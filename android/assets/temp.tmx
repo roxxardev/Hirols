@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="96" tileheight="96" nextobjectid="32">
+ <tileset firstgid="1" name="ZestawSnieg" tilewidth="96" tileheight="96" tilecount="36">
+  <image source="ZestawSnieg.png" width="576" height="576"/>
+  <terraintypes>
+   <terrain name="Ice" tile="7"/>
+  </terraintypes>
+  <tile id="0" terrain=",,,0">
+   <properties>
+    <property name="walkable" value="false"/>
+   </properties>
+  </tile>
+  <tile id="1" terrain=",,0,0">
+   <properties>
+    <property name="walkable" value="false"/>
+   </properties>
+  </tile>
+  <tile id="2" terrain=",,0,">
+   <properties>
+    <property name="walkable" value="false"/>
+   </properties>
+  </tile>
+  <tile id="6" terrain=",0,,0">
+   <properties>
+    <property name="walkable" value="false"/>
+   </properties>
+  </tile>
+  <tile id="7" terrain="0,0,0,0">
+   <properties>
+    <property name="walkable" value="true"/>
+   </properties>
+  </tile>
+  <tile id="8" terrain="0,,0,">
+   <properties>
+    <property name="walkable" value="false"/>
+   </properties>
+  </tile>
+  <tile id="12" terrain=",0,,">
+   <properties>
+    <property name="walkable" value="false"/>
+   </properties>
+  </tile>
+  <tile id="13" terrain="0,0,,">
+   <properties>
+    <property name="walkable" value="false"/>
+   </properties>
+  </tile>
+  <tile id="14" terrain="0,,,">
+   <properties>
+    <property name="walkable" value="false"/>
+   </properties>
+  </tile>
+  <tile id="21" terrain="0,0,0,">
+   <properties>
+    <property name="walkable" value="false"/>
+   </properties>
+  </tile>
+  <tile id="22" terrain="0,0,,">
+   <properties>
+    <property name="walkable" value="false"/>
+   </properties>
+  </tile>
+  <tile id="23" terrain="0,0,,0">
+   <properties>
+    <property name="walkable" value="false"/>
+   </properties>
+  </tile>
+  <tile id="27" terrain="0,,0,">
+   <properties>
+    <property name="walkable" value="false"/>
+   </properties>
+  </tile>
+  <tile id="28">
+   <properties>
+    <property name="walkable" value="false"/>
+   </properties>
+  </tile>
+  <tile id="29" terrain=",0,,0">
+   <properties>
+    <property name="walkable" value="false"/>
+   </properties>
+  </tile>
+  <tile id="30">
+   <properties>
+    <property name="walkable" value="false"/>
+   </properties>
+  </tile>
+  <tile id="33" terrain="0,,0,0">
+   <properties>
+    <property name="walkable" value="false"/>
+   </properties>
+  </tile>
+  <tile id="34" terrain=",,0,0">
+   <properties>
+    <property name="walkable" value="false"/>
+   </properties>
+  </tile>
+  <tile id="35" terrain=",0,0,0">
+   <properties>
+    <property name="walkable" value="false"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="37" name="Building" tilewidth="96" tileheight="96" tilecount="6">
+  <image source="Building.png" width="192" height="288"/>
+  <tile id="0">
+   <properties>
+    <property name="walkable" value="false"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="walkable" value="false"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="walkable" value="false"/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="walkable" value="false"/>
+   </properties>
+  </tile>
+  <tile id="4">
+   <properties>
+    <property name="walkable" value="false"/>
+   </properties>
+  </tile>
+  <tile id="5">
+   <properties>
+    <property name="walkable" value="false"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="ground" width="64" height="64">
+  <data encoding="base64" compression="zlib">
+   eJztW8lOazEMLWUBLAq7lgVl0TL//weSK9WSZWXwmORKd2E9CUrj43PsxE7eebfbnTfbbDOW3SXbI7ufwKee2D+SPSK7JLvebE/siv4FW3O83gl2jV1WHAMP/DgGi56uGcP6oT8fGTsv/BADmks1+032txurH0/81thRfUTX41ztw7yMjgmNjXccenF/THZK9ozslfl5/LmnFeJfsLyQdUu6y+E8oBh46+BhAHbOum+Nz3vpIBo/xcHVHd0PqJ+l751J/yXuuesuHMO5nObKbPzT+naqYG/lPtZA6XMz8V/j2Tvmx1t8JevV7ID4qu1Hmhz3xi+NszYW0jhw8UNfIDkfR3DumRNcTrg535vzkg5aGoB6x/VNW2e8z3teMZD6Vcv5z2Rfhd951XltDHJ1UaPJGv7vZD+d+YdzBWf+gPcIiebxWprcj+Sf8gF9xWw9ZgT/LT68e6xSHo3in3v+8NaE5twTMffQ6NGqQ0sNgDh4zEq1ftD7AIkP3DWXfYWTIxZNePV7kryka8J5FvYTPNuRcKOpDZ6zfi4HdE0629D2HZqc9J73QF6U4lDSfm7eL90nRvLPiQNnn5X+jZX/6Hkv3jO5OPC9hyT/Z9D/SNPofzR+6Jst86Y18p+b4Vh9mTH/Jb5qfbHMwyQxx1rV7M8R+K3zMMma1GeLdnK1SvN91ncCkjWpz974OXNG7netEb/2Oy29qCT/sdas/asn/l7841hH7VW9+ZeuB2dTC/dUS5IakHuH0xM/Nu58wjsG1AfL/qetuRB3ba/e4o7rl8c8VJvLmt5O4n9Lm153gZYcqN1VWfgHDZS05XkPaqnltbsqK/80Dvg9iecd8KgeaMRd9kz4R97ltvQf/d51Fu6t+T8aO7631vaBljPACOzwbojuu5ZeOPrdo/atgFSvmprC6eVKd1Qj6lwNf8QMNKdZbs5E1Lle+Ftvujh1s/d7BQ1+uGfD/xeBk6stDUTtcfRcDLnZ800k9QXPhT1rHWftWc4Rm202q/0Deuk44A==
+  </data>
+ </layer>
+ <objectgroup name="objects">
+  <object id="1" name="castle1" type="castle" x="2112" y="4608" width="96" height="96">
+   <properties>
+    <property name="EnterX" value="2208.00"/>
+    <property name="EnterY" value="4704.00"/>
+    <property name="isEnter" value="false"/>
+   </properties>
+  </object>
+  <object id="3" name="castle1" type="castle" x="2208" y="4608" width="96" height="96">
+   <properties>
+    <property name="EnterX" value="2208.00"/>
+    <property name="EnterY" value="4704.00"/>
+    <property name="isEnter" value="false"/>
+   </properties>
+  </object>
+  <object id="6" name="castle1" type="castle" x="2112" y="4704" width="96" height="96">
+   <properties>
+    <property name="EnterX" value="2208.00"/>
+    <property name="EnterY" value="4704.00"/>
+    <property name="isEnter" value="false"/>
+   </properties>
+  </object>
+  <object id="7" name="castle1" type="castle" x="2208" y="4704" width="96" height="96">
+   <properties>
+    <property name="isEnter" value="true"/>
+   </properties>
+  </object>
+  <object id="8" name="castle2" type="castle" x="4128" y="2016" width="96" height="96"/>
+  <object id="9" name="castle2" type="castle" x="4224" y="2016" width="96" height="96"/>
+  <object id="10" name="castle2" type="castle" x="4128" y="2112" width="96" height="96"/>
+  <object id="11" name="castle2" type="castle" x="4224" y="2112" width="96" height="96"/>
+  <object id="12" name="wood" type="resources" x="1248" y="2976" width="96" height="96"/>
+  <object id="13" name="stone" type="resources" x="3072" y="4608" width="96" height="96"/>
+  <object id="14" name="steel" type="resources" x="4512" y="3744" width="96" height="96"/>
+  <object id="15" name="steel" type="resources" x="1824" y="1728" width="96" height="96"/>
+  <object id="16" name="stone" type="resources" x="2304" y="864" width="96" height="96"/>
+  <object id="17" name="wood" type="resources" x="4800" y="1632" width="96" height="96"/>
+  <object id="18" name="mine1" type="mine" x="1536" y="864" width="96" height="96"/>
+  <object id="19" name="mine1" type="mine" x="1632" y="864" width="96" height="96"/>
+  <object id="20" name="mine2" type="mine" x="4032" y="672" width="96" height="96"/>
+  <object id="22" name="mine2" type="mine" x="4128" y="672" width="96" height="96"/>
+  <object id="23" name="mine3" type="mine" x="4800" y="4224" width="96" height="96"/>
+  <object id="24" name="mine3" type="mine" x="4896" y="4224" width="96" height="96"/>
+  <object id="25" name="mine4" type="mine" x="1152" y="4992" width="96" height="96"/>
+  <object id="27" name="mine4" type="mine" x="1248" y="4992" width="96" height="96"/>
+ </objectgroup>
+</map>

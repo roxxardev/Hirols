@@ -1,0 +1,26 @@
+package pl.pollub.hirols.components.physics;
+
+import com.badlogic.ashley.core.Component;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+
+/**
+ * Created by Eryk on 2015-11-28.
+ */
+public class PositionComponent implements Component {
+    public float x = 0.0f;
+    public float y = 0.0f;
+
+    public PositionComponent(float x, float y) {
+        this.y = y;
+        this.x = x;
+    }
+
+    public PositionComponent(Vector2 position) {
+        this(position.x,position.y);
+    }
+
+    public PositionComponent(Vector3 position) {
+        this(position.x,position.y);
+    }
+}
