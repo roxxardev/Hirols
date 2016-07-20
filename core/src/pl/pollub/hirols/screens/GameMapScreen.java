@@ -1,15 +1,18 @@
 package pl.pollub.hirols.screens;
 
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.components.map.GameMapComponent;
 import pl.pollub.hirols.components.map.GameMapDataComponent;
+import pl.pollub.hirols.console.CommandsContainer;
+import pl.pollub.hirols.console.GraphicalConsole;
+import pl.pollub.hirols.managers.HudManager;
 import pl.pollub.hirols.managers.SpawnGenerator;
 import pl.pollub.hirols.managers.input.InputManager;
 import pl.pollub.hirols.gameMap.Map;
@@ -44,6 +47,8 @@ public class GameMapScreen extends GameScreen {
     private final GestureDetector gestureDetector;
     private final MyInputProcessor myInputProcessor;
 
+    private GraphicalConsole console;
+
     public GameMapScreen(Hirols game, Map map, OrthographicCamera gameMapCam, Viewport gameMapPort) {
         super(game);
         this.gameMapCam = gameMapCam;
@@ -62,6 +67,31 @@ public class GameMapScreen extends GameScreen {
                         .add(map.getGameMapComponent())
                         .add(new GameMapDataComponent(map,gameMapCam,game.batch,inputManager));
         game.engine.addEntity(gameMapEntity);
+
+        CommandsContainer commandsContainer = new CommandsContainer() {
+            @Override
+            public void exit() {
+                Gdx.app.exit();
+            }
+
+            @Override
+            public void showCommands() {
+                console.showCommands();
+            }
+
+            @Override
+            public void clear() {
+                console.clear();
+            }
+
+            public void dupa(String s) {
+                Gdx.app.log("TEST", s);
+            }
+
+            public void quit() { Gdx.app.exit();}
+        };
+        console = new GraphicalConsole(commandsContainer,
+                game.assetManager.get("default_skin/uiskin.json", Skin.class),game);
     }
 
     @Override
@@ -88,6 +118,7 @@ public class GameMapScreen extends GameScreen {
     @Override
     public void render(float delta) {
         game.gameMapManager.update(delta);
+        console.draw();
     }
 
     @Override
@@ -95,6 +126,7 @@ public class GameMapScreen extends GameScreen {
         super.resize(width,height);
         gameMapPort.update(width, height);
         gameMapCam.zoom = 1;
+        console.resize(width,height);
     }
 
     @Override
@@ -112,6 +144,7 @@ public class GameMapScreen extends GameScreen {
         super.show();
         game.multiplexer.addProcessor(gestureDetector);
         game.multiplexer.addProcessor(myInputProcessor);
+        console.addInputProcessorToMultiplexer();
     }
 
     @Override
@@ -119,6 +152,8 @@ public class GameMapScreen extends GameScreen {
         super.hide();
         game.multiplexer.removeProcessor(gestureDetector);
         game.multiplexer.removeProcessor(myInputProcessor);
+        console.setVisible(false);
+        console.removeInputProcessorFromMultiplexer();
     }
 
     @Override
@@ -126,5 +161,6 @@ public class GameMapScreen extends GameScreen {
         super.dispose();
         map.dispose();
         game.engine.removeEntity(gameMapEntity);
+        console.dispose();
     }
 }

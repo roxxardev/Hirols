@@ -2,6 +2,7 @@ package pl.pollub.hirols.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.loaders.SkinLoader;
 import com.badlogic.gdx.assets.loaders.TextureLoader;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.assets.AssetManager;
@@ -138,6 +139,9 @@ public class LoadingScreen implements Screen {
         assetManager.load("resources/metal.png", Texture.class, textureParameter);
         assetManager.load("resources/alienrsc.png", Texture.class, textureParameter);
         assetManager.load("ui/atlas.pack", TextureAtlas.class);
+
+        assetManager.load("default_skin/uiskin.atlas", TextureAtlas.class);
+        assetManager.load("default_skin/uiskin.json", Skin.class, new SkinLoader.SkinParameter("default_skin/uiskin.atlas"));
 
     }
 

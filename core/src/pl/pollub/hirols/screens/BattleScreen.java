@@ -3,12 +3,14 @@ package pl.pollub.hirols.screens;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -16,6 +18,9 @@ import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.battle.HexagonMapPolygon;
 import pl.pollub.hirols.components.battle.BattleComponent;
 import pl.pollub.hirols.components.battle.BattleDataComponent;
+import pl.pollub.hirols.console.CommandsContainer;
+import pl.pollub.hirols.console.GraphicalConsole;
+import pl.pollub.hirols.managers.HudManager;
 import pl.pollub.hirols.managers.input.InputManager;
 import pl.pollub.hirols.managers.input.MyGestureListener;
 import pl.pollub.hirols.managers.input.MyInputProcessor;
@@ -45,6 +50,8 @@ public class BattleScreen extends GameScreen {
 
     private final HexagonMapPolygon hexagonMapPolygon;
 
+    private GraphicalConsole console;
+
     public BattleScreen(Hirols game) {
         super(game);
 
@@ -67,6 +74,31 @@ public class BattleScreen extends GameScreen {
         game.engine.addEntity(battleEntity);
 
         createSystems();
+
+        CommandsContainer commandsContainer = new CommandsContainer() {
+            @Override
+            public void exit() {
+                Gdx.app.exit();
+            }
+
+            @Override
+            public void showCommands() {
+                console.showCommands();
+            }
+
+            @Override
+            public void clear() {
+                console.clear();
+            }
+
+            public void dupa(String s) {
+                Gdx.app.log("TEST", s);
+            }
+        };
+        game.hudManager = new HudManager(game);
+        console = new GraphicalConsole(commandsContainer,
+                game.assetManager.get("default_skin/uiskin.json", Skin.class),
+                game);
     }
 
     @Override
@@ -74,6 +106,7 @@ public class BattleScreen extends GameScreen {
         super.show();
         game.multiplexer.addProcessor(gestureDetector);
         game.multiplexer.addProcessor(myInputProcessor);
+        console.addInputProcessorToMultiplexer();
     }
 
     @Override
@@ -81,6 +114,7 @@ public class BattleScreen extends GameScreen {
         super.hide();
         game.multiplexer.removeProcessor(gestureDetector);
         game.multiplexer.removeProcessor(myInputProcessor);
+        console.removeInputProcessorFromMultiplexer();
         dispose();
     }
 
@@ -106,6 +140,7 @@ public class BattleScreen extends GameScreen {
             return;
         }
         game.engine.update(delta);
+        console.draw();
     }
 
     @Override
@@ -121,6 +156,7 @@ public class BattleScreen extends GameScreen {
         Vector2 margin = hexagonMapPolygon.getMargin();
         margin.set(backgroundSprite.getWidth()/100*10,backgroundSprite.getHeight()/100*10 + offsetY);
         hexagonMapPolygon.setSideAndUpdate((width - 2* margin.x)/((2*hexagonMapPolygon.getMapWidth()+1)* ((float) Math.cos(Math.toRadians(30)))));
+        console.resize(width,height);
     }
 
     @Override
@@ -140,5 +176,6 @@ public class BattleScreen extends GameScreen {
         for(Entity entity : battleEntities) {
             game.engine.removeEntity(entity);
         }
+        console.dispose();
     }
 }
