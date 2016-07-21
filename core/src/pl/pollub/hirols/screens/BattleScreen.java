@@ -95,7 +95,6 @@ public class BattleScreen extends GameScreen {
                 Gdx.app.log("TEST", s);
             }
         };
-        game.hudManager = new HudManager(game);
         console = new GraphicalConsole(commandsContainer,
                 game.assetManager.get("default_skin/uiskin.json", Skin.class),
                 game);

@@ -12,7 +12,7 @@ public class AnimationComponent implements Component {
     public String animationName;
     public String renderedAnimationName;
     public String direction;
-    public Float stateTime;
+    public float stateTime;
     public Map<String, Map<String,Animation>> animationMap;
     public boolean looping = false;
 

@@ -12,7 +12,6 @@ import pl.pollub.hirols.components.map.GameMapComponent;
 import pl.pollub.hirols.components.map.GameMapDataComponent;
 import pl.pollub.hirols.console.CommandsContainer;
 import pl.pollub.hirols.console.GraphicalConsole;
-import pl.pollub.hirols.managers.HudManager;
 import pl.pollub.hirols.managers.SpawnGenerator;
 import pl.pollub.hirols.managers.input.InputManager;
 import pl.pollub.hirols.gameMap.Map;
@@ -85,7 +84,7 @@ public class GameMapScreen extends GameScreen {
             }
 
             public void dupa(String s) {
-                Gdx.app.log("TEST", s);
+                console.log("NO ELO");
             }
 
             public void quit() { Gdx.app.exit();}

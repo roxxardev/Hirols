@@ -3,11 +3,14 @@ package pl.pollub.hirols.console;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.utils.StringBuilder;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.Method;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 
 /**
  * Created by erykp_000 on 2016-07-15.
@@ -109,14 +112,24 @@ public abstract class DefaultConsole implements Console {
     public void showCommands() {
         Class<? extends CommandsContainer> commandsContainerClazz = commands.getClass();
         Method[] methods = ClassReflection.getDeclaredMethods(commandsContainerClazz);
+        StringBuilder stringBuilder = new StringBuilder();
+        Arrays.sort(methods, new Comparator<Method>() {
+            @Override
+            public int compare(Method o1, Method o2) {
+                return (o1.getName().compareToIgnoreCase(o2.getName()));
+            }
+        });
+
+        int i = 0;
         for(Method method : methods) {
             if(!(method.isAnnotationPresent(Hidden.class) && !isHiddenCommandsVisible())) {
-                String command = method.getName() + ": ";
+                stringBuilder.setLength(0);
+                stringBuilder.append(method.getName()).append(" ");
                 Class[] parameters = method.getParameterTypes();
                 for(Class parameter : parameters) {
-                    command += parameter.getSimpleName() + "; ";
+                    stringBuilder.append("<").append(parameter.getSimpleName()).append(">");
                 }
-                log(command);
+                log(stringBuilder.toString());
             }
         }
     }
