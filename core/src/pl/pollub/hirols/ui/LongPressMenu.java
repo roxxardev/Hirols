@@ -33,34 +33,33 @@ public class LongPressMenu extends VisTable {
     private Stage stage;
     private boolean debug;
     private Skin skin;
-    private BitmapFont font;
     private VisLabel.LabelStyle labelStyle;
     private Sprite sprite;
 
-    public LongPressMenu(Hirols game, Stage stage, boolean debug,  Texture texture){
+    public LongPressMenu(Hirols game, Stage stage, boolean debug){
         this.game = game;
         this.stage = stage;
         this.debug = debug;
         this.skin = game.hudManager.skin;
-        this.font = game.hudManager.font;
 
-        sprite = new Sprite(texture);
+        sprite = new Sprite(game.hudManager.whiteTexture);
         sprite.setColor(0,0,0,0.7f);
 
         labelStyle = skin.get("label-white", Label.LabelStyle.class);
     }
 
     public void createLongPressMenuOnEnemy(){
-        VisTable infoMenu = new VisTable(true);
-        infoMenu.setDebug(debug);
-        infoMenu.setBounds(stage.getWidth() / 2 - stage.getWidth() / 8, stage.getHeight() / 2 - stage.getHeight() / 8, stage.getWidth() / 4, stage.getHeight() / 4);
-        infoMenu.setBackground(new SpriteDrawable(sprite));
-        infoMenu.setTouchable(Touchable.enabled);
-        infoMenu.addCaptureListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-            }
-        });
+        VisTable infoMenu = new VisTable(true){{
+            setDebug(debug);
+            setBounds(stage.getWidth() / 2 - stage.getWidth() / 8, stage.getHeight() / 2 - stage.getHeight() / 8, stage.getWidth() / 4, stage.getHeight() / 4);
+            setBackground(new SpriteDrawable(sprite));
+            setTouchable(Touchable.enabled);
+            addCaptureListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                }
+            });
+        }};
 
         VisLabel label = new VisLabel("EnemyInfoMenu", labelStyle);
         //label.setPosition(enemyInfoMenu.getWidth()/2,enemyInfoMenu.getHeight()/2);
@@ -70,16 +69,17 @@ public class LongPressMenu extends VisTable {
     }
 
     public void createLongPressMenuOnTown(TownComponent townComponent){
-        VisTable infoMenu = new VisTable(true);
-        infoMenu.setDebug(debug);
-        infoMenu.setBounds(stage.getWidth() / 2 - stage.getWidth() / 8, stage.getHeight() / 2 - stage.getHeight() / 8, stage.getWidth() / 4, stage.getHeight() / 4);
-        infoMenu.setBackground(new SpriteDrawable(sprite));
-        infoMenu.setTouchable(Touchable.enabled);
-        infoMenu.addCaptureListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-            }
-        });
+        VisTable infoMenu = new VisTable(true){{
+            setDebug(debug);
+            setBounds(stage.getWidth() / 2 - stage.getWidth() / 8, stage.getHeight() / 2 - stage.getHeight() / 8, stage.getWidth() / 4, stage.getHeight() / 4);
+            setBackground(new SpriteDrawable(sprite));
+            setTouchable(Touchable.enabled);
+            addCaptureListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                }
+            });
+        }};
 
 
         VisLabel label = new VisLabel("Town name "+townComponent.name, labelStyle);
@@ -90,16 +90,17 @@ public class LongPressMenu extends VisTable {
     }
 
     public void createLongPressMenuOnMine(){
-        VisTable infoMenu = new VisTable(true);
-        infoMenu.setDebug(debug);
-        infoMenu.setBounds(stage.getWidth() / 2 - stage.getWidth() / 8, stage.getHeight() / 2 - stage.getHeight() / 8, stage.getWidth() / 4, stage.getHeight() / 4);
-        infoMenu.setBackground(new SpriteDrawable(sprite));
-        infoMenu.setTouchable(Touchable.enabled);
-        infoMenu.addCaptureListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-            }
-        });
+        VisTable infoMenu = new VisTable(true){{
+            setDebug(debug);
+            setBounds(stage.getWidth() / 2 - stage.getWidth() / 8, stage.getHeight() / 2 - stage.getHeight() / 8, stage.getWidth() / 4, stage.getHeight() / 4);
+            setBackground(new SpriteDrawable(sprite));
+            setTouchable(Touchable.enabled);
+            addCaptureListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                }
+            });
+        }};
 
 
         VisLabel label = new VisLabel("MineInfoMenu", labelStyle);
@@ -110,17 +111,17 @@ public class LongPressMenu extends VisTable {
     }
 
     public void createLongPressMenuOnResource(){
-        VisTable infoMenu = new VisTable(true);
-        infoMenu.setDebug(debug);
-        infoMenu.setBounds(stage.getWidth() / 2 - stage.getWidth() / 8, stage.getHeight() / 2 - stage.getHeight() / 8, stage.getWidth() / 4, stage.getHeight() / 4);
-        infoMenu.setBackground(new SpriteDrawable(sprite));
-        infoMenu.setTouchable(Touchable.enabled);
-        infoMenu.addCaptureListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-            }
-        });
-
+        VisTable infoMenu = new VisTable(true){{
+            setDebug(debug);
+            setBounds(stage.getWidth() / 2 - stage.getWidth() / 8, stage.getHeight() / 2 - stage.getHeight() / 8, stage.getWidth() / 4, stage.getHeight() / 4);
+            setBackground(new SpriteDrawable(sprite));
+            setTouchable(Touchable.enabled);
+            addCaptureListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                }
+            });
+        }};
 
         VisLabel label = new VisLabel("ResourceInfoMenu", labelStyle);
         //label.setPosition(enemyInfoMenu.getWidth()/2,enemyInfoMenu.getHeight()/2);
@@ -130,17 +131,17 @@ public class LongPressMenu extends VisTable {
     }
 
     public void createLongPressMenuOnChest(){
-        VisTable infoMenu = new VisTable(true);
-        infoMenu.setDebug(debug);
-        infoMenu.setBounds(stage.getWidth() / 2 - stage.getWidth() / 8, stage.getHeight() / 2 - stage.getHeight() / 8, stage.getWidth() / 4, stage.getHeight() / 4);
-        infoMenu.setBackground(new SpriteDrawable(sprite));
-        infoMenu.setTouchable(Touchable.enabled);
-        infoMenu.addCaptureListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-            }
-        });
-
+        VisTable infoMenu = new VisTable(true){{
+            setDebug(debug);
+            setBounds(stage.getWidth() / 2 - stage.getWidth() / 8, stage.getHeight() / 2 - stage.getHeight() / 8, stage.getWidth() / 4, stage.getHeight() / 4);
+            setBackground(new SpriteDrawable(sprite));
+            setTouchable(Touchable.enabled);
+            addCaptureListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                }
+            });
+        }};
 
         VisLabel label = new VisLabel("ChestInfoMenu", labelStyle);
         //label.setPosition(enemyInfoMenu.getWidth()/2,enemyInfoMenu.getHeight()/2);

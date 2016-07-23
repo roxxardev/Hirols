@@ -24,6 +24,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import pl.pollub.hirols.Hirols;
+import pl.pollub.hirols.managers.HudManager;
 
 /**
  * Created by Eryk on 2016-02-28.
@@ -129,6 +130,8 @@ public class LoadingScreen implements Screen {
         assetManager.load("hexagon2.png", Texture.class, textureParameter);
         assetManager.load("battleBackground.png", Texture.class, textureParameter);
         assetManager.load("rect.png", Texture.class, textureParameter);
+        assetManager.load("towns/snow-town.png", Texture.class, textureParameter);
+
         //GUI
 
         assetManager.load("fonts/test2.fnt", BitmapFont.class);
@@ -138,11 +141,19 @@ public class LoadingScreen implements Screen {
         assetManager.load("resources/grafen2.png", Texture.class, textureParameter);
         assetManager.load("resources/metal.png", Texture.class, textureParameter);
         assetManager.load("resources/alienrsc.png", Texture.class, textureParameter);
+        assetManager.load("resources/coinsresource.png", Texture.class, textureParameter);
+
+
+
         assetManager.load("ui/atlas.pack", TextureAtlas.class);
 
         assetManager.load("default_skin/uiskin.atlas", TextureAtlas.class);
         assetManager.load("default_skin/uiskin.json", Skin.class, new SkinLoader.SkinParameter("default_skin/uiskin.atlas"));
 
+        assetManager.load("ui/button-images.png", Texture.class, textureParameter);
+        assetManager.load("ui/menuDrag.png", Texture.class, textureParameter);
+        assetManager.load("ui/minimapDrag.png", Texture.class, textureParameter);
+        //assetManager.load("ui/townheroDrag.png", Texture.class, textureParameter);
     }
 
     @Override
@@ -159,6 +170,7 @@ public class LoadingScreen implements Screen {
         if(assetManager.update()) {
             if(Gdx.input.isTouched()) {
                 //jeśli wczytano assety i naciśnieto
+                game.hudManager = new HudManager(game);
                 game.gameMapManager.createMap("temp.tmx");
                 game.setScreen(game.gameMapManager.getCurrentMapScreen());
             }

@@ -30,6 +30,7 @@ import pl.pollub.hirols.systems.generalSystems.graphics.BitmapFontRenderSystem;
 import pl.pollub.hirols.systems.generalSystems.graphics.RenderSystem;
 import pl.pollub.hirols.systems.gameMapSystems.TiledMapRenderSystem;
 import pl.pollub.hirols.systems.generalSystems.physics.MovementSystem;
+import pl.pollub.hirols.ui.playScreenUI.PlayerScreenHud;
 
 /**
  * Created by Eryk on 2016-04-25.
@@ -47,6 +48,8 @@ public class GameMapScreen extends GameScreen {
     private final MyInputProcessor myInputProcessor;
 
     private GraphicalConsole console;
+
+    private PlayerScreenHud hud;
 
     public GameMapScreen(Hirols game, Map map, OrthographicCamera gameMapCam, Viewport gameMapPort) {
         super(game);
@@ -91,6 +94,8 @@ public class GameMapScreen extends GameScreen {
         };
         console = new GraphicalConsole(commandsContainer,
                 game.assetManager.get("default_skin/uiskin.json", Skin.class),game);
+
+        hud = new PlayerScreenHud(game);
     }
 
     @Override
@@ -116,13 +121,17 @@ public class GameMapScreen extends GameScreen {
 
     @Override
     public void render(float delta) {
+        hud.update(delta);
         game.gameMapManager.update(delta);
+        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+        hud.stage.draw();
         console.draw();
     }
 
     @Override
     public void resize(int width, int height) {
         super.resize(width,height);
+        hud.resize(width,height);
         gameMapPort.update(width, height);
         gameMapCam.zoom = 1;
         console.resize(width,height);
@@ -141,6 +150,7 @@ public class GameMapScreen extends GameScreen {
     @Override
     public void show() {
         super.show();
+        game.multiplexer.addProcessor(hud.stage);
         game.multiplexer.addProcessor(gestureDetector);
         game.multiplexer.addProcessor(myInputProcessor);
         console.addInputProcessorToMultiplexer();
@@ -149,6 +159,7 @@ public class GameMapScreen extends GameScreen {
     @Override
     public void hide() {
         super.hide();
+        game.multiplexer.removeProcessor(hud.stage);
         game.multiplexer.removeProcessor(gestureDetector);
         game.multiplexer.removeProcessor(myInputProcessor);
         console.setVisible(false);
@@ -161,5 +172,6 @@ public class GameMapScreen extends GameScreen {
         map.dispose();
         game.engine.removeEntity(gameMapEntity);
         console.dispose();
+        hud.dispose();
     }
 }

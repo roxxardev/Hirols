@@ -56,7 +56,7 @@ public class SpawnGenerator {
 
             Entity mapEntity = map.getEntity(indexX,indexY);
 
-            mapEntity.add(new AnimationComponent("standAnimation", directions[rand.nextInt(8)], snakeAnimationMap, rand.nextFloat()))
+            mapEntity.add(new AnimationComponent("standAnimation", directions[rand.nextInt(8)], snakeAnimationMap, true, rand.nextFloat()))
                     .add(map.getGameMapComponent())
                     .add(new TextureComponent(128, 128, -16, 0))
                     .add(new RenderableComponent())
@@ -105,7 +105,7 @@ public class SpawnGenerator {
         engine.addEntity(new Entity()
                 .add(new PositionComponent(1728, 1728))
                 .add(map.getGameMapComponent())
-                .add(new AnimationComponent("standAnimation", directions[rand.nextInt(8)], animationMap))
+                .add(new AnimationComponent("standAnimation", directions[rand.nextInt(8)], animationMap, true))
                 .add(new TextureComponent(84, 102))
                 .add(new RenderableComponent())
                 .add(new HeroDataComponent(++playerId, 123.f))
@@ -116,7 +116,7 @@ public class SpawnGenerator {
             Entity hero = new Entity();
             hero
                     .add(map.getGameMapComponent())
-                    .add(new AnimationComponent("standAnimation", directions[rand.nextInt(8)], animationMap))
+                    .add(new AnimationComponent("standAnimation", directions[rand.nextInt(8)], animationMap, true))
                     .add(new PositionComponent(generateRandomPositionOnMap(map,mapMapper)))
                     .add(new RenderableComponent())
                     .add(new TextureComponent(84, 102))

@@ -31,6 +31,7 @@ import pl.pollub.hirols.components.map.TownComponent;
 import pl.pollub.hirols.components.physics.PositionComponent;
 import pl.pollub.hirols.components.physics.VelocityComponent;
 import pl.pollub.hirols.screens.BattleScreen;
+import pl.pollub.hirols.screens.TownScreen;
 
 /**
  * Created by Eryk on 2016-05-15.
@@ -121,6 +122,7 @@ public class EndNodeInteractionSystem extends GameMapEntitySystem {
             TownComponent townComponent = townMap.get(targetEntity);
             selectedHeroData.targetEntity = null;
             Gdx.app.log("EndNodeInteractionSystem", "Interaction with town: ");
+            game.setScreen(new TownScreen(game));
         } else if(mineMap.has(targetEntity)) {
             Gdx.app.log("EndNodeInteractionSystem", "Interaction with mine: ");
         }

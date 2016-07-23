@@ -10,17 +10,18 @@ import java.util.Map;
 /**
  * Created by Marcin on 2016-01-15.
  */
+
 public class AnimationManager {
     public static Map<String,Animation> createAnimation( String[] directions, Texture texture, int FRAME_COLS, int FRAME_ROWS, float duration){
-        Map<String,Animation> tmp = new HashMap<String, Animation>();
+        Map<String,Animation> animationDirectioriesMap = new HashMap<String, Animation>();
         TextureRegion[][] frames = TextureRegion.split(texture,
                 texture.getWidth() / FRAME_COLS,
                 texture.getHeight() / FRAME_ROWS);
 
         for(int i =0 ;i <FRAME_ROWS; i++)
-            tmp.put(directions[i], new Animation(duration, frames[i]));
+            animationDirectioriesMap.put(directions[i], new Animation(duration, frames[i]));
 
-        return tmp;
+        return animationDirectioriesMap;
     }
 
     public static Animation createAnimation(Texture texture, int FRAME_COLS, int FRAME_ROWS, float duration){

@@ -32,6 +32,7 @@ import pl.pollub.hirols.systems.generalSystems.graphics.AnimationSystem;
 import pl.pollub.hirols.systems.generalSystems.graphics.BitmapFontRenderSystem;
 import pl.pollub.hirols.systems.generalSystems.graphics.RenderSystem;
 import pl.pollub.hirols.systems.generalSystems.physics.MovementSystem;
+import pl.pollub.hirols.ui.battleScreenUI.BattleScreenHud;
 
 /**
  * Created by Eryk on 2016-04-03.
@@ -51,6 +52,8 @@ public class BattleScreen extends GameScreen {
     private final HexagonMapPolygon hexagonMapPolygon;
 
     private GraphicalConsole console;
+
+    private BattleScreenHud hud;
 
     public BattleScreen(Hirols game) {
         super(game);
@@ -98,11 +101,14 @@ public class BattleScreen extends GameScreen {
         console = new GraphicalConsole(commandsContainer,
                 game.assetManager.get("default_skin/uiskin.json", Skin.class),
                 game);
+
+        hud = new BattleScreenHud(game);
     }
 
     @Override
     public void show() {
         super.show();
+        game.multiplexer.addProcessor(hud.stage);
         game.multiplexer.addProcessor(gestureDetector);
         game.multiplexer.addProcessor(myInputProcessor);
         console.addInputProcessorToMultiplexer();
@@ -111,6 +117,7 @@ public class BattleScreen extends GameScreen {
     @Override
     public void hide() {
         super.hide();
+        game.multiplexer.removeProcessor(hud.stage);
         game.multiplexer.removeProcessor(gestureDetector);
         game.multiplexer.removeProcessor(myInputProcessor);
         console.removeInputProcessorFromMultiplexer();
@@ -138,7 +145,12 @@ public class BattleScreen extends GameScreen {
             game.setScreen(game.gameMapManager.getCurrentMapScreen());
             return;
         }
+        hud.update(delta);
+
         game.engine.update(delta);
+
+        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+        hud.stage.draw();
         console.draw();
     }
 

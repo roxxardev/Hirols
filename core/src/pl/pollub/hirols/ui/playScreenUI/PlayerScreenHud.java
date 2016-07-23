@@ -4,18 +4,27 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.kotcrab.vis.ui.util.dialog.OptionDialogAdapter;
+import com.kotcrab.vis.ui.widget.VisTable;
 
 import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.managers.AnimationManager;
+import pl.pollub.hirols.ui.AnimatedImage;
+import pl.pollub.hirols.ui.LongPressMenu;
 
 /**
  * Created by krol22 on 15.02.16.
@@ -28,12 +37,15 @@ public class PlayerScreenHud implements Disposable{
     public boolean debug;
     private Viewport guiPort;
 
-    private TopBar topBar;
-    private RightBar rightBar;
-    private LeftBar leftBar;
-    private pl.pollub.hirols.ui.AnimatedImage longPressLoading;
-    private pl.pollub.hirols.ui.LongPressMenu longPressMenus;
+    public pl.pollub.hirols.ui.TopBar topBar;
+    public pl.pollub.hirols.ui.playScreenUI.RightBar rightBar;
+    public LeftBar leftBar;
 
+    private ImageButton menuButton;
+    private VisTable leftBarTable;
+
+    private AnimatedImage longPressLoading;
+    private LongPressMenu longPressMenus;
 
     public PlayerScreenHud(Hirols game){
         this.game = game;
@@ -46,33 +58,87 @@ public class PlayerScreenHud implements Disposable{
         guiPort = new ScreenViewport(gameCam);
         stage = new Stage(guiPort, game.batch);
 
-        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pixmap.setColor(Color.rgba8888(1f, 1f, 1f, 1f));
-        pixmap.fill();
-
-        Texture whiteTexture = new Texture(pixmap);
-
         debug = game.hudManager.debug;
 
         VisUI.load();
-        createActors(whiteTexture);
-
-        pixmap.dispose();
+        createActors();
     }
 
-    private void createActors(Texture texture){
-        topBar = new TopBar(stage, game.assetManager, debug, texture);
-        rightBar = new RightBar(game, stage, topBar, debug, texture);
+    private void createActors(){
+        topBar = new pl.pollub.hirols.ui.TopBar(game, stage, debug);
+        rightBar = new pl.pollub.hirols.ui.playScreenUI.RightBar(game, stage, topBar, debug);
         leftBar = new LeftBar(game, stage, topBar, debug);
 
-        longPressLoading = new pl.pollub.hirols.ui.AnimatedImage( stage,  AnimationManager.createAnimation(game.assetManager.get("animations/loadingLongPress.png", Texture.class), 32, 1, 0.034375f), false);
-        longPressMenus = new pl.pollub.hirols.ui.LongPressMenu(game, stage, debug, texture);
+        longPressMenus = new LongPressMenu(game, stage, debug);
+        longPressLoading = new AnimatedImage(AnimationManager.createAnimation(game.assetManager.get("animations/loadingLongPress.png", Texture.class), 32, 1, 0.034375f), false);
+        longPressLoading.setZIndex(0);
 
         stage.addActor(longPressLoading);
         stage.addActor(topBar);
         stage.addActor(rightBar);
         stage.addActor(leftBar);
         stage.addActor(longPressMenus);
+
+        //createLeftBar();
+    }
+
+    private void createLeftBar(){
+        final ImageButton.ImageButtonStyle imageButtonStyle = new ImageButton.ImageButtonStyle(game.hudManager.buttonStyleRoundedOver);
+
+        leftBarTable = new VisTable(){{
+            setBounds(stage.getWidth()/14 +20, -stage.getWidth() / 14, stage.getWidth() / 14, stage.getWidth() / 14);
+
+            Sprite sprite = new Sprite(game.assetManager.get("ui/options-image.png", Texture.class));
+            sprite.setSize(stage.getWidth()/24,stage.getWidth()/24);
+            imageButtonStyle.imageUp = new SpriteDrawable(sprite);
+
+            addActor(new ImageButton(imageButtonStyle) {{
+                setBounds(0, 0, stage.getWidth() / 14, stage.getWidth() / 14);
+            }});
+
+            sprite = new Sprite(game.assetManager.get("ui/save-image.png", Texture.class));
+            sprite.setSize(stage.getWidth() / 24, stage.getWidth() / 24);
+            imageButtonStyle.imageUp = new SpriteDrawable(sprite);
+
+            addActor(new ImageButton(imageButtonStyle) {{
+                setBounds(stage.getWidth() / 14 + 10, 0, stage.getWidth() / 14, stage.getWidth() / 14);
+            }});
+
+            sprite = new Sprite(game.assetManager.get("ui/load-image.png", Texture.class));
+            sprite.setSize(stage.getWidth() / 24, stage.getWidth() / 24);
+            imageButtonStyle.imageUp = new SpriteDrawable(sprite);
+            addActor(new ImageButton(imageButtonStyle) {{
+                setBounds(stage.getWidth() / 7 + 20, 0, stage.getWidth() / 14, stage.getWidth() / 14);
+            }});
+
+            sprite = new Sprite(game.assetManager.get("ui/exit-image.png", Texture.class));
+            sprite.setSize(stage.getWidth() / 24, stage.getWidth() / 24);
+            imageButtonStyle.imageUp = new SpriteDrawable(sprite);
+            addActor(new ImageButton(imageButtonStyle){{
+                setBounds(stage.getWidth()*3/14+30,0,stage.getWidth() / 14, stage.getWidth() / 14);
+            }});
+        }};
+
+        Sprite sprite = new Sprite(game.assetManager.get("ui/menu-image.png", Texture.class));
+        sprite.setSize(stage.getWidth() / 24, stage.getWidth() / 24);
+        imageButtonStyle.imageUp = new SpriteDrawable(sprite);
+
+        menuButton = new ImageButton(imageButtonStyle){
+            {
+                setBounds(10, 10, stage.getWidth() / 14, stage.getWidth() / 14);
+                addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        if (isChecked()) {
+                            leftBarTable.addAction(Actions.moveTo(stage.getWidth()/14 +20, 10, 0.3f));
+                        }else
+                            leftBarTable.addAction(Actions.moveTo(stage.getWidth()/14 +20,-stage.getWidth()/14 , 0.3f));
+                    }
+                });
+            }};
+
+        stage.addActor(menuButton);
+        stage.addActor(leftBarTable);
     }
 
     public void update(float delta){
@@ -82,12 +148,17 @@ public class PlayerScreenHud implements Disposable{
         rightBar.update();
     }
 
-    public void handleLongPressLoading(boolean load, Vector2 targetPosition){
-        longPressLoading.setPositionToRender(targetPosition);
-        longPressLoading.setVisible(load);
+    public void handleLongPressLoading(boolean visible, float x, float y){
+        longPressLoading.setVisible(visible);
+        if(visible)
+            longPressLoading.setPosition(x, y);
     }
 
-    public pl.pollub.hirols.ui.LongPressMenu getLongPressMenu(){
+    public void unfocusScroll(){
+        stage.setScrollFocus(null);
+    }
+
+    public LongPressMenu getLongPressMenu(){
         return longPressMenus;
     }
 
@@ -99,10 +170,19 @@ public class PlayerScreenHud implements Disposable{
         leftBar.resize(width, height);
     }
 
+    public void hideLeftBar(){
+        leftBar.hide();
+    }
+
     @Override
     public void dispose() {
         stage.dispose();
         VisUI.dispose();
+    }
+    public boolean isNewTurn(){
+        boolean temp =  rightBar.newTurn;
+        rightBar.newTurn = false;
+        return temp;
     }
 
     public void showOkWindow(String title, String text){
