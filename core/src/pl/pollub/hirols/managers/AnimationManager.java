@@ -7,13 +7,15 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import java.util.HashMap;
 import java.util.Map;
 
+import pl.pollub.hirols.managers.enums.Direction;
+
 /**
  * Created by Marcin on 2016-01-15.
  */
 
 public class AnimationManager {
-    public static Map<String,Animation> createAnimation( String[] directions, Texture texture, int FRAME_COLS, int FRAME_ROWS, float duration){
-        Map<String,Animation> animationDirectioriesMap = new HashMap<String, Animation>();
+    public static Map<Direction,Animation> createAnimation(Direction[] directions, Texture texture, int FRAME_COLS, int FRAME_ROWS, float duration){
+        Map<Direction,Animation> animationDirectioriesMap = new HashMap<Direction, Animation>();
         TextureRegion[][] frames = TextureRegion.split(texture,
                 texture.getWidth() / FRAME_COLS,
                 texture.getHeight() / FRAME_ROWS);

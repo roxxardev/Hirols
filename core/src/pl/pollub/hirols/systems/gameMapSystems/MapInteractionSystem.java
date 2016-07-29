@@ -303,8 +303,9 @@ public class MapInteractionSystem extends GameMapEntitySystem {
         gameMap.findPath(startNodePos,endNodePos,heroData.path);
         if(heroData.path.getCount() > 0) {
             for(Entity pathEntity : pathEntities) {
-                if(pathMap.get(pathEntity).playerID == heroData.id)
+                if(pathMap.get(pathEntity).playerID == heroData.id) {
                     getEngine().removeEntity(pathEntity);
+                }
             }
             heroData.tempNodesPosition.clear();
         } else return false;

@@ -1,15 +1,23 @@
 package pl.pollub.hirols.screens;
 
+import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.util.ArrayList;
+
 import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.components.map.GameMapComponent;
 import pl.pollub.hirols.components.map.GameMapDataComponent;
+import pl.pollub.hirols.components.map.HeroDataComponent;
+import pl.pollub.hirols.components.map.PathComponent;
+import pl.pollub.hirols.components.map.SelectedHeroComponent;
 import pl.pollub.hirols.console.CommandsContainer;
 import pl.pollub.hirols.console.GraphicalConsole;
 import pl.pollub.hirols.managers.SpawnGenerator;
@@ -51,7 +59,7 @@ public class GameMapScreen extends GameScreen {
 
     private PlayerScreenHud hud;
 
-    public GameMapScreen(Hirols game, Map map, OrthographicCamera gameMapCam, Viewport gameMapPort) {
+    public GameMapScreen(final Hirols game, Map map, OrthographicCamera gameMapCam, Viewport gameMapPort) {
         super(game);
         this.gameMapCam = gameMapCam;
         this.gameMapPort = gameMapPort;
@@ -71,6 +79,11 @@ public class GameMapScreen extends GameScreen {
         game.engine.addEntity(gameMapEntity);
 
         CommandsContainer commandsContainer = new CommandsContainer() {
+            private Hirols hirols;
+            {
+                this.hirols = game;
+            }
+
             @Override
             public void exit() {
                 Gdx.app.exit();
@@ -91,11 +104,35 @@ public class GameMapScreen extends GameScreen {
             }
 
             public void quit() { Gdx.app.exit();}
+
+            public void setM(int movementPoints) {
+                ImmutableArray<Entity> selectedHeroes = game.engine.getEntitiesFor(Family.all(SelectedHeroComponent.class, HeroDataComponent.class).get());
+                for(Entity entity : selectedHeroes) {
+                    HeroDataComponent dataComponent = ComponentMapper.getFor(HeroDataComponent.class).get(entity);
+                    dataComponent.movementPoints = movementPoints;
+                    dataComponent.targetEntity = null;
+                    ImmutableArray<Entity> pathEntities = game.engine.getEntitiesFor(Family.all(PathComponent.class, game.gameMapManager.getCurrentMapScreen().map.getGameMapComponent().getClass()).get());
+                    ComponentMapper<PathComponent> pathMap = ComponentMapper.getFor(PathComponent.class);
+                    //TODO zmienic
+
+                    ArrayList<Entity> paths = new ArrayList<Entity>(pathEntities.size());
+                    for(Entity pathEntity : pathEntities) {
+                        if(pathMap.get(pathEntity).playerID == dataComponent.id){
+                            paths.add(pathEntity);
+                        }
+                    }
+                    for(Entity pathEntity : paths) game.engine.removeEntity(pathEntity);
+                    dataComponent.tempNodesPosition.clear();
+
+                    console.log(movementPoints + " movement points set to player " + dataComponent.id);
+                }
+            }
         };
         console = new GraphicalConsole(commandsContainer,
                 game.assetManager.get("default_skin/uiskin.json", Skin.class),game);
 
         hud = new PlayerScreenHud(game);
+
     }
 
     @Override

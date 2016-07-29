@@ -5,33 +5,26 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 
 import java.util.Map;
 
+import pl.pollub.hirols.Animation.AnimationSet;
+import pl.pollub.hirols.managers.enums.Direction;
+
 /**
  * Created by Marcin on 2015-12-07.
  */
 public class AnimationComponent implements Component {
-    public String animationName;
-    public String renderedAnimationName;
-    public String direction;
-    public float stateTime;
-    public Map<String, Map<String,Animation>> animationMap;
+
+    public AnimationSet animationSet;
+    public float stateTime = 0.0f;
     public boolean looping = false;
 
-    public AnimationComponent(String animationName, String direction, Map<String, Map<String,Animation>> animationMap, boolean looping){
-        this.animationName = animationName;
-        this.direction = direction;
-        this.animationMap = animationMap;
-        renderedAnimationName = animationName;
-        stateTime = .0f;
+    public AnimationComponent(AnimationSet animationSet, boolean looping){
+        this.animationSet = animationSet;
         this.looping = looping;
     }
 
-    public AnimationComponent(String animationName, String direction, Map<String, Map<String,Animation>> animationMap, boolean looping, Float stateTime){
-        this.animationName = animationName;
-        this.direction = direction;
-        this.animationMap = animationMap;
-        renderedAnimationName = animationName;
+    public AnimationComponent(AnimationSet animationSet, boolean looping, Float stateTime){
+        this(animationSet,looping);
         this.stateTime = stateTime;
-        this.looping = looping;
     }
 
 }

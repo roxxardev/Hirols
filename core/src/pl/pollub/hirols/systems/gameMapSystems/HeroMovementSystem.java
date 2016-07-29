@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 
@@ -52,7 +53,7 @@ public class HeroMovementSystem extends GameMapEntitySystem {
                 handleMovementForPosition(heroData.pathNodesPosition.get(0), heroPosition, velocity, deltaTime, gameMapData.gameMapCam);
                 else {
                     heroData.tempNodesPosition = heroData.pathNodesPosition;
-                    heroData.pathNodesPosition = new ArrayList<Vector3>();
+                    heroData.pathNodesPosition.clear();
                 }
             }
         }

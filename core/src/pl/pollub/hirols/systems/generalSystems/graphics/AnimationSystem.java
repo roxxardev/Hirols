@@ -4,6 +4,8 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import pl.pollub.hirols.components.graphics.AnimationComponent;
 import pl.pollub.hirols.components.graphics.TextureComponent;
@@ -25,13 +27,8 @@ public abstract class AnimationSystem extends GeneralIteratingSystem {
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
         AnimationComponent animData = animDataMap.get(entity);
-        if(!animData.animationName.equals(animData.renderedAnimationName))
-            animData.stateTime = .0f;
 
         animData.stateTime += deltaTime;
-
-        textureMap.get(entity).sprite.setRegion(animData.animationMap.get(animData.animationName).get(animData.direction).getKeyFrame(animData.stateTime, animData.looping));
-
-        animData.renderedAnimationName = animData.animationName;
+        textureMap.get(entity).sprite.setRegion(animData.animationSet.getCurrentAnimation().getKeyFrame(animData.stateTime,animData.looping));
     }
 }

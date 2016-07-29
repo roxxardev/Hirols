@@ -53,7 +53,7 @@ public abstract class DefaultConsole implements Console {
         }
 
         if(methodsToExecute.size() < 1) {
-            log(methodName + " <-- there is no such command, type showcommands to print them all", ERROR_LOG_LEVEL);
+            log(methodName + " <-- there is no such command.\nType showcommands to print them all.", ERROR_LOG_LEVEL);
             return;
         }
 
@@ -120,7 +120,6 @@ public abstract class DefaultConsole implements Console {
             }
         });
 
-        int i = 0;
         for(Method method : methods) {
             if(!(method.isAnnotationPresent(Hidden.class) && !isHiddenCommandsVisible())) {
                 stringBuilder.setLength(0);

@@ -93,6 +93,8 @@ public class LoadingScreen implements Screen {
 
         //tutaj wszystko do załadowania:
         loadAssets();
+
+        //Texture.setAssetManager(assetManager);
     }
 
     private void loadAssets() {
@@ -180,10 +182,8 @@ public class LoadingScreen implements Screen {
     }
 
     public void update(float delta){
-
         stage.act(delta);
         bar.setValue(assetManager.getProgress() * 100);
-
     }
 
     @Override

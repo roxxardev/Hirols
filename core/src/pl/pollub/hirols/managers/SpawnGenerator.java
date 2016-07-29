@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import pl.pollub.hirols.Animation.AnimationSet;
 import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.components.LifePeriodComponent;
 import pl.pollub.hirols.components.PlayerComponent;
@@ -28,24 +29,26 @@ import pl.pollub.hirols.components.map.MapComponent;
 import pl.pollub.hirols.components.map.SelectedHeroComponent;
 import pl.pollub.hirols.components.physics.PositionComponent;
 import pl.pollub.hirols.components.physics.VelocityComponent;
+import pl.pollub.hirols.managers.enums.AnimationType;
+import pl.pollub.hirols.managers.enums.Direction;
 
 /**
  * Created by Eryk on 2015-12-02.
  */
 
 public class SpawnGenerator {
-    private static final String[] directions = {"E", "W", "NE", "NW", "SE", "SW", "W", "S"};
 
     public static void loadEntities(Hirols game, pl.pollub.hirols.gameMap.Map map) {
         ComponentMapper<MapComponent> mapMapper = ComponentMapper.getFor(MapComponent.class);
         Random rand = new Random();
 
-        Map<String, Map<String, Animation>> snakeAnimationMap = new HashMap<String, Map<String, Animation>>();
-        snakeAnimationMap.put("standAnimation", AnimationManager.createAnimation(new String[]{"N", "NE", "E", "SE", "S", "SW", "W", "NW"},
+        Map<AnimationType, Map<Direction, Animation>> snakeAnimationMap = new HashMap<AnimationType, Map<Direction, Animation>>();
+        Direction[] snakeStayDirections = new Direction[] {Direction.N, Direction.NE, Direction.E, Direction.SE, Direction.S, Direction.SW, Direction.W, Direction.NW};
+        snakeAnimationMap.put(AnimationType.stand, AnimationManager.createAnimation(snakeStayDirections,
                 game.assetManager.get("animations/snake_stay_animation.png", Texture.class), 32, 8, 0.06f));
 
-        Map<String, Map<String, Animation>> mechAnimationMap = new HashMap<String, Map<String, Animation>>();
-        mechAnimationMap.put("standAnimation", AnimationManager.createAnimation(new String[]{"N", "NE", "E", "SE", "S", "SW", "W", "NW"},
+        Map<AnimationType, Map<Direction, Animation>> mechAnimationMap = new HashMap<AnimationType, Map<Direction, Animation>>();
+        mechAnimationMap.put(AnimationType.stand, AnimationManager.createAnimation(snakeStayDirections,
                 game.assetManager.get("animations/standing_mech.png", Texture.class), 13, 8, 0.06f));
 
         for (int i = 0; i < 50; i++) {
@@ -56,7 +59,7 @@ public class SpawnGenerator {
 
             Entity mapEntity = map.getEntity(indexX,indexY);
 
-            mapEntity.add(new AnimationComponent("standAnimation", directions[rand.nextInt(8)], snakeAnimationMap, true, rand.nextFloat()))
+            mapEntity.add(new AnimationComponent(new AnimationSet(AnimationType.stand, Direction.getRandomDirection(), snakeAnimationMap), true, rand.nextFloat()))
                     .add(map.getGameMapComponent())
                     .add(new TextureComponent(128, 128, -16, 0))
                     .add(new RenderableComponent())
@@ -92,7 +95,7 @@ public class SpawnGenerator {
 
 
 
-    private static void spawnPlayers(Engine engine, Map<String, Map<String, Animation>> animationMap, pl.pollub.hirols.gameMap.Map map, ComponentMapper<MapComponent> mapMapper) {
+    private static void spawnPlayers(Engine engine, Map<AnimationType, Map<Direction, Animation>> animationMap, pl.pollub.hirols.gameMap.Map map, ComponentMapper<MapComponent> mapMapper) {
         int playerId = -1;
         Random rand = new Random();
         Entity player = new Entity();
@@ -105,7 +108,7 @@ public class SpawnGenerator {
         engine.addEntity(new Entity()
                 .add(new PositionComponent(1728, 1728))
                 .add(map.getGameMapComponent())
-                .add(new AnimationComponent("standAnimation", directions[rand.nextInt(8)], animationMap, true))
+                .add(new AnimationComponent(new AnimationSet(AnimationType.stand, Direction.getRandomDirection(), animationMap), true))
                 .add(new TextureComponent(84, 102))
                 .add(new RenderableComponent())
                 .add(new HeroDataComponent(++playerId, 123.f))
@@ -116,7 +119,7 @@ public class SpawnGenerator {
             Entity hero = new Entity();
             hero
                     .add(map.getGameMapComponent())
-                    .add(new AnimationComponent("standAnimation", directions[rand.nextInt(8)], animationMap, true))
+                    .add(new AnimationComponent(new AnimationSet(AnimationType.stand, Direction.getRandomDirection(), animationMap), true))
                     .add(new PositionComponent(generateRandomPositionOnMap(map,mapMapper)))
                     .add(new RenderableComponent())
                     .add(new TextureComponent(84, 102))

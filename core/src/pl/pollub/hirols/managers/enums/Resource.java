@@ -16,4 +16,7 @@ public enum Resource {
 
         throw new IllegalArgumentException("Wrong resource type!");
     }
+    public static Resource getRandomResource() {
+        return values()[(int) (Math.random() * values().length)];
+    }
 }
