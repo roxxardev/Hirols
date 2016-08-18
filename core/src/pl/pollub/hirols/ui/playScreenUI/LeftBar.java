@@ -83,7 +83,7 @@ public class LeftBar extends VisTable {
     private void createActors(){
         optionsButton = new VisImageButton(new VisImageButton.VisImageButtonStyle(skin.get("image-button",VisImageButton.VisImageButtonStyle.class)){{
             imageUp = new SpriteDrawable(new Sprite(new TextureRegion(game.assetManager.get("ui/button-images.png", Texture.class),0,178,142,142)){{
-                setSize(topBar.getHeight(),topBar.getHeight());
+                setSize(30, 30);
             }});
         }});
 

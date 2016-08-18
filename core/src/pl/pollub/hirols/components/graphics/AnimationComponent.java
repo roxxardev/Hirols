@@ -1,12 +1,8 @@
 package pl.pollub.hirols.components.graphics;
 
 import com.badlogic.ashley.core.Component;
-import com.badlogic.gdx.graphics.g2d.Animation;
 
-import java.util.Map;
-
-import pl.pollub.hirols.Animation.AnimationSet;
-import pl.pollub.hirols.managers.enums.Direction;
+import pl.pollub.hirols.animation.AnimationSet;
 
 /**
  * Created by Marcin on 2015-12-07.

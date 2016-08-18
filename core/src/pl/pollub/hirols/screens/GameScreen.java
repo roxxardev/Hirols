@@ -13,7 +13,7 @@ import pl.pollub.hirols.Hirols;
  */
 public abstract class GameScreen implements Screen {
 
-    protected Hirols game;
+    protected final Hirols game;
 
     protected ArrayList<EntitySystem> systems = new ArrayList<EntitySystem>();
 

@@ -3,7 +3,6 @@ package pl.pollub.hirols.managers;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -13,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-import pl.pollub.hirols.Animation.AnimationSet;
+import pl.pollub.hirols.animation.AnimationSet;
 import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.components.LifePeriodComponent;
 import pl.pollub.hirols.components.PlayerComponent;

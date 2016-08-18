@@ -20,6 +20,7 @@ import pl.pollub.hirols.components.map.PathComponent;
 import pl.pollub.hirols.components.map.SelectedHeroComponent;
 import pl.pollub.hirols.console.CommandsContainer;
 import pl.pollub.hirols.console.GraphicalConsole;
+import pl.pollub.hirols.gui.gameMap.GameMapHud;
 import pl.pollub.hirols.managers.SpawnGenerator;
 import pl.pollub.hirols.managers.input.InputManager;
 import pl.pollub.hirols.gameMap.Map;
@@ -57,7 +58,7 @@ public class GameMapScreen extends GameScreen {
 
     private GraphicalConsole console;
 
-    private PlayerScreenHud hud;
+    private GameMapHud hud;
 
     public GameMapScreen(final Hirols game, Map map, OrthographicCamera gameMapCam, Viewport gameMapPort) {
         super(game);
@@ -131,7 +132,7 @@ public class GameMapScreen extends GameScreen {
         console = new GraphicalConsole(commandsContainer,
                 game.assetManager.get("default_skin/uiskin.json", Skin.class),game);
 
-        hud = new PlayerScreenHud(game);
+        hud = new GameMapHud(game);
 
     }
 
@@ -160,8 +161,8 @@ public class GameMapScreen extends GameScreen {
     public void render(float delta) {
         hud.update(delta);
         game.gameMapManager.update(delta);
-        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
-        hud.stage.draw();
+        game.batch.setProjectionMatrix(hud.getStage().getCamera().combined);
+        hud.getStage().draw();
         console.draw();
     }
 
@@ -187,7 +188,7 @@ public class GameMapScreen extends GameScreen {
     @Override
     public void show() {
         super.show();
-        game.multiplexer.addProcessor(hud.stage);
+        game.multiplexer.addProcessor(hud.getStage());
         game.multiplexer.addProcessor(gestureDetector);
         game.multiplexer.addProcessor(myInputProcessor);
         console.addInputProcessorToMultiplexer();
@@ -196,7 +197,7 @@ public class GameMapScreen extends GameScreen {
     @Override
     public void hide() {
         super.hide();
-        game.multiplexer.removeProcessor(hud.stage);
+        game.multiplexer.removeProcessor(hud.getStage());
         game.multiplexer.removeProcessor(gestureDetector);
         game.multiplexer.removeProcessor(myInputProcessor);
         console.setVisible(false);

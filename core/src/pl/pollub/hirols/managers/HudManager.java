@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisImageButton;
 import com.kotcrab.vis.ui.widget.VisImageTextButton;
 import com.kotcrab.vis.ui.widget.VisTextButton;
@@ -21,7 +22,9 @@ import pl.pollub.hirols.Hirols;
 public class HudManager {
     private Hirols game;
     public Skin skin;
+
     public Texture whiteTexture;
+    private SpriteDrawable transparentBackground;
     public BitmapFont bitmapFont;
     public boolean debug;
 
@@ -53,6 +56,12 @@ public class HudManager {
         debug = false;
 
         pixmapWhite.dispose();
+
+        transparentBackground = new SpriteDrawable(new Sprite(whiteTexture) {{
+            setColor(0,0,0,0.3f);
+        }});
+
+        VisUI.load();
     }
 
     private void createStyles(){
@@ -111,5 +120,9 @@ public class HudManager {
         buttonStyleRoundedChecked.checked = buttonStyleRoundedOver.down;
         buttonStyleRoundedChecked.over = buttonStyleRoundedOver.over;
 */
+    }
+
+    public SpriteDrawable getTransparentBackground() {
+        return transparentBackground;
     }
 }

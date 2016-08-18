@@ -35,8 +35,6 @@ public class LoadingScreen implements Screen {
     private AssetManager assetManager;
 
     private Viewport loadPort;
-    private float barval = 0;
-
     private Stage stage;
 
     private ProgressBar bar;
@@ -156,6 +154,9 @@ public class LoadingScreen implements Screen {
         assetManager.load("ui/menuDrag.png", Texture.class, textureParameter);
         assetManager.load("ui/minimapDrag.png", Texture.class, textureParameter);
         //assetManager.load("ui/townheroDrag.png", Texture.class, textureParameter);
+        assetManager.load("temp/portrait.png", Texture.class, textureParameter);
+        assetManager.load("temp/town.gif", Texture.class, textureParameter);
+
     }
 
     @Override
@@ -203,11 +204,12 @@ public class LoadingScreen implements Screen {
 
     @Override
     public void hide() {
-
+        dispose();
     }
 
     @Override
     public void dispose() {
-
+        stage.dispose();
+        skin.dispose();
     }
 }

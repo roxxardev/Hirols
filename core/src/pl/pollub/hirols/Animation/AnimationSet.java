@@ -1,4 +1,4 @@
-package pl.pollub.hirols.Animation;
+package pl.pollub.hirols.animation;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 

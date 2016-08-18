@@ -24,8 +24,6 @@ public class TopBar extends VisTable {
     private Hirols game;
     private BitmapFont font;
 
-    private Image resourceMetalImage, resourceEnergyImage, resourceFuelImage, resourceSpecialImage;
-    private Label resourceMetalLabel, resourceEnergyLabel, resourceFuelLabel, resourceSpecialLabel;
 
     public TopBar(Hirols game, Stage stage, boolean debug){
         this.game = game;
@@ -55,26 +53,30 @@ public class TopBar extends VisTable {
     private void initAndAddResources() {
         Label.LabelStyle labelStyle = new Label.LabelStyle(this.font, Color.WHITE);
 
-        float height = this.getHeight() * 2 / 5;
-        float width = height;
+        //float height = this.getHeight() * 2 / 5;
+        //float width = height;
+
+
+        Image resourceMetalImage, resourceEnergyImage, resourceFuelImage, resourceSpecialImage;
+        Label resourceMetalLabel, resourceEnergyLabel, resourceFuelLabel, resourceSpecialLabel;
 
         Texture textureEnergy = game.assetManager.get("resources/energy.png");
-        resourceEnergyImage = new Image(new TextureRegion(textureEnergy));
-        resourceEnergyImage.setWidth(width);
-        resourceEnergyImage.setHeight(height);
+        resourceEnergyImage = new Image(textureEnergy);
+        //resourceEnergyImage.setWidth(width);
+        //resourceEnergyImage.setHeight(height);
         resourceEnergyLabel = new Label("0", labelStyle);
 
         Texture textureFuel = game.assetManager.get("resources/fuel.png", Texture.class);
         resourceFuelImage = new Image(new TextureRegion(textureFuel));
-        resourceFuelImage.setWidth(width);
-        resourceFuelImage.setHeight(height);
+        //resourceFuelImage.setWidth(width);
+        //resourceFuelImage.setHeight(height);
         resourceFuelLabel = new Label("0", labelStyle);
 
         Texture textureMetal = game.assetManager.get("resources/metal.png", Texture.class);
 
         resourceMetalImage = new Image(new TextureRegion(textureMetal));
-        resourceMetalImage.setWidth(width);
-        resourceMetalImage.setHeight(height);
+        //resourceMetalImage.setWidth(width);
+        //resourceMetalImage.setHeight(height);
         resourceMetalLabel = new Label("0", labelStyle);
 
         Texture textureSpecial = game.assetManager.get("resources/coinsresource.png", Texture.class);
