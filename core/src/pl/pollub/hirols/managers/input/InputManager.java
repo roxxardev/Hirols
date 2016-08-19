@@ -1,5 +1,6 @@
 package pl.pollub.hirols.managers.input;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.HashMap;
@@ -13,6 +14,7 @@ public class InputManager {
     Character lastChar;
 
     Vector2 mouseCoords = new Vector2(0,0);
+    Vector2 mouseCoordsYUP = new Vector2();
 
     boolean pan = false;
     int scrolledAmount = 0;
@@ -78,6 +80,10 @@ public class InputManager {
         return mouseCoords;
     }
 
+    public Vector2 getMouseCoordsYAxisUp() {
+        return mouseCoordsYUP.set(mouseCoords.x, Gdx.graphics.getHeight() - mouseCoords.y);
+    }
+
     public int getPressedKey() {
         for(Map.Entry<Integer, Boolean> it: keyMap.entrySet()) {
             if(it.getValue()) {
@@ -107,7 +113,7 @@ public class InputManager {
         return false;
     }
     public boolean getUnreadLongPress() {
-        if(unreadLongPress) {
+        if (unreadLongPress) {
             unreadLongPress = false;
             return true;
         }
@@ -118,6 +124,10 @@ public class InputManager {
         Vector2 temp = draggedDelta.cpy();
         draggedDelta.set(0,0);
         return temp;
+    }
+
+    public boolean getTouchDownForLongPress() {
+        return touchDownForLongPress;
     }
 
     public boolean isPan() {

@@ -35,7 +35,7 @@ public abstract class Hud implements Disposable{
     }
 
     public void resize(float width, float height) {
-        stage.getViewport().setScreenSize((int)width,(int)height);
+        //stage.getViewport().setScreenSize((int)width,(int)height);
         stage.getViewport().update((int)width,(int)height, true);
     }
 

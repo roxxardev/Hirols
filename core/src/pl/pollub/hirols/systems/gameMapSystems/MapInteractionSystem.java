@@ -30,6 +30,7 @@ import pl.pollub.hirols.components.map.SelectedHeroComponent;
 import pl.pollub.hirols.components.map.TownComponent;
 import pl.pollub.hirols.components.physics.PositionComponent;
 import pl.pollub.hirols.gameMap.Map;
+import pl.pollub.hirols.managers.input.InputManager;
 import pl.pollub.hirols.pathfinding.Node;
 
 /**
@@ -82,12 +83,17 @@ public class MapInteractionSystem extends GameMapEntitySystem {
         if(gameMapData.size() < 1) return;
         GameMapDataComponent gameMapData = gameMapDataMapper.get(this.gameMapData.first());
 
-        handleTap(gameMapData);
+        InputManager inputManager = gameMapData.inputManager;
+        Vector2 longPressPosition = inputManager.getMouseCoordsYAxisUp();
+        gameMapData.hud.updateLongPressImage(inputManager.getTouchDownForLongPress(), longPressPosition.x - gameMapData.hud.getLongPressImage().getWidth()/2, longPressPosition.y);
 
+        handleTap(gameMapData);
     }
 
     private void handleTap(GameMapDataComponent gameMapData) {
         if (gameMapData.inputManager.getUnreadTap()) {
+            gameMapData.hud.unfocusScroll();
+            gameMapData.hud.hideLeftBar();
             mousePos.set(gameMapData.inputManager.getMouseCoords().x,gameMapData.inputManager.getMouseCoords().y,0);
             gameMapData.gameMapCam.unproject(mousePos);
             mousePosition.set(mousePos.x, mousePos.y);

@@ -1,7 +1,5 @@
 package pl.pollub.hirols.gui.battle;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-
 import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.gui.Hud;
 

@@ -74,9 +74,11 @@ public class GameMapScreen extends GameScreen {
 
         SpawnGenerator.loadEntities(game,map);
 
+        hud = new GameMapHud(game);
+
         gameMapEntity = new Entity()
                         .add(map.getGameMapComponent())
-                        .add(new GameMapDataComponent(map,gameMapCam,game.batch,inputManager));
+                        .add(new GameMapDataComponent(map,gameMapCam,game.batch,inputManager, hud));
         game.engine.addEntity(gameMapEntity);
 
         CommandsContainer commandsContainer = new CommandsContainer() {
@@ -131,8 +133,6 @@ public class GameMapScreen extends GameScreen {
         };
         console = new GraphicalConsole(commandsContainer,
                 game.assetManager.get("default_skin/uiskin.json", Skin.class),game);
-
-        hud = new GameMapHud(game);
 
     }
 

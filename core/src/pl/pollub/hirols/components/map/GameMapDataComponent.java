@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 import pl.pollub.hirols.gameMap.Map;
+import pl.pollub.hirols.gui.gameMap.GameMapHud;
 import pl.pollub.hirols.managers.input.InputManager;
 
 /**
@@ -17,11 +18,13 @@ public class GameMapDataComponent implements Component {
     public OrthogonalTiledMapRenderer tiledMapRenderer;
     public OrthographicCamera gameMapCam;
     public InputManager inputManager;
+    public GameMapHud hud;
 
-    public GameMapDataComponent(Map map, OrthographicCamera gameMapCam, SpriteBatch batch, InputManager inputManager) {
+    public GameMapDataComponent(Map map, OrthographicCamera gameMapCam, SpriteBatch batch, InputManager inputManager, GameMapHud hud) {
         this.map = map;
         this.tiledMapRenderer = new OrthogonalTiledMapRenderer(map.getTiledMap(), batch);
         this.gameMapCam = gameMapCam;
         this.inputManager = inputManager;
+        this.hud = hud;
     }
 }
