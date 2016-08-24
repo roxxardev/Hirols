@@ -74,12 +74,13 @@ public class GameMapScreen extends GameScreen {
 
         SpawnGenerator.loadEntities(game,map);
 
-        hud = new GameMapHud(game);
+        hud = new GameMapHud(game, this);
 
         gameMapEntity = new Entity()
                         .add(map.getGameMapComponent())
                         .add(new GameMapDataComponent(map,gameMapCam,game.batch,inputManager, hud));
         game.engine.addEntity(gameMapEntity);
+
 
         CommandsContainer commandsContainer = new CommandsContainer() {
             private Hirols hirols;
@@ -135,6 +136,8 @@ public class GameMapScreen extends GameScreen {
                 game.assetManager.get("default_skin/uiskin.json", Skin.class),game);
 
     }
+
+    public GameMapComponent getGameMapComponent() {return map.getGameMapComponent();}
 
     @Override
     protected void createSystems() {

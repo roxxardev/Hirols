@@ -53,7 +53,7 @@ public class HeroMovementSystem extends GameMapEntitySystem {
                 handleMovementForPosition(heroData.pathNodesPosition.get(0), heroPosition, velocity, deltaTime, gameMapData.gameMapCam);
                 else {
                     heroData.tempNodesPosition = heroData.pathNodesPosition;
-                    heroData.pathNodesPosition.clear();
+                    heroData.pathNodesPosition = new ArrayList<Vector3>();
                 }
             }
         }

@@ -24,7 +24,7 @@ public class TownScreen implements Screen {
 
     @Override
     public void show(){
-
+        game.multiplexer.addProcessor(townScreenHud.stage);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class TownScreen implements Screen {
 
     @Override
     public void hide(){
-        dispose();
+        game.multiplexer.removeProcessor(townScreenHud.stage);
     }
 
     @Override
@@ -61,6 +61,6 @@ public class TownScreen implements Screen {
     }
 
     public void dispose(){
-
+        townScreenHud.dispose();
     }
 }

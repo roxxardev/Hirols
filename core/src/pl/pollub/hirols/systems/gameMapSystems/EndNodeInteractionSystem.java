@@ -74,6 +74,7 @@ public class EndNodeInteractionSystem extends GameMapEntitySystem {
         GameMapDataComponent gameMapData = gameMapDataMapper.get(this.gameMapData.first());
         Entity selectedHero = selectedHeroes.first();
         HeroDataComponent selectedHeroData = heroDataMap.get(selectedHero);
+
         if(!(selectedHeroData.pathNodesPosition.isEmpty() && selectedHeroData.tempNodesPosition.isEmpty() && selectedHeroData.targetEntity != null)) return;
 
         Entity targetEntity = selectedHeroData.targetEntity;
@@ -110,12 +111,15 @@ public class EndNodeInteractionSystem extends GameMapEntitySystem {
                 ChestComponent chestComponent = chestMap.get(targetEntity);
                 selectedHeroData.targetEntity = null;
                 Gdx.app.log("EndNodeInteractionSystem", "Interaction with chest: ");
+                getEngine().removeEntity(pathEntity);
             } else if(enemyMap.has(targetEntity)) {
                 selectedHeroData.targetEntity = null;
                 Gdx.app.log("EndNodeInteractionSystem", "Interaction with enemy: ");
                 getEngine().removeEntity(pathEntity);
                 game.setScreen(new BattleScreen(game));
+                break;
             }
+            Gdx.app.log("dsdas0","das");
 
         }
         if(townMap.has(targetEntity)) {

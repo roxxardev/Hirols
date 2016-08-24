@@ -19,6 +19,7 @@ public class HeroDataComponent implements Component{
     public HeroEntity[] entities = new HeroEntity[5];
     public float movementPoints;
     public Sprite avatar;
+    public String name;
 
     public ArrayList<Vector3> pathNodesPosition = new ArrayList<Vector3>();
     public ArrayList<Vector3> tempNodesPosition = new ArrayList<Vector3>();
@@ -26,9 +27,11 @@ public class HeroDataComponent implements Component{
     public Entity targetEntity = null;
     public NodePath path = new NodePath();
 
-    public HeroDataComponent(int id, float movementPoints) {
+    public HeroDataComponent(int id, String name, float movementPoints, Sprite avatar) {
         this.id = id;
         this.movementPoints = movementPoints;
+        this.avatar = avatar;
+        this.name = name;
     }
 
     private class HeroEntity {

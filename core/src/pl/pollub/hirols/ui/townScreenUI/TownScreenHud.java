@@ -54,8 +54,6 @@ public class TownScreenHud implements Disposable {
         stage = new Stage(guiPort, game.batch);
         debug = game.hudManager.debug;
 
-        Gdx.input.setInputProcessor(stage);
-
         debug = false;
 
         createActors();

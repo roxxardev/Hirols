@@ -1,8 +1,14 @@
 package pl.pollub.hirols.gui.gameMap;
 
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -10,6 +16,8 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
@@ -20,7 +28,12 @@ import com.kotcrab.vis.ui.widget.VisScrollPane;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisWindow;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import pl.pollub.hirols.Hirols;
+import pl.pollub.hirols.components.map.GameMapComponent;
+import pl.pollub.hirols.components.map.HeroDataComponent;
 
 /**
  * Created by erykp_000 on 2016-08-14.
@@ -34,11 +47,12 @@ public class RightBar extends Table {
     private VisImageButton moveButton, turnButton;
     private VisTextButton changeScrollPane;
     private VisScrollPane scrollPaneHeroes, scrollPaneTowns;
-    private GridGroup gridGroupHeroes, gridGroupTowns;
+    private GridGroup gridGroupTowns;
+    private GridGroupHeroes gridGroupHeroes;
     private Image rightBarDragImage;
     private VisWindow miniMapWindow;
 
-    public RightBar(Hirols game, final Stage stage) {
+    public RightBar(Hirols game, final Stage stage, GameMapComponent gameMapComponent) {
         this.game = game;
         this.stage = stage;
 
@@ -46,7 +60,7 @@ public class RightBar extends Table {
         setBackground(game.hudManager.getTransparentBackground());
         setDebug(game.hudManager.debug);
 
-        createActors();
+        createActors(gameMapComponent);
 
         resize(stage.getWidth(), stage.getHeight(), 10);
 
@@ -78,7 +92,7 @@ public class RightBar extends Table {
         });
     }
 
-    private void createActors() {
+    private void createActors(GameMapComponent gameMapComponent) {
         moveButton = new VisImageButton(new VisImageButton.VisImageButtonStyle(game.hudManager.skin.get("image-button", VisImageButton.VisImageButtonStyle.class)));
         moveButton.getStyle().imageUp = new SpriteDrawable(new Sprite(new TextureRegion(game.assetManager.get("ui/button-images.png", Texture.class), 0, 2, 128, 176)));
         turnButton = new VisImageButton(new VisImageButton.VisImageButtonStyle(game.hudManager.skin.get("image-button", VisImageButton.VisImageButtonStyle.class)));
@@ -98,13 +112,14 @@ public class RightBar extends Table {
         miniMapWindow.setKeepWithinStage(false);
         miniMapWindow.setMovable(false);
 
-        gridGroupHeroes = new GridGroup();
-        for(int i = 0; i < 5; i++) {
-            VisImageTextButton hero = new VisImageTextButton("hero" + i, new SpriteDrawable(new Sprite(game.assetManager.get("temp/portrait.png", Texture.class))));
-            hero.clearChildren();
-            hero.add(hero.getImage()).expand().fill().row();
-            hero.add(hero.getLabel());
-            gridGroupHeroes.addActor(hero);
+        gridGroupHeroes = new GridGroupHeroes();
+
+        ImmutableArray<Entity> heroes = game.engine.getEntitiesFor(Family.all(HeroDataComponent.class, gameMapComponent.getClass()).get());
+        ComponentMapper<HeroDataComponent> heroDataMap = ComponentMapper.getFor(HeroDataComponent.class);
+
+        for(int i = 0; i < heroes.size(); i++) {
+            HeroDataComponent heroData = heroDataMap.get(heroes.get(i));
+            gridGroupHeroes.addHero(heroData);
         }
 
         gridGroupTowns = new GridGroup();
@@ -199,5 +214,40 @@ public class RightBar extends Table {
         rightBarDragImage.setSize(buttonSize, 3*buttonSize);
         rightBarDragImage.setPosition(-rightBarDragImage.getWidth(), getHeight()/2 - rightBarDragImage.getHeight()/2);
 
+    }
+
+    private class GridGroupHeroes extends GridGroup {
+        Map<Integer, VisImageTextButton> heroButtonMap = new HashMap<Integer, VisImageTextButton>();
+
+        public void addHero(final HeroDataComponent heroData) {
+            if(heroButtonMap.get(heroData.id) != null) {
+                Gdx.app.log("Hud -> RightBar", "Hero already added to GridGroup!");
+                return;
+            }
+
+            VisImageTextButton hero = new VisImageTextButton(heroData.name + " " + heroData.id, new SpriteDrawable(heroData.avatar));
+
+            hero.getImage().addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                }
+            });
+
+            hero.clearChildren();
+            hero.add(hero.getImage()).expand().fill().row();
+            hero.add(hero.getLabel());
+            addActor(hero);
+            heroButtonMap.put(heroData.id,hero);
+            //TODO set cell bounds to fit image expanded in Y direction
+        }
+
+        public void removeHero(final HeroDataComponent heroData) {
+            if(heroButtonMap.get(heroData.id) == null) {
+                Gdx.app.log("Hud -> RightBar", "There is no hero id " + heroData.id +"!");
+                return;
+            }
+
+            heroButtonMap.remove(heroData.id);
+        }
     }
 }

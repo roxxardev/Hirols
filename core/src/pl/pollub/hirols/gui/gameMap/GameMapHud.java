@@ -6,6 +6,7 @@ import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.gui.TopBar;
 import pl.pollub.hirols.managers.AnimationManager;
 import pl.pollub.hirols.gui.Hud;
+import pl.pollub.hirols.screens.GameMapScreen;
 import pl.pollub.hirols.ui.LongPressMenu;
 
 /**
@@ -20,14 +21,17 @@ public class GameMapHud extends Hud {
     private pl.pollub.hirols.gui.AnimatedImage longPressImage;
     private LongPressMenu longPressMenu;
 
-    public GameMapHud(Hirols game) {
+    private GameMapScreen gameMapScreen;
+
+    public GameMapHud(Hirols game, GameMapScreen gameMapScreen) {
         super(game);
+        this.gameMapScreen = gameMapScreen;
         createActors();
     }
 
     private void createActors(){
         topBar = new TopBar(game,stage);
-        rightBar = new RightBar(game, stage);
+        rightBar = new RightBar(game, stage,gameMapScreen.getGameMapComponent());
         leftBar = new LeftBar(game,stage);
 
         longPressImage = new pl.pollub.hirols.gui.AnimatedImage(AnimationManager.createAnimation(game.assetManager.get("animations/loadingLongPress.png", Texture.class), 32, 1, 0.034375f), false);

@@ -6,6 +6,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.HashMap;
@@ -89,12 +90,12 @@ public class SpawnGenerator {
                 .add(new LifePeriodComponent(1000));
         game.engine.addEntity(testText);
 
-        spawnPlayers(game.engine, mechAnimationMap,map,mapMapper);
+        spawnPlayers(game.engine, mechAnimationMap,map,mapMapper, game);
     }
 
 
 
-    private static void spawnPlayers(Engine engine, Map<AnimationType, Map<Direction, Animation>> animationMap, pl.pollub.hirols.gameMap.Map map, ComponentMapper<MapComponent> mapMapper) {
+    private static void spawnPlayers(Engine engine, Map<AnimationType, Map<Direction, Animation>> animationMap, pl.pollub.hirols.gameMap.Map map, ComponentMapper<MapComponent> mapMapper, Hirols game) {
         int playerId = -1;
         Random rand = new Random();
         Entity player = new Entity();
@@ -110,7 +111,7 @@ public class SpawnGenerator {
                 .add(new AnimationComponent(new AnimationSet(AnimationType.stand, Direction.getRandomDirection(), animationMap), true))
                 .add(new TextureComponent(84, 102))
                 .add(new RenderableComponent())
-                .add(new HeroDataComponent(++playerId, 123.f))
+                .add(new HeroDataComponent(++playerId, "Cwel", 10.f,new Sprite(game.assetManager.get("temp/portrait.png", Texture.class))))
                 .add(new VelocityComponent(new Vector2(0, 0)))
                 .add(new PlayerComponent())
                 .add(new SelectedHeroComponent()));
@@ -122,7 +123,7 @@ public class SpawnGenerator {
                     .add(new PositionComponent(generateRandomPositionOnMap(map,mapMapper)))
                     .add(new RenderableComponent())
                     .add(new TextureComponent(84, 102))
-                    .add(new HeroDataComponent(++playerId, 13f))
+                    .add(new HeroDataComponent(++playerId,"nołnejm", 13f, new Sprite(game.assetManager.get("temp/portrait.png", Texture.class))))
                     .add(new VelocityComponent(new Vector2(0, 0)))
                     .add(new PlayerComponent());
             engine.addEntity(hero);

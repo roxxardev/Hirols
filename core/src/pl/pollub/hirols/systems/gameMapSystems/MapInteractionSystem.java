@@ -144,31 +144,56 @@ public class MapInteractionSystem extends GameMapEntitySystem {
     }
 
     private void handleTapForSelectedHero(Entity mapEntity, Map gameMap, HeroDataComponent selectedHeroData, PositionComponent selectedHeroPosition, int mapIndexX, int mapIndexY) {
-        //TODO rename this shit, bo za miesiac zapomne co tu sie dzieje
-        if (selectedHeroData.pathNodesPosition.isEmpty()) {
-            if (!selectedHeroData.tempNodesPosition.isEmpty()) {
-                Vector2 endNodePosition = selectedHeroData.endPathTargetPosition;
-                if ((int)Math.floor(endNodePosition.x / gameMap.getTileWidth()) == mapIndexX && (int)Math.floor(endNodePosition.y / gameMap.getTileHeight()) == mapIndexY) {
-                    selectedHeroData.pathNodesPosition = selectedHeroData.tempNodesPosition;
-                    selectedHeroData.tempNodesPosition = new ArrayList<Vector3>();
+        if (!isHeroMoving(selectedHeroData)) {
+            if(isHeroPathFound(selectedHeroData)) {
+                if (isLastNodePathClicked(selectedHeroData, gameMap, mapIndexX, mapIndexY)) {
+                    makeHeroFollowHisPath(selectedHeroData);
                     return;
                 }
             }
+
             if (mapMapper.get(mapEntity).walkable) {
                 handleWalkableForSelectedHero(gameMap,selectedHeroData, selectedHeroPosition, mapIndexX, mapIndexY);
             } else {
                 handleNonWalkableForSelectedHero(gameMap,selectedHeroData, selectedHeroPosition, mapIndexX, mapIndexY, mapEntity);
             }
+
         } else {
-            if (selectedHeroData.pathNodesPosition.size() > 1) {
-                selectedHeroData.tempNodesPosition = selectedHeroData.pathNodesPosition;
-                selectedHeroData.pathNodesPosition = new ArrayList<Vector3>();
-                selectedHeroData.pathNodesPosition.add(selectedHeroData.tempNodesPosition.get(0));
-                selectedHeroData.tempNodesPosition.remove(0);
+            makeHeroStop(selectedHeroData);
+        }
+    }
+
+    public boolean makeHeroFollowHisPath(HeroDataComponent heroData) {
+        if(!isHeroMoving(heroData)) {
+            if(isHeroPathFound(heroData)) {
+                heroData.pathNodesPosition = heroData.tempNodesPosition;
+                heroData.tempNodesPosition = new ArrayList<Vector3>();
+                return true;
             }
         }
-
+        return false;
     }
+
+    public boolean makeHeroStop(HeroDataComponent heroData) {
+        if(!isHeroMoving(heroData)) return false;
+        if (heroData.pathNodesPosition.size() > 1) {
+            heroData.tempNodesPosition = heroData.pathNodesPosition;
+            heroData.pathNodesPosition = new ArrayList<Vector3>();
+            heroData.pathNodesPosition.add(heroData.tempNodesPosition.get(0));
+            heroData.tempNodesPosition.remove(0);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isLastNodePathClicked(HeroDataComponent heroData, Map gameMap, int mapIndexX, int mapIndexY) {
+        Vector2 endNodePosition = heroData.endPathTargetPosition;
+        return ((int)Math.floor(endNodePosition.x / gameMap.getTileWidth()) == mapIndexX && (int)Math.floor(endNodePosition.y / gameMap.getTileHeight()) == mapIndexY);
+    }
+
+    public boolean isHeroMoving(HeroDataComponent heroData) { return !heroData.pathNodesPosition.isEmpty();}
+
+    public boolean isHeroPathFound(HeroDataComponent heroData) {return !heroData.tempNodesPosition.isEmpty();}
 
     private void updateGraphConnectionsForEnemy(Map gameMap, Entity mapEntity, EnemyComponent enemyComponent, boolean walkable) {
         PositionComponent enemyPosition = posMap.get(mapEntity);
@@ -282,7 +307,7 @@ public class MapInteractionSystem extends GameMapEntitySystem {
             PositionComponent heroPosition = posMap.get(hero);
             if (mapIndexX == (int)Math.floor(heroPosition.x / gameMap.getTileWidth()) && mapIndexY == (int)Math.floor(heroPosition.y / gameMap.getTileHeight())) {
                 Gdx.app.log("MapInteractionSystem", "Long press on hero id: " + heroData.id);
-                break;
+                return;
             }
         }
         //TODO map object action when long press
