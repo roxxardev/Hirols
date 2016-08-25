@@ -4,7 +4,7 @@ package pl.pollub.hirols.console;
  * Created by erykp_000 on 2016-07-15.
  */
 public abstract class CommandsContainer {
-    private Console console;
+    protected Console console;
 
     public abstract void exit();
 

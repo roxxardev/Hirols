@@ -3,6 +3,7 @@ package pl.pollub.hirols.gui.gameMap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -10,26 +11,28 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.kotcrab.vis.ui.widget.VisImageButton;
 
 import pl.pollub.hirols.Hirols;
+import pl.pollub.hirols.screens.GameMapScreen;
 
 /**
  * Created by erykp_000 on 2016-08-14.
  */
 public class LeftBar extends Table {
     private final Hirols game;
-    private final Stage stage;
+    private final GameMapScreen gameMapScreen;
 
     private final Image menuDrag;
     private VisImageButton optionsButton, saveButton, loadButton, exitToMenuButton;
 
     private boolean slided = false;
 
-    public LeftBar(Hirols game, Stage stage) {
+    public LeftBar(Hirols game, Stage stage, GameMapScreen gameMapScreen) {
         this.game = game;
-        this.stage = stage;
+        this.gameMapScreen = gameMapScreen;
 
         this.setBackground(game.hudManager.getTransparentBackground());
         this.setTouchable(Touchable.enabled);
@@ -75,6 +78,14 @@ public class LeftBar extends Table {
         optionsButton = new VisImageButton(new VisImageButton.VisImageButtonStyle(buttonStyle));
         optionsButton.getStyle().imageUp = new SpriteDrawable(new Sprite(new TextureRegion(game.assetManager.get("ui/button-images.png", Texture.class),0,178,142,142)));
 
+        //TODO change later for options menu
+        optionsButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                gameMapScreen.getConsole().setVisible(true);
+            }
+        });
+
         saveButton = new VisImageButton(new VisImageButton.VisImageButtonStyle(buttonStyle));
         saveButton.getStyle().imageUp = new SpriteDrawable(new Sprite(new TextureRegion(game.assetManager.get("ui/button-images.png", Texture.class),142, 190, 98, 130)));
 
@@ -113,7 +124,6 @@ public class LeftBar extends Table {
     }
 
     public void resize(float width, float height, float topBarHeight) {
-        //TODO przekazac heighttopbar
         if(slided) {
             setSize(width/8,height - topBarHeight);
             setPosition(0, 0);

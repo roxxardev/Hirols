@@ -97,7 +97,6 @@ public class SpawnGenerator {
 
     private static void spawnPlayers(Engine engine, Map<AnimationType, Map<Direction, Animation>> animationMap, pl.pollub.hirols.gameMap.Map map, ComponentMapper<MapComponent> mapMapper, Hirols game) {
         int playerId = -1;
-        Random rand = new Random();
         Entity player = new Entity();
         player
                 .add(map.getGameMapComponent())

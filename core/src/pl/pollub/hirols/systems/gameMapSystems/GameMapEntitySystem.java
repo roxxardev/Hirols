@@ -15,7 +15,7 @@ import pl.pollub.hirols.components.map.GameMapDataComponent;
  */
 public abstract class GameMapEntitySystem extends EntitySystem {
 
-    protected ImmutableArray<Entity> gameMapData;
+    protected ImmutableArray<Entity> gameMapDataArray;
     protected ComponentMapper<GameMapDataComponent> gameMapDataMapper = ComponentMapper.getFor(GameMapDataComponent.class);
 
     protected final Class<? extends GameMapComponent> gameMapClass;
@@ -27,7 +27,7 @@ public abstract class GameMapEntitySystem extends EntitySystem {
 
     @Override
     public void addedToEngine(Engine engine) {
-        gameMapData = engine.getEntitiesFor(Family.all(GameMapDataComponent.class, gameMapClass).get());
+        gameMapDataArray = engine.getEntitiesFor(Family.all(GameMapDataComponent.class, gameMapClass).get());
     }
 
     @Override

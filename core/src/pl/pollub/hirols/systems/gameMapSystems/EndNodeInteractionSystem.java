@@ -39,7 +39,7 @@ import pl.pollub.hirols.screens.TownScreen;
 public class EndNodeInteractionSystem extends GameMapEntitySystem {
 
     private ImmutableArray<Entity> selectedHeroes;
-    private ImmutableArray<Entity> pathEntities;
+    private ImmutableArray<Entity> selectedHeroPathEntities;
     private ImmutableArray<Entity> players;
 
     private ComponentMapper<ResourceComponent> resourceMap = ComponentMapper.getFor(ResourceComponent.class);
@@ -63,24 +63,22 @@ public class EndNodeInteractionSystem extends GameMapEntitySystem {
     @Override
     public void addedToEngine(Engine engine) {
         super.addedToEngine(engine);
-        pathEntities = engine.getEntitiesFor(Family.all(PathComponent.class,gameMapClass).get());
-        selectedHeroes = engine.getEntitiesFor(Family.all(SelectedHeroComponent.class, gameMapClass).get());
+        selectedHeroPathEntities = engine.getEntitiesFor(Family.all(PathComponent.class,SelectedHeroComponent.class, gameMapClass).get());
+        selectedHeroes = engine.getEntitiesFor(Family.all(HeroDataComponent.class, SelectedHeroComponent.class, gameMapClass).get());
         players = engine.getEntitiesFor(Family.all(PlayerComponent.class, PlayerDataComponent.class).get());
     }
 
     @Override
     public void update(float deltaTime) {
-        if(gameMapData.size() < 1 || selectedHeroes.size() < 1) return;
-        GameMapDataComponent gameMapData = gameMapDataMapper.get(this.gameMapData.first());
+        if(gameMapDataArray.size() < 1 || selectedHeroes.size() < 1) return;
+        GameMapDataComponent gameMapData = gameMapDataMapper.get(this.gameMapDataArray.first());
         Entity selectedHero = selectedHeroes.first();
         HeroDataComponent selectedHeroData = heroDataMap.get(selectedHero);
         if(!(!selectedHeroData.heroPath.hasWalkNodes() && !selectedHeroData.heroPath.hasStandNodes() && selectedHeroData.heroPath.getTargetEntity() != null)) return;
 
         Entity targetEntity = selectedHeroData.heroPath.getTargetEntity();
 
-        for(Entity pathEntity : pathEntities) {
-            PathComponent pathComponent = pathMap.get(pathEntity);
-            if(pathComponent.playerID != selectedHeroData.id) continue;
+        for(Entity pathEntity : selectedHeroPathEntities) {
 
             if(resourceMap.has(targetEntity)) {
                 ResourceComponent resourceComponent = resourceMap.get(targetEntity);
@@ -104,6 +102,7 @@ public class EndNodeInteractionSystem extends GameMapEntitySystem {
                         .add(new VelocityComponent(new Vector2()))
                         .add(gameMapData.map.getGameMapComponent()));
                 getEngine().removeEntity(pathEntity);
+                selectedHeroData.heroPath.resetTargetPosition();
                 Gdx.app.log("EndNodeInteractionSystem", "Interaction with resource: " + resourceText);
                 return;
             } else if(chestMap.has(targetEntity)) {

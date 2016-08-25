@@ -1,7 +1,5 @@
 package pl.pollub.hirols.systems.gameMapSystems;
 
-import com.badlogic.gdx.Gdx;
-
 import pl.pollub.hirols.components.map.GameMapComponent;
 import pl.pollub.hirols.components.map.GameMapDataComponent;
 
@@ -16,8 +14,8 @@ public class TiledMapRenderSystem extends GameMapEntitySystem {
 
     @Override
     public void update(float deltaTime) {
-        if(gameMapData.size() < 1) return;
-        GameMapDataComponent gameMapData = gameMapDataMapper.get(this.gameMapData.first());
+        if(gameMapDataArray.size() < 1) return;
+        GameMapDataComponent gameMapData = gameMapDataMapper.get(this.gameMapDataArray.first());
         gameMapData.tiledMapRenderer.setView(gameMapData.gameMapCam);
         gameMapData.tiledMapRenderer.render();
         //Gdx.app.log("TiledMapRenderSystem",priority + "");

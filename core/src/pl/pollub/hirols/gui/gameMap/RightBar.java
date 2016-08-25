@@ -34,6 +34,7 @@ import java.util.Map;
 import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.components.map.GameMapComponent;
 import pl.pollub.hirols.components.map.HeroDataComponent;
+import pl.pollub.hirols.systems.gameMapSystems.MapInteractionSystem;
 
 /**
  * Created by erykp_000 on 2016-08-14.
@@ -98,10 +99,14 @@ public class RightBar extends Table {
         turnButton = new VisImageButton(new VisImageButton.VisImageButtonStyle(game.hudManager.skin.get("image-button", VisImageButton.VisImageButtonStyle.class)));
         turnButton.getStyle().imageUp = new SpriteDrawable(new Sprite(new TextureRegion(game.assetManager.get("ui/button-images.png", Texture.class), 128, 0, 104, 178)));
 
-        turnButton.addListener(new ActorGestureListener(){
+        moveButton.addListener(new ChangeListener() {
             @Override
-            public void tap(InputEvent event, float x, float y, int count, int button) {
-                //new turn
+            public void changed(ChangeEvent event, Actor actor) {
+                MapInteractionSystem mapInteractionSystem = game.engine.getSystem(MapInteractionSystem.class);
+                Entity selectedHero = mapInteractionSystem.getSelectedHeroes().first();
+                if(selectedHero == null) return;
+                HeroDataComponent selectedHeroData = ComponentMapper.getFor(HeroDataComponent.class).get(selectedHero);
+                selectedHeroData.heroPath.followPath();
             }
         });
 
@@ -115,11 +120,9 @@ public class RightBar extends Table {
         gridGroupHeroes = new GridGroupHeroes();
 
         ImmutableArray<Entity> heroes = game.engine.getEntitiesFor(Family.all(HeroDataComponent.class, gameMapComponent.getClass()).get());
-        ComponentMapper<HeroDataComponent> heroDataMap = ComponentMapper.getFor(HeroDataComponent.class);
 
         for(int i = 0; i < heroes.size(); i++) {
-            HeroDataComponent heroData = heroDataMap.get(heroes.get(i));
-            gridGroupHeroes.addHero(heroData);
+            gridGroupHeroes.addHero(heroes.get(i));
         }
 
         gridGroupTowns = new GridGroup();
@@ -219,7 +222,9 @@ public class RightBar extends Table {
     private class GridGroupHeroes extends GridGroup {
         Map<Integer, VisImageTextButton> heroButtonMap = new HashMap<Integer, VisImageTextButton>();
 
-        public void addHero(final HeroDataComponent heroData) {
+        public void addHero(final Entity heroEntity) {
+            HeroDataComponent heroData = ComponentMapper.getFor(HeroDataComponent.class).get(heroEntity);
+
             if(heroButtonMap.get(heroData.id) != null) {
                 Gdx.app.log("Hud -> RightBar", "Hero already added to GridGroup!");
                 return;
@@ -230,6 +235,7 @@ public class RightBar extends Table {
             hero.getImage().addListener(new ClickListener(){
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
+                    game.engine.getSystem(MapInteractionSystem.class).changeSelectedHero(heroEntity);
                 }
             });
 

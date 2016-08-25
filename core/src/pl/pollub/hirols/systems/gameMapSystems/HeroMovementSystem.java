@@ -37,8 +37,8 @@ public class HeroMovementSystem extends GameMapEntitySystem {
     }
 
     public void update(float deltaTime) {
-        if(gameMapData.size() < 1) return;
-        GameMapDataComponent gameMapData = gameMapDataMapper.get(this.gameMapData.first());
+        if(gameMapDataArray.size() < 1) return;
+        GameMapDataComponent gameMapData = gameMapDataMapper.get(this.gameMapDataArray.first());
 
         for (Entity hero : selectedHeroes) {
             HeroDataComponent heroData = selectedHeroDataMap.get(hero);

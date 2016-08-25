@@ -2,15 +2,12 @@ package pl.pollub.hirols.systems.gameMapSystems;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import pl.pollub.hirols.components.map.GameMapComponent;
 import pl.pollub.hirols.components.map.GameMapDataComponent;
-import pl.pollub.hirols.managers.input.InputManager;
-import pl.pollub.hirols.systems.gameMapSystems.GameMapEntitySystem;
 
 /**
  * Created by Eryk on 2016-05-01.
@@ -32,9 +29,9 @@ public class MapCamMovementSystem extends GameMapEntitySystem {
 
     @Override
     public void update(float deltaTime) {
-        if(gameMapData.size() < 1) return;
+        if(gameMapDataArray.size() < 1) return;
 
-        GameMapDataComponent gameMapData = gameMapDataMapper.get(this.gameMapData.first());
+        GameMapDataComponent gameMapData = gameMapDataMapper.get(this.gameMapDataArray.first());
         OrthographicCamera cam = gameMapData.gameMapCam;
 
         panDelta = gameMapData.inputManager.getPanDelta(panDelta);

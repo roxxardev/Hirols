@@ -2,22 +2,16 @@ package pl.pollub.hirols.screens;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.Family;
-import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import java.util.ArrayList;
-
 import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.components.map.GameMapComponent;
 import pl.pollub.hirols.components.map.GameMapDataComponent;
 import pl.pollub.hirols.components.map.HeroDataComponent;
-import pl.pollub.hirols.components.map.PathComponent;
-import pl.pollub.hirols.components.map.SelectedHeroComponent;
 import pl.pollub.hirols.console.CommandsContainer;
 import pl.pollub.hirols.console.GraphicalConsole;
 import pl.pollub.hirols.gui.gameMap.GameMapHud;
@@ -36,6 +30,8 @@ import pl.pollub.hirols.systems.generalSystems.FontsDeathSystem;
 import pl.pollub.hirols.systems.generalSystems.InputManagerUpdateSystem;
 import pl.pollub.hirols.systems.generalSystems.graphics.AnimationSystem;
 import pl.pollub.hirols.systems.generalSystems.graphics.BitmapFontRenderSystem;
+import pl.pollub.hirols.systems.generalSystems.graphics.ConsoleRenderSystem;
+import pl.pollub.hirols.systems.generalSystems.graphics.HudRenderSystem;
 import pl.pollub.hirols.systems.generalSystems.graphics.RenderSystem;
 import pl.pollub.hirols.systems.gameMapSystems.TiledMapRenderSystem;
 import pl.pollub.hirols.systems.generalSystems.physics.MovementSystem;
@@ -59,7 +55,7 @@ public class GameMapScreen extends GameScreen {
 
     private GameMapHud hud;
 
-    public GameMapScreen(final Hirols game, Map map, OrthographicCamera gameMapCam, Viewport gameMapPort) {
+    public GameMapScreen(final Hirols game, final Map map, OrthographicCamera gameMapCam, Viewport gameMapPort) {
         super(game);
         this.gameMapCam = gameMapCam;
         this.gameMapPort = gameMapPort;
@@ -69,22 +65,16 @@ public class GameMapScreen extends GameScreen {
         myInputProcessor = new MyInputProcessor(inputManager);
         gestureDetector = new GestureDetector(new MyGestureListener(inputManager));
 
-        createSystems();
-
         SpawnGenerator.loadEntities(game,map);
 
         hud = new GameMapHud(game, this);
 
-        gameMapEntity = new Entity()
-                        .add(map.getGameMapComponent())
-                        .add(new GameMapDataComponent(map,gameMapCam,game.batch,inputManager, hud));
-        game.engine.addEntity(gameMapEntity);
-
-
         CommandsContainer commandsContainer = new CommandsContainer() {
             private Hirols hirols;
+            private Map gameMap;
             {
                 this.hirols = game;
+                this.gameMap = map;
             }
 
             @Override
@@ -108,31 +98,34 @@ public class GameMapScreen extends GameScreen {
 
             public void quit() { Gdx.app.exit();}
 
-//            public void setM(int movementPoints) {
-//                ImmutableArray<Entity> selectedHeroes = game.engine.getEntitiesFor(Family.all(SelectedHeroComponent.class, HeroDataComponent.class).get());
-//                for(Entity entity : selectedHeroes) {
-//                    HeroDataComponent dataComponent = ComponentMapper.getFor(HeroDataComponent.class).get(entity);
-//                    dataComponent.movementPoints = movementPoints;
-//                    dataComponent.targetEntity = null;
-//                    ImmutableArray<Entity> pathEntities = game.engine.getEntitiesFor(Family.all(PathComponent.class, game.gameMapManager.getCurrentMapScreen().map.getGameMapComponent().getClass()).get());
-//                    ComponentMapper<PathComponent> pathMap = ComponentMapper.getFor(PathComponent.class);
-//                    //TODO zmienic
-//
-//                    ArrayList<Entity> paths = new ArrayList<Entity>(pathEntities.size());
-//                    for(Entity pathEntity : pathEntities) {
-//                        if(pathMap.get(pathEntity).playerID == dataComponent.id){
-//                            paths.add(pathEntity);
-//                        }
-//                    }
-//                    for(Entity pathEntity : paths) game.engine.removeEntity(pathEntity);
-//                    dataComponent.tempNodesPosition.clear();
-//
-//                    console.log(movementPoints + " movement points set to player " + dataComponent.id);
-//                }
-//            }
+            public void setMovementPoints(float value) {
+                Entity selectedHero = game.engine.getSystem(MapInteractionSystem.class).getSelectedHeroes().first();
+                HeroDataComponent selectedHeroData = ComponentMapper.getFor(HeroDataComponent.class).get(selectedHero);
+                selectedHeroData.movementPoints = value;
+                game.engine.getSystem(MapInteractionSystem.class).resetHeroPath(selectedHeroData);
+
+                console.log("Selected Hero id: "+ selectedHeroData.id +" movement points set to " + value + ".");
+            }
+
+            public void recalculatePath() {
+                Entity selectedHero = game.engine.getSystem(MapInteractionSystem.class).getSelectedHeroes().first();
+                HeroDataComponent selectedHeroData = ComponentMapper.getFor(HeroDataComponent.class).get(selectedHero);
+                game.engine.getSystem(MapInteractionSystem.class).recalculatePathForHero(selectedHero);
+
+                console.log("Path recalculated for selected hero id: "+ selectedHeroData.id + ".");
+            }
         };
         console = new GraphicalConsole(commandsContainer,
                 game.assetManager.get("default_skin/uiskin.json", Skin.class),game);
+
+
+        createSystems();
+
+
+        gameMapEntity = new Entity()
+                        .add(map.getGameMapComponent())
+                        .add(new GameMapDataComponent(map,gameMapCam,game.batch,inputManager, hud));
+        game.engine.addEntity(gameMapEntity);
 
     }
 
@@ -156,16 +149,15 @@ public class GameMapScreen extends GameScreen {
 
         systems.add(new RenderSystem(16, game.batch, gameMapClass){});
         systems.add(new BitmapFontRenderSystem(17,game.batch,gameMapClass){});
+
+        systems.add(new HudRenderSystem(21,gameMapClass,hud){});
+        systems.add(new ConsoleRenderSystem(22,gameMapClass,console){});
         systems.add(new InputManagerUpdateSystem(50,gameMapClass,inputManager){});
     }
 
     @Override
     public void render(float delta) {
-        hud.update(delta);
         game.gameMapManager.update(delta);
-        game.batch.setProjectionMatrix(hud.getStage().getCamera().combined);
-        hud.getStage().draw();
-        console.draw();
     }
 
     @Override
@@ -213,5 +205,9 @@ public class GameMapScreen extends GameScreen {
         game.engine.removeEntity(gameMapEntity);
         console.dispose();
         hud.dispose();
+    }
+
+    public GraphicalConsole getConsole() {
+        return console;
     }
 }

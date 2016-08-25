@@ -53,6 +53,17 @@ public class HeroPath {
         return false;
     }
 
+    public void reset() {
+        walkNodesPosition.clear();
+        standNodesPosition.clear();
+        resetTargetPosition();
+        setTargetEntity(null);
+    }
+
+    public void resetTargetPosition() {
+        targetPosition.set(0,0);
+    }
+
     public int getPathSize() {return path.getCount();}
 
     public ArrayList<Vector3> getWalkNodesPosition() {
