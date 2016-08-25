@@ -5,11 +5,8 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
-
-import java.util.ArrayList;
 
 import pl.pollub.hirols.components.map.GameMapComponent;
 import pl.pollub.hirols.components.map.GameMapDataComponent;
@@ -48,12 +45,11 @@ public class HeroMovementSystem extends GameMapEntitySystem {
             PositionComponent heroPosition = posMap.get(hero);
             VelocityComponent velocity = velMap.get(hero);
 
-            if (!heroData.pathNodesPosition.isEmpty()) {
-                if(heroData.movementPoints - heroData.pathNodesPosition.get(0).z >= 0)
-                handleMovementForPosition(heroData.pathNodesPosition.get(0), heroPosition, velocity, deltaTime, gameMapData.gameMapCam);
+            if (heroData.heroPath.hasWalkNodes()) {
+                if(heroData.movementPoints - heroData.heroPath.getWalkNodesPosition().get(0).z >= 0)
+                handleMovementForPosition(heroData.heroPath.getWalkNodesPosition().get(0), heroPosition, velocity, deltaTime, gameMapData.gameMapCam);
                 else {
-                    heroData.tempNodesPosition = heroData.pathNodesPosition;
-                    heroData.pathNodesPosition = new ArrayList<Vector3>();
+                    heroData.heroPath.stopFollowing(true);
                 }
             }
         }

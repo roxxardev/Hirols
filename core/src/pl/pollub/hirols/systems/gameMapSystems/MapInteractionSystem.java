@@ -144,56 +144,25 @@ public class MapInteractionSystem extends GameMapEntitySystem {
     }
 
     private void handleTapForSelectedHero(Entity mapEntity, Map gameMap, HeroDataComponent selectedHeroData, PositionComponent selectedHeroPosition, int mapIndexX, int mapIndexY) {
-        if (!isHeroMoving(selectedHeroData)) {
-            if(isHeroPathFound(selectedHeroData)) {
-                if (isLastNodePathClicked(selectedHeroData, gameMap, mapIndexX, mapIndexY)) {
-                    makeHeroFollowHisPath(selectedHeroData);
-                    return;
-                }
-            }
-
-            if (mapMapper.get(mapEntity).walkable) {
-                handleWalkableForSelectedHero(gameMap,selectedHeroData, selectedHeroPosition, mapIndexX, mapIndexY);
-            } else {
-                handleNonWalkableForSelectedHero(gameMap,selectedHeroData, selectedHeroPosition, mapIndexX, mapIndexY, mapEntity);
-            }
-
+        if(selectedHeroData.heroPath.hasWalkNodes()) {
+            selectedHeroData.heroPath.stopFollowing(false);
+            return;
+        }
+        if (isLastNodePathClicked(selectedHeroData, gameMap, mapIndexX, mapIndexY)) {
+            selectedHeroData.heroPath.followPath();
+            return;
+        }
+        if (mapMapper.get(mapEntity).walkable) {
+            handleWalkableForSelectedHero(gameMap,selectedHeroData, selectedHeroPosition, mapIndexX, mapIndexY);
         } else {
-            makeHeroStop(selectedHeroData);
+            handleNonWalkableForSelectedHero(gameMap,selectedHeroData, selectedHeroPosition, mapIndexX, mapIndexY, mapEntity);
         }
-    }
-
-    public boolean makeHeroFollowHisPath(HeroDataComponent heroData) {
-        if(!isHeroMoving(heroData)) {
-            if(isHeroPathFound(heroData)) {
-                heroData.pathNodesPosition = heroData.tempNodesPosition;
-                heroData.tempNodesPosition = new ArrayList<Vector3>();
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean makeHeroStop(HeroDataComponent heroData) {
-        if(!isHeroMoving(heroData)) return false;
-        if (heroData.pathNodesPosition.size() > 1) {
-            heroData.tempNodesPosition = heroData.pathNodesPosition;
-            heroData.pathNodesPosition = new ArrayList<Vector3>();
-            heroData.pathNodesPosition.add(heroData.tempNodesPosition.get(0));
-            heroData.tempNodesPosition.remove(0);
-            return true;
-        }
-        return false;
     }
 
     public boolean isLastNodePathClicked(HeroDataComponent heroData, Map gameMap, int mapIndexX, int mapIndexY) {
-        Vector2 endNodePosition = heroData.endPathTargetPosition;
+        Vector2 endNodePosition = heroData.heroPath.getTargetPosition();
         return ((int)Math.floor(endNodePosition.x / gameMap.getTileWidth()) == mapIndexX && (int)Math.floor(endNodePosition.y / gameMap.getTileHeight()) == mapIndexY);
     }
-
-    public boolean isHeroMoving(HeroDataComponent heroData) { return !heroData.pathNodesPosition.isEmpty();}
-
-    public boolean isHeroPathFound(HeroDataComponent heroData) {return !heroData.tempNodesPosition.isEmpty();}
 
     private void updateGraphConnectionsForEnemy(Map gameMap, Entity mapEntity, EnemyComponent enemyComponent, boolean walkable) {
         PositionComponent enemyPosition = posMap.get(mapEntity);
@@ -215,63 +184,39 @@ public class MapInteractionSystem extends GameMapEntitySystem {
             EnemyComponent enemyComponent = enemyMap.get(mapEntity);
             if (enemyComponent.trueEntity) {
                 Gdx.app.log("MapInteractionSystem", "Tap on enemy id: " + enemyComponent.id);
-
-                updateGraphConnectionsForEnemy(gameMap,mapEntity,enemyComponent,true);
-                if (findPath(new Vector2(selectedHeroPosition.x, selectedHeroPosition.y), mousePosition, gameMap,selectedHeroData, swordPathTexture)) {
+                if(findPathToEnemy(pathStartPosition.set(selectedHeroPosition.x,selectedHeroPosition.y), mousePosition, gameMap, selectedHeroData, mapEntity, swordPathTexture, enemyComponent)) {
                     Gdx.app.log("MapInteractionSystem", "Path created for hero id: "
-                            + selectedHeroData.id + " Length: " + selectedHeroData.path.getCount() + " to enemy id: " + enemyComponent.id);
-                    selectedHeroData.tempNodesPosition.remove(selectedHeroData.tempNodesPosition.size() - 1);
-                    selectedHeroData.targetEntity = mapEntity;
+                            + selectedHeroData.id + " Length: " + selectedHeroData.heroPath.getPathSize() + " to enemy id: " + enemyComponent.id);
                 }
-                updateGraphConnectionsForEnemy(gameMap,mapEntity,enemyComponent,false);
-
             } else {
                 Gdx.app.log("MapInteractionSystem", "Tap nearby enemy id: " + enemyComponent.id);
-                PositionComponent enemyPosition = posMap.get(mapEntity);
-                gameMap.updateGraphConnectionsToNode(enemyPosition.x,enemyPosition.y,true);
-
-                if (findPath(new Vector2(selectedHeroPosition.x, selectedHeroPosition.y), mousePosition, gameMap, selectedHeroData, swordPathTexture)) {
+                if(findPathNonWalkable(pathStartPosition.set(selectedHeroPosition.x, selectedHeroPosition.y), mousePosition, gameMap, selectedHeroData, mapEntity, swordPathTexture, false)) {
                     Gdx.app.log("MapInteractionSystem", "Path created for hero id: "
-                            + selectedHeroData.id + " Length: " + selectedHeroData.path.getCount() + " nearby enemy id: " + enemyComponent.id);
-                    selectedHeroData.tempNodesPosition.remove(selectedHeroData.tempNodesPosition.size() - 1);
-                    selectedHeroData.targetEntity = mapEntity;
+                            + selectedHeroData.id + " Length: " + selectedHeroData.heroPath.getPathSize() + " nearby enemy id: " + enemyComponent.id);
                 }
-
-                gameMap.updateGraphConnectionsToNode(enemyPosition.x,enemyPosition.y,false);
             }
         } else if (townMap.has(mapEntity)) {
             Gdx.app.log("MapInteractionSystem", "Tap on town");
             TownComponent townComponent = townMap.get(mapEntity);
-            gameMap.updateGraphConnectionsToNode(townComponent.enterPosition.x, townComponent.enterPosition.y, true);
-            if (findPath(new Vector2(selectedHeroPosition.x, selectedHeroPosition.y), townComponent.enterPosition, gameMap, selectedHeroData, crossPathTexture)) {
+            if(findPathNonWalkable(pathStartPosition.set(selectedHeroPosition.x, selectedHeroPosition.y), townComponent.enterPosition, gameMap, selectedHeroData, mapEntity, crossPathTexture, true)) {
                 Gdx.app.log("MapInteractionSystem", "Path created for hero id: "
-                        + selectedHeroData.id + " Length: " + selectedHeroData.path.getCount() + " to town");
-                selectedHeroData.targetEntity = mapEntity;
+                        + selectedHeroData.id + " Length: " + selectedHeroData.heroPath.getPathSize() + " to town");
             }
-            gameMap.updateGraphConnectionsToNode(townComponent.enterPosition.x, townComponent.enterPosition.y, false);
         } else if (mineMap.has(mapEntity)) {
             //TODO czekaj na mape
             Gdx.app.log("MapInteractionSystem", "Tap on mine");
         } else if (resourceMap.has(mapEntity)) {
             Gdx.app.log("MapInteractionSystem", "Tap on resource");
-            gameMap.updateGraphConnectionsToNode(mousePosition.x,mousePosition.y,true);
-            if (findPath(new Vector2(selectedHeroPosition.x, selectedHeroPosition.y), mousePosition, gameMap, selectedHeroData, crossPathTexture)) {
+            if (findPathNonWalkable(pathStartPosition.set(selectedHeroPosition.x, selectedHeroPosition.y), mousePosition, gameMap, selectedHeroData, mapEntity, crossPathTexture, false)) {
                 Gdx.app.log("MapInteractionSystem", "Path created for hero id: "
-                        + selectedHeroData.id + " Length: " + selectedHeroData.path.getCount() + " to resource");
-                selectedHeroData.tempNodesPosition.remove(selectedHeroData.tempNodesPosition.size() - 1);
-                selectedHeroData.targetEntity = mapEntity;
+                        + selectedHeroData.id + " Length: " + selectedHeroData.heroPath.getPathSize() + " to resource");
             }
-            gameMap.updateGraphConnectionsToNode(mousePosition.x,mousePosition.y,false);
         } else if (chestMap.has(mapEntity)) {
             Gdx.app.log("MapInteractionSystem", "Tap on chest");
-            gameMap.updateGraphConnectionsToNode(mapEntityPosition.x,mapEntityPosition.y,true);
-            if (findPath(new Vector2(selectedHeroPosition.x, selectedHeroPosition.y), mousePosition, gameMap, selectedHeroData, crossPathTexture)) {
+            if(findPathNonWalkable(pathStartPosition.set(selectedHeroPosition.x,selectedHeroPosition.y), mousePosition, gameMap, selectedHeroData, mapEntity, crossPathTexture, false)) {
                 Gdx.app.log("MapInteractionSystem", "Path created for hero id: "
-                        + selectedHeroData.id + " Length: " + selectedHeroData.path.getCount() + " to chest");
-                selectedHeroData.tempNodesPosition.remove(selectedHeroData.tempNodesPosition.size() - 1);
-                selectedHeroData.targetEntity = mapEntity;
+                        + selectedHeroData.id + " Length: " + selectedHeroData.heroPath.getPathSize() + " to chest");
             }
-            gameMap.updateGraphConnectionsToNode(mapEntityPosition.x,mapEntityPosition.y,false);
         }
     }
 
@@ -296,7 +241,7 @@ public class MapInteractionSystem extends GameMapEntitySystem {
 
         if (findPath(pathStartPosition.set(selectedHeroPosition.x, selectedHeroPosition.y), mousePosition, gameMap, selectedHeroData, crossPathTexture))
             Gdx.app.log("MapInteractionSystem", "Path created for hero id: "
-                    + selectedHeroData.id + " Length: " + selectedHeroData.path.getCount());
+                    + selectedHeroData.id + " Length: " + selectedHeroData.heroPath.getPathSize());
 
     }
 
@@ -329,22 +274,49 @@ public class MapInteractionSystem extends GameMapEntitySystem {
         Gdx.app.log("MapInteractionSystem", "Tap outside map of " + mousePosition.toString());
     }
 
-    private boolean findPath(Vector2 startNodePos, Vector2 endNodePos, Map gameMap, HeroDataComponent heroData, Texture lastPathTexture) {
-        heroData.targetEntity = null;
-        gameMap.findPath(startNodePos,endNodePos,heroData.path);
-        if(heroData.path.getCount() > 0) {
+    public boolean findPathToEnemy(Vector2 startNodePos, Vector2 endNodePos, Map gameMap, HeroDataComponent heroData, Entity mapEntity, Texture lastPathTexture, EnemyComponent enemyComponent) {
+        boolean success = false;
+        updateGraphConnectionsForEnemy(gameMap,mapEntity,enemyComponent,true);
+        if (findPath(startNodePos, endNodePos, gameMap,heroData, lastPathTexture)) {
+            success = true;
+            heroData.heroPath.getStandNodesPosition().remove(heroData.heroPath.getStandNodesPosition().size() - 1);
+            heroData.heroPath.setTargetEntity(mapEntity);
+        }
+        updateGraphConnectionsForEnemy(gameMap,mapEntity,enemyComponent,false);
+        return success;
+    }
+
+    public boolean findPathNonWalkable(Vector2 startNodePos, Vector2 endNodePos, Map gameMap, HeroDataComponent heroData, Entity mapEntity, Texture lastPathTexture, boolean targetEnter) {
+        boolean success = false;
+        gameMap.updateGraphConnectionsToNode(endNodePos.x, endNodePos.y, true);
+        if (findPath(startNodePos, endNodePos, gameMap, heroData, lastPathTexture)) {
+            success = true;
+            if(!targetEnter) heroData.heroPath.getStandNodesPosition().remove(heroData.heroPath.getStandNodesPosition().size() - 1);
+            heroData.heroPath.setTargetEntity(mapEntity);
+        }
+        gameMap.updateGraphConnectionsToNode(endNodePos.x, endNodePos.y, false);
+        return success;
+    }
+
+
+    public boolean findPath(Vector2 startNodePos, Vector2 endNodePos, Map gameMap, HeroDataComponent heroData, Texture lastPathTexture) {
+        if(heroData.heroPath.hasWalkNodes()) throw new IllegalArgumentException("Hero must stand to find new Path!");
+
+        heroData.heroPath.setTargetEntity(null);
+        gameMap.findPath(startNodePos,endNodePos,heroData.heroPath.getPath());
+        if(heroData.heroPath.getPathSize() > 0) {
             for(Entity pathEntity : pathEntities) {
                 if(pathMap.get(pathEntity).playerID == heroData.id) {
                     getEngine().removeEntity(pathEntity);
                 }
             }
-            heroData.tempNodesPosition.clear();
+            heroData.heroPath.getStandNodesPosition().clear();
         } else return false;
 
-        if (heroData.path.getCount() > 1) {
+        if (heroData.heroPath.getPathSize() > 1) {
             float heroMovementPoints = heroData.movementPoints;
-            for (int i = 1; i < heroData.path.getCount(); i++) {
-                Node node = heroData.path.get(i);
+            for (int i = 1; i < heroData.heroPath.getPathSize(); i++) {
+                Node node = heroData.heroPath.getPath().get(i);
                 int nodeX = node.getXIndex();
                 int nodeY = node.getYIndex();
 
@@ -352,7 +324,7 @@ public class MapInteractionSystem extends GameMapEntitySystem {
                 temp.setSize(96, 96);
                 temp.setColor(Color.GREEN);
 
-                Node previousNode = heroData.path.get(i-1);
+                Node previousNode = heroData.heroPath.getPath().get(i-1);
                 int previousNodeX = previousNode.getXIndex();
                 int previousNodeY = previousNode.getYIndex();
 
@@ -388,7 +360,7 @@ public class MapInteractionSystem extends GameMapEntitySystem {
                     temp.setColor(Color.RED);
                 }
 
-                heroData.tempNodesPosition.add(new Vector3(nodeX * gameMap.getTileWidth(), nodeY * gameMap.getTileHeight(), movementCost));
+                heroData.heroPath.getStandNodesPosition().add(new Vector3(nodeX * gameMap.getTileWidth(), nodeY * gameMap.getTileHeight(), movementCost));
                 Entity entity = new Entity();
 
                 entity
@@ -398,9 +370,9 @@ public class MapInteractionSystem extends GameMapEntitySystem {
                         .add(gameMap.getGameMapComponent())
                         .add(new PathComponent(heroData.id));
 
-                if (i == (heroData.path.getCount() - 1)) {
+                if (i == (heroData.heroPath.getPathSize() - 1)) {
                     temp.setTexture(lastPathTexture);
-                    heroData.endPathTargetPosition = new Vector2(nodeX * gameMap.getTileWidth(), nodeY * gameMap.getTileHeight());
+                    heroData.heroPath.getTargetPosition().set(nodeX * gameMap.getTileWidth(), nodeY * gameMap.getTileHeight());
                 }
 
                 getEngine().addEntity(entity);

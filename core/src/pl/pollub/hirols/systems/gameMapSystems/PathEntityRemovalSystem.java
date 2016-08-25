@@ -5,6 +5,8 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 
 import pl.pollub.hirols.components.map.GameMapComponent;
 import pl.pollub.hirols.components.map.HeroDataComponent;
@@ -41,20 +43,21 @@ public class PathEntityRemovalSystem extends GameMapEntitySystem {
         for (Entity hero : selectedHeroes) {
             HeroDataComponent heroData = heroDataMap.get(hero);
             PositionComponent heroPosition = posMap.get(hero);
-            if (!heroData.pathNodesPosition.isEmpty()) {
-                if (heroPosition.x == heroData.pathNodesPosition.get(0).x && heroPosition.y == heroData.pathNodesPosition.get(0).y) {
+            if (heroData.heroPath.hasWalkNodes()) {
+                Vector3 node = heroData.heroPath.getWalkNodesPosition().get(0);
+                if (heroPosition.x == node.x && heroPosition.y == node.y) {
                     for (Entity pathEntity : pathEntities) {
                         PathComponent pathData = pathMap.get(pathEntity);
                         if (pathData.playerID == heroData.id) {
                             PositionComponent positionPathEntity = posMap.get(pathEntity);
-                            if (positionPathEntity.x == heroData.pathNodesPosition.get(0).x && positionPathEntity.y == heroData.pathNodesPosition.get(0).y) {
+                            if (positionPathEntity.x == node.x && positionPathEntity.y == node.y) {
                                 getEngine().removeEntity(pathEntity);
                                 break;
                             }
                         }
                     }
-                    heroData.movementPoints -= heroData.pathNodesPosition.get(0).z;
-                    heroData.pathNodesPosition.remove(0);
+                    heroData.movementPoints -= node.z;
+                    heroData.heroPath.getWalkNodesPosition().remove(0);
                 }
             }
         }

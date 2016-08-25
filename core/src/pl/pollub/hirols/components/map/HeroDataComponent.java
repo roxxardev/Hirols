@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
 
+import pl.pollub.hirols.gameMap.HeroPath;
 import pl.pollub.hirols.pathfinding.NodePath;
 
 /**
@@ -21,11 +22,7 @@ public class HeroDataComponent implements Component{
     public Sprite avatar;
     public String name;
 
-    public ArrayList<Vector3> pathNodesPosition = new ArrayList<Vector3>();
-    public ArrayList<Vector3> tempNodesPosition = new ArrayList<Vector3>();
-    public Vector2 endPathTargetPosition = null;
-    public Entity targetEntity = null;
-    public NodePath path = new NodePath();
+    public final HeroPath heroPath = new HeroPath();
 
     public HeroDataComponent(int id, String name, float movementPoints, Sprite avatar) {
         this.id = id;

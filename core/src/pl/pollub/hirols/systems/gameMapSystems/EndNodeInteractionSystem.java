@@ -74,10 +74,9 @@ public class EndNodeInteractionSystem extends GameMapEntitySystem {
         GameMapDataComponent gameMapData = gameMapDataMapper.get(this.gameMapData.first());
         Entity selectedHero = selectedHeroes.first();
         HeroDataComponent selectedHeroData = heroDataMap.get(selectedHero);
+        if(!(!selectedHeroData.heroPath.hasWalkNodes() && !selectedHeroData.heroPath.hasStandNodes() && selectedHeroData.heroPath.getTargetEntity() != null)) return;
 
-        if(!(selectedHeroData.pathNodesPosition.isEmpty() && selectedHeroData.tempNodesPosition.isEmpty() && selectedHeroData.targetEntity != null)) return;
-
-        Entity targetEntity = selectedHeroData.targetEntity;
+        Entity targetEntity = selectedHeroData.heroPath.getTargetEntity();
 
         for(Entity pathEntity : pathEntities) {
             PathComponent pathComponent = pathMap.get(pathEntity);
@@ -91,7 +90,7 @@ public class EndNodeInteractionSystem extends GameMapEntitySystem {
                 targetEntity.remove(ResourceComponent.class);
                 targetEntity.remove(RenderableComponent.class);
                 targetEntity.remove(TextureComponent.class);
-                selectedHeroData.targetEntity = null;
+                selectedHeroData.heroPath.setTargetEntity(null);
                 mapMapper.get(targetEntity).walkable = true;
                 PositionComponent resourcePosition = posMap.get(targetEntity);
                 gameMapData.map.updateGraphConnectionsToNode(resourcePosition.x,resourcePosition.y,true);
@@ -109,11 +108,11 @@ public class EndNodeInteractionSystem extends GameMapEntitySystem {
                 return;
             } else if(chestMap.has(targetEntity)) {
                 ChestComponent chestComponent = chestMap.get(targetEntity);
-                selectedHeroData.targetEntity = null;
+                selectedHeroData.heroPath.setTargetEntity(null);
                 Gdx.app.log("EndNodeInteractionSystem", "Interaction with chest: ");
                 getEngine().removeEntity(pathEntity);
             } else if(enemyMap.has(targetEntity)) {
-                selectedHeroData.targetEntity = null;
+                selectedHeroData.heroPath.setTargetEntity(null);
                 Gdx.app.log("EndNodeInteractionSystem", "Interaction with enemy: ");
                 getEngine().removeEntity(pathEntity);
                 game.setScreen(new BattleScreen(game));
@@ -124,7 +123,7 @@ public class EndNodeInteractionSystem extends GameMapEntitySystem {
         }
         if(townMap.has(targetEntity)) {
             TownComponent townComponent = townMap.get(targetEntity);
-            selectedHeroData.targetEntity = null;
+            selectedHeroData.heroPath.setTargetEntity(null);
             Gdx.app.log("EndNodeInteractionSystem", "Interaction with town: ");
             game.setScreen(new TownScreen(game));
         } else if(mineMap.has(targetEntity)) {

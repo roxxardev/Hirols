@@ -39,7 +39,6 @@ import pl.pollub.hirols.systems.generalSystems.graphics.BitmapFontRenderSystem;
 import pl.pollub.hirols.systems.generalSystems.graphics.RenderSystem;
 import pl.pollub.hirols.systems.gameMapSystems.TiledMapRenderSystem;
 import pl.pollub.hirols.systems.generalSystems.physics.MovementSystem;
-import pl.pollub.hirols.ui.playScreenUI.PlayerScreenHud;
 
 /**
  * Created by Eryk on 2016-04-25.
@@ -109,28 +108,28 @@ public class GameMapScreen extends GameScreen {
 
             public void quit() { Gdx.app.exit();}
 
-            public void setM(int movementPoints) {
-                ImmutableArray<Entity> selectedHeroes = game.engine.getEntitiesFor(Family.all(SelectedHeroComponent.class, HeroDataComponent.class).get());
-                for(Entity entity : selectedHeroes) {
-                    HeroDataComponent dataComponent = ComponentMapper.getFor(HeroDataComponent.class).get(entity);
-                    dataComponent.movementPoints = movementPoints;
-                    dataComponent.targetEntity = null;
-                    ImmutableArray<Entity> pathEntities = game.engine.getEntitiesFor(Family.all(PathComponent.class, game.gameMapManager.getCurrentMapScreen().map.getGameMapComponent().getClass()).get());
-                    ComponentMapper<PathComponent> pathMap = ComponentMapper.getFor(PathComponent.class);
-                    //TODO zmienic
-
-                    ArrayList<Entity> paths = new ArrayList<Entity>(pathEntities.size());
-                    for(Entity pathEntity : pathEntities) {
-                        if(pathMap.get(pathEntity).playerID == dataComponent.id){
-                            paths.add(pathEntity);
-                        }
-                    }
-                    for(Entity pathEntity : paths) game.engine.removeEntity(pathEntity);
-                    dataComponent.tempNodesPosition.clear();
-
-                    console.log(movementPoints + " movement points set to player " + dataComponent.id);
-                }
-            }
+//            public void setM(int movementPoints) {
+//                ImmutableArray<Entity> selectedHeroes = game.engine.getEntitiesFor(Family.all(SelectedHeroComponent.class, HeroDataComponent.class).get());
+//                for(Entity entity : selectedHeroes) {
+//                    HeroDataComponent dataComponent = ComponentMapper.getFor(HeroDataComponent.class).get(entity);
+//                    dataComponent.movementPoints = movementPoints;
+//                    dataComponent.targetEntity = null;
+//                    ImmutableArray<Entity> pathEntities = game.engine.getEntitiesFor(Family.all(PathComponent.class, game.gameMapManager.getCurrentMapScreen().map.getGameMapComponent().getClass()).get());
+//                    ComponentMapper<PathComponent> pathMap = ComponentMapper.getFor(PathComponent.class);
+//                    //TODO zmienic
+//
+//                    ArrayList<Entity> paths = new ArrayList<Entity>(pathEntities.size());
+//                    for(Entity pathEntity : pathEntities) {
+//                        if(pathMap.get(pathEntity).playerID == dataComponent.id){
+//                            paths.add(pathEntity);
+//                        }
+//                    }
+//                    for(Entity pathEntity : paths) game.engine.removeEntity(pathEntity);
+//                    dataComponent.tempNodesPosition.clear();
+//
+//                    console.log(movementPoints + " movement points set to player " + dataComponent.id);
+//                }
+//            }
         };
         console = new GraphicalConsole(commandsContainer,
                 game.assetManager.get("default_skin/uiskin.json", Skin.class),game);
