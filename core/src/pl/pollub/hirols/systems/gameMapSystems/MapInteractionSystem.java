@@ -269,6 +269,7 @@ public class MapInteractionSystem extends GameMapEntitySystem {
             HeroDataComponent unselectedHeroData = heroDataMap.get(unselectedHero);
             if (mapIndexX == (int)Math.floor(unselectedHeroPosition.x / gameMap.getTileWidth()) && mapIndexY == (int)Math.floor(unselectedHeroPosition.y / gameMap.getTileHeight())) {
                 Gdx.app.log("MapInteractionSystem", "Tap on unselected hero id: " + unselectedHeroData.id);
+                changeSelectedHero(unselectedHero);
                 return;
             }
         }
@@ -290,7 +291,6 @@ public class MapInteractionSystem extends GameMapEntitySystem {
             PositionComponent heroPosition = posMap.get(hero);
             if (mapIndexX == (int)Math.floor(heroPosition.x / gameMap.getTileWidth()) && mapIndexY == (int)Math.floor(heroPosition.y / gameMap.getTileHeight())) {
                 Gdx.app.log("MapInteractionSystem", "Long press on hero id: " + heroData.id);
-                changeSelectedHero(hero);
                 return;
             }
         }
@@ -310,10 +310,12 @@ public class MapInteractionSystem extends GameMapEntitySystem {
     }
 
     public void changeSelectedHero(Entity hero) {
-        for(Entity entity : selectedHeroPathEntities) {
+        ArrayList<Entity> selectedHeroPathEntitiesSnapshot = EngineTools.getArraySnapshot(selectedHeroPathEntities);
+        for(Entity entity : selectedHeroPathEntitiesSnapshot) {
             entity.remove(SelectedHeroComponent.class);
         }
-        for(Entity entity : selectedHeroes) {
+        ArrayList<Entity> selectedHeroesSnapshot = EngineTools.getArraySnapshot(selectedHeroes);
+        for(Entity entity : selectedHeroesSnapshot) {
             entity.remove(SelectedHeroComponent.class);
         }
 

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -14,8 +15,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.kotcrab.vis.ui.widget.VisImageButton;
 
 import java.util.ArrayList;
 
@@ -84,6 +87,18 @@ public class GraphicalConsole extends DefaultConsole {
         consoleTable.add(textField).expandX().fillX().pad(4);
 
         window = new Window("Console Hirols", skin);
+
+        //TODO change temporary exit button
+        Table titleTable = window.getTitleTable();
+        VisImageButton closeButton = new VisImageButton("close-window");
+        titleTable.add(closeButton).padRight(-window.getPadRight() + 0.7f);
+        closeButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                setVisible(false);
+            }
+        });
+
         window.setKeepWithinStage(true);
         window.setMovable(true);
         window.setResizable(true);

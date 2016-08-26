@@ -78,6 +78,7 @@ public class EndNodeInteractionSystem extends GameMapEntitySystem {
 
         Entity targetEntity = selectedHeroData.heroPath.getTargetEntity();
 
+        //TODO remove loop, only single path
         for(Entity pathEntity : selectedHeroPathEntities) {
 
             if(resourceMap.has(targetEntity)) {
@@ -117,8 +118,6 @@ public class EndNodeInteractionSystem extends GameMapEntitySystem {
                 game.setScreen(new BattleScreen(game));
                 break;
             }
-            Gdx.app.log("dsdas0","das");
-
         }
         if(townMap.has(targetEntity)) {
             TownComponent townComponent = townMap.get(targetEntity);

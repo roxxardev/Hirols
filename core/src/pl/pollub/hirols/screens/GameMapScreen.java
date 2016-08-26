@@ -92,10 +92,6 @@ public class GameMapScreen extends GameScreen {
                 console.clear();
             }
 
-            public void dupa(String s) {
-                console.log("NO ELO");
-            }
-
             public void quit() { Gdx.app.exit();}
 
             public void setMovementPoints(float value) {
