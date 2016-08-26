@@ -112,8 +112,8 @@ public class SpawnGenerator {
                 .add(new RenderableComponent())
                 .add(new HeroDataComponent(++playerId, "Cwel", 10.f,new Sprite(game.assetManager.get("temp/portrait.png", Texture.class))))
                 .add(new VelocityComponent(new Vector2(0, 0)))
-                .add(new PlayerComponent())
-                .add(new SelectedHeroComponent()));
+                .add(new PlayerComponent()));
+                //.add(new SelectedHeroComponent()));
         for (int i = 0; i < 10; i++) {
             Entity hero = new Entity();
             hero

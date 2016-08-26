@@ -128,6 +128,16 @@ public class MapInteractionSystem extends GameMapEntitySystem {
         Map gameMap = gameMapData.map;
         Entity mapEntity = gameMap.getEntity(mapIndexX,mapIndexY);
 
+        for (Entity unselectedHero : unselectedHeroes) {
+            PositionComponent unselectedHeroPosition = posMap.get(unselectedHero);
+            HeroDataComponent unselectedHeroData = heroDataMap.get(unselectedHero);
+            if (mapIndexX == (int)Math.floor(unselectedHeroPosition.x / gameMap.getTileWidth()) && mapIndexY == (int)Math.floor(unselectedHeroPosition.y / gameMap.getTileHeight())) {
+                Gdx.app.log("MapInteractionSystem", "Tap on unselected hero id: " + unselectedHeroData.id);
+                changeSelectedHero(unselectedHero);
+                return;
+            }
+        }
+
         //TODO interaction with map objects when tap and no player is selected
         Gdx.app.log("MapInteractionSystem", "Tap inside map "
                 + mousePosition.toString() + " (" + mapIndexX + "," + mapIndexY + ")" + " walkable: false, no hero selected");
@@ -309,7 +319,8 @@ public class MapInteractionSystem extends GameMapEntitySystem {
         }
     }
 
-    public void changeSelectedHero(Entity hero) {
+    public void deselectHero() {
+        //TODO deselect everything that belongs to selected hero
         ArrayList<Entity> selectedHeroPathEntitiesSnapshot = EngineTools.getArraySnapshot(selectedHeroPathEntities);
         for(Entity entity : selectedHeroPathEntitiesSnapshot) {
             entity.remove(SelectedHeroComponent.class);
@@ -318,7 +329,10 @@ public class MapInteractionSystem extends GameMapEntitySystem {
         for(Entity entity : selectedHeroesSnapshot) {
             entity.remove(SelectedHeroComponent.class);
         }
+    }
 
+    public void changeSelectedHero(Entity hero) {
+        deselectHero();
 
         hero.add(new SelectedHeroComponent());
         HeroDataComponent heroData = heroDataMap.get(hero);
