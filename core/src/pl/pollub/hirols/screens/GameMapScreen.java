@@ -46,14 +46,14 @@ public class GameMapScreen extends GameScreen {
 
     private final Map map;
     private final Entity gameMapEntity;
+    private final GraphicalConsole console;
+    private final GameMapHud hud;
 
     private final InputManager inputManager;
     private final GestureDetector gestureDetector;
     private final MyInputProcessor myInputProcessor;
 
-    private GraphicalConsole console;
 
-    private GameMapHud hud;
 
     public GameMapScreen(final Hirols game, final Map map, OrthographicCamera gameMapCam, Viewport gameMapPort) {
         super(game);

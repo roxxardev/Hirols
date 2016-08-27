@@ -2,7 +2,6 @@ package pl.pollub.hirols.managers;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -13,7 +12,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import pl.pollub.hirols.Hirols;
-import pl.pollub.hirols.components.battle.BattleComponent;
 import pl.pollub.hirols.components.map.GameMapComponent;
 import pl.pollub.hirols.screens.GameMapScreen;
 import pl.pollub.hirols.systems.genericSystems.BeginSystem;
@@ -28,7 +26,7 @@ public class GameMapManager {
     private Hirols game;
 
     private HashMap<String, GameMapScreen> maps = new HashMap<String, GameMapScreen>();
-    private String currentMap;
+    private GameMapScreen currentGameMapScreen;
 
     private TmxMapLoader tmxMapLoader = new TmxMapLoader();
     private TmxMapLoader.Parameters parameters = new TmxMapLoader.Parameters();
@@ -68,7 +66,7 @@ public class GameMapManager {
         pl.pollub.hirols.gameMap.Map map = new pl.pollub.hirols.gameMap.Map(game,tmxMapLoader.load(filePath),getNewGameMapComponentClass());
         GameMapScreen gameMapScreen = new GameMapScreen(game,map,gameMapCam,gameMapPort);
         maps.put(filePath,gameMapScreen);
-        if(currentMap == null) currentMap = filePath; else gameMapScreen.setSystemsProcessing(false);
+        if(currentGameMapScreen == null) currentGameMapScreen = gameMapScreen; else gameMapScreen.setSystemsProcessing(false);
     }
 
     public void update(float delta) {
@@ -76,7 +74,16 @@ public class GameMapManager {
     }
 
     public GameMapScreen getCurrentMapScreen() {
-        return maps.get(currentMap);
+        return currentGameMapScreen;
+    }
+
+    public void setCurrentMapScreen(GameMapScreen gameMapScreen) {
+        currentGameMapScreen = gameMapScreen;
+        game.setScreen(currentGameMapScreen);
+    }
+
+    public void setCurrentMapScreen(String mapName) {
+        setCurrentMapScreen(maps.get(mapName));
     }
 
     private void createSharedSystems() {

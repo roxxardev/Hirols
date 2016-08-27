@@ -80,6 +80,10 @@ public class InputManager {
         return mouseCoords;
     }
 
+    public Vector2 getMouseCoordinates(Vector2 vec) {
+        return vec.set(mouseCoords.x,mouseCoords.y);
+    }
+
     public Vector2 getMouseCoordsYAxisUp() {
         return mouseCoordsYUP.set(mouseCoords.x, Gdx.graphics.getHeight() - mouseCoords.y);
     }
