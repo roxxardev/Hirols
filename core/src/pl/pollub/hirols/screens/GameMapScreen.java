@@ -98,7 +98,7 @@ public class GameMapScreen extends GameScreen {
                 Entity selectedHero = game.engine.getSystem(MapInteractionSystem.class).getSelectedHeroes().first();
                 HeroDataComponent selectedHeroData = ComponentMapper.getFor(HeroDataComponent.class).get(selectedHero);
                 selectedHeroData.movementPoints = value;
-                game.engine.getSystem(MapInteractionSystem.class).resetHeroPath(selectedHeroData);
+                game.engine.getSystem(MapInteractionSystem.class).resetHeroPath(selectedHeroData, true);
 
                 console.log("Selected Hero id: "+ selectedHeroData.id +" movement points set to " + value + ".");
             }
@@ -196,7 +196,6 @@ public class GameMapScreen extends GameScreen {
 
     @Override
     public void dispose() {
-        super.dispose();
         map.dispose();
         game.engine.removeEntity(gameMapEntity);
         console.dispose();

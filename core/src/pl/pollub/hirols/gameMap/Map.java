@@ -14,6 +14,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Pools;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,13 +114,16 @@ public class Map {
             Object typ = object.getProperties().get("type");
             if(typ != null) {
                 String type = typ.toString();
-                Vector2 position = new Vector2(Float.parseFloat(object.getProperties().get("x").toString()), Float.parseFloat(object.getProperties().get("y").toString()));
+                Vector2 position = Pools.obtain(Vector2.class);
+                position.set(Float.parseFloat(object.getProperties().get("x").toString()), Float.parseFloat(object.getProperties().get("y").toString()));
+                //TODO probably dividing bug
                 int x = ((int) position.x)/tileWidth;
                 int y = ((int) position.y)/tileHeight;
                 boolean walkable = false;
                 if(type.equals("castle")) {
                     float enterPositionX = position.x;
                     float enterPositionY = position.y;
+                    Vector2 enterPosition = Pools.obtain(Vector2.class);
                     if(object.getProperties().containsKey("isEnter")) {
                         walkable = Boolean.valueOf(object.getProperties().get("isEnter").toString());
                         boolean isEnter = walkable;
@@ -127,16 +131,17 @@ public class Map {
                             enterPositionX = Float.parseFloat(object.getProperties().get("EnterX").toString());
                             enterPositionY = mapRect.getHeight() - tileHeight - Float.parseFloat(object.getProperties().get("EnterY").toString());
                         }
-                        Gdx.app.log("Castle Object", objectName + " " +position.toString() + " Enter: "+isEnter +new Vector2(enterPositionX,enterPositionY).toString());
+                        Gdx.app.log("Castle Object", objectName + " " +position.toString() + " Enter: "+isEnter +enterPosition.set(enterPositionX,enterPositionY).toString());
                     } else {
                         Gdx.app.log("Castle Object", objectName + " " +position.toString() + " has no enter");
                     }
                     Entity base = entityMap[x][y];
                     base
-                            .add(new TownComponent(new Vector2(enterPositionX,enterPositionY)));
+                            .add(new TownComponent(enterPosition.set(enterPositionX,enterPositionY)));
                     //mapComponentMapper.get(base).walkable = walkable;
                     //graph.updateConnectionsToNode(new Vector2(position.x,position.y),walkable);
                     game.engine.addEntity(base);
+                    Pools.free(enterPosition);
                 } else if(type.equals("resources")) {
                     Gdx.app.log("Resource Object", objectName + " " + position.toString());
                     Entity resource = entityMap[x][y];
@@ -144,18 +149,20 @@ public class Map {
                             .add(new ResourceComponent(pl.pollub.hirols.managers.enums.Resource.fromString(objectName), random.nextInt(7) + 1))
                             .add(new TextureComponent(game.assetManager.get("gold.png", Texture.class)))
                             .add(new RenderableComponent());
-                    mapComponentMapper.get(resource).walkable = walkable;
-                    graph.updateConnectionsToNode(new Vector2(position.x,position.y),walkable);
+                    mapComponentMapper.get(resource).walkable = false;
+
+                    graph.updateConnectionsToNode(position,false);
                     game.engine.addEntity(resource);
                 } else if(type.equals("mine")) {
                     Gdx.app.log("Mine Object", objectName + " " + position.toString());
                     Entity mine = entityMap[x][y];
                     mine
                             .add(new MineComponent());
-                    mapComponentMapper.get(mine).walkable = walkable;
-                    graph.updateConnectionsToNode(new Vector2(position.x,position.y),walkable);
+                    mapComponentMapper.get(mine).walkable = false;
+                    graph.updateConnectionsToNode(position,false);
                     game.engine.addEntity(mine);
                 }
+                Pools.free(position);
             }
         }
     }

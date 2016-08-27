@@ -8,7 +8,7 @@ import pl.pollub.hirols.systems.generalSystems.GeneralEntitySystem;
 /**
  * Created by erykp_000 on 2016-08-25.
  */
-public class HudRenderSystem extends GeneralEntitySystem {
+public abstract class HudRenderSystem extends GeneralEntitySystem {
 
     private Hud hud;
 

@@ -42,7 +42,7 @@ public class PathEntityRemovalSystem extends GameMapEntitySystem {
             HeroDataComponent heroData = heroDataMap.get(hero);
             PositionComponent heroPosition = posMap.get(hero);
             if (heroData.heroPath.hasWalkNodes()) {
-                Vector3 node = heroData.heroPath.getWalkNodesPosition().get(0);
+                Vector3 node = heroData.heroPath.getWalk().getFirstElement();
                 if (heroPosition.x == node.x && heroPosition.y == node.y) {
                     for (Entity pathEntity : selectedHeroPathEntities) {
                         PositionComponent positionPathEntity = posMap.get(pathEntity);
@@ -52,7 +52,7 @@ public class PathEntityRemovalSystem extends GameMapEntitySystem {
                         }
                     }
                     heroData.movementPoints -= node.z;
-                    heroData.heroPath.getWalkNodesPosition().remove(0);
+                    heroData.heroPath.getWalk().removeFirstElement();
                 }
             }
         }

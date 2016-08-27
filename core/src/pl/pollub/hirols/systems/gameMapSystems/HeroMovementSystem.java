@@ -46,8 +46,8 @@ public class HeroMovementSystem extends GameMapEntitySystem {
             VelocityComponent velocity = velMap.get(hero);
 
             if (heroData.heroPath.hasWalkNodes()) {
-                if(heroData.movementPoints - heroData.heroPath.getWalkNodesPosition().get(0).z >= 0)
-                handleMovementForPosition(heroData.heroPath.getWalkNodesPosition().get(0), heroPosition, velocity, deltaTime, gameMapData.gameMapCam);
+                if(heroData.movementPoints - heroData.heroPath.getWalk().getFirstElement().z >= 0)
+                handleMovementForPosition(heroData.heroPath.getWalk().getFirstElement(), heroPosition, velocity, deltaTime, gameMapData.gameMapCam);
                 else {
                     heroData.heroPath.stopFollowing(true);
                 }

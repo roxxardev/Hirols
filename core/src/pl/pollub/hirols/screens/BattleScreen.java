@@ -182,7 +182,6 @@ public class BattleScreen extends GameScreen {
 
     @Override
     public void dispose() {
-        super.dispose();
         ImmutableArray<Entity> battleEntities = game.engine.getEntitiesFor(Family.all(battleComponent.getClass()).get());
         for(Entity entity : battleEntities) {
             game.engine.removeEntity(entity);

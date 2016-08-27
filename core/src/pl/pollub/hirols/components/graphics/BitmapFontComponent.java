@@ -5,11 +5,12 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Colors;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.utils.Pool;
 
 /**
  * Created by Eryk on 2015-12-02.
  */
-public class BitmapFontComponent implements Component {
+public class BitmapFontComponent implements Component, Pool.Poolable {
     public BitmapFont bitmapFont;
     public CharSequence sequence;
     public float scale;
@@ -27,5 +28,13 @@ public class BitmapFontComponent implements Component {
         this.sequence = sequence;
         color = bitmapFont.getColor();
         scale = 1;
+    }
+
+    @Override
+    public void reset() {
+        bitmapFont = null;
+        sequence = null;
+        scale = 0f;
+        color.set(Color.CLEAR);
     }
 }

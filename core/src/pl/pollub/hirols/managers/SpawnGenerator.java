@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Pools;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,8 +53,9 @@ public class SpawnGenerator {
                 game.assetManager.get("animations/standing_mech.png", Texture.class), 13, 8, 0.06f));
 
         for (int i = 0; i < 50; i++) {
+            Vector2 position = Pools.obtain(Vector2.class);
+            generateRandomPositionOnMap(position,map);
 
-            Vector2 position = generateRandomPositionOnMap(map, mapMapper);
             int indexX = (int)Math.floor(position.x / map.getTileWidth());
             int indexY = (int)Math.floor(position.y / map.getTileHeight());
 
@@ -78,6 +80,7 @@ public class SpawnGenerator {
                     map.updateGraphConnectionsToNode(posMap.get(entity).x,posMap.get(entity).y,false);
                 }
             }
+            Pools.free(position);
         }
 
         Entity testText = new Entity();
@@ -104,6 +107,7 @@ public class SpawnGenerator {
                 .add(new PlayerComponent());
         engine.addEntity(player);
 
+        Vector2 firstHeroPos = Pools.obtain(Vector2.class);
         engine.addEntity(new Entity()
                 .add(new PositionComponent(1728, 1728))
                 .add(map.getGameMapComponent())
@@ -111,25 +115,29 @@ public class SpawnGenerator {
                 .add(new TextureComponent(84, 102))
                 .add(new RenderableComponent())
                 .add(new HeroDataComponent(++playerId, "Cwel", 10.f,new Sprite(game.assetManager.get("temp/portrait.png", Texture.class))))
-                .add(new VelocityComponent(new Vector2(0, 0)))
+                .add(new VelocityComponent())
                 .add(new PlayerComponent()));
                 //.add(new SelectedHeroComponent()));
+        Pools.free(firstHeroPos);
         for (int i = 0; i < 10; i++) {
+            Vector2 heroPosition = Pools.obtain(Vector2.class);
             Entity hero = new Entity();
             hero
                     .add(map.getGameMapComponent())
                     .add(new AnimationComponent(new AnimationSet(AnimationType.stand, Direction.getRandomDirection(), animationMap), true))
-                    .add(new PositionComponent(generateRandomPositionOnMap(map,mapMapper)))
+                    .add(new PositionComponent(generateRandomPositionOnMap(heroPosition,map)))
                     .add(new RenderableComponent())
                     .add(new TextureComponent(84, 102))
                     .add(new HeroDataComponent(++playerId,"nołnejm", 13f, new Sprite(game.assetManager.get("temp/portrait.png", Texture.class))))
-                    .add(new VelocityComponent(new Vector2(0, 0)))
+                    .add(new VelocityComponent())
                     .add(new PlayerComponent());
             engine.addEntity(hero);
+            Pools.free(heroPosition);
         }
     }
 
-    private static Vector2 generateRandomPositionOnMap(pl.pollub.hirols.gameMap.Map map, ComponentMapper<MapComponent> mapMapper) {
+    private static Vector2 generateRandomPositionOnMap(Vector2 position, pl.pollub.hirols.gameMap.Map map) {
+        ComponentMapper<MapComponent> mapMapper = ComponentMapper.getFor(MapComponent.class);
         int x;
         int y;
         Random rand = new Random();
@@ -139,7 +147,7 @@ public class SpawnGenerator {
 
         } while (!mapMapper.get(map.getEntity(x,y)).walkable);
 
-        return new Vector2(x*map.getTileWidth(),y*map.getTileHeight());
+        return position.set(x*map.getTileWidth(),y*map.getTileHeight());
     }
 
 

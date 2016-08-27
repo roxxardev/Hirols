@@ -3,6 +3,7 @@ package pl.pollub.hirols.screens;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.utils.Disposable;
 
 import java.util.ArrayList;
 
@@ -11,7 +12,7 @@ import pl.pollub.hirols.Hirols;
 /**
  * Created by Eryk on 2016-05-03.
  */
-public abstract class GameScreen implements Screen {
+public abstract class GameScreen implements Screen, Disposable {
 
     protected final Hirols game;
 
@@ -50,10 +51,6 @@ public abstract class GameScreen implements Screen {
     @Override
     public void hide() {
         setSystemsProcessing(false);
-        removeSystemsFromEngine();
-    }
-
-    public void dispose() {
         removeSystemsFromEngine();
     }
 

@@ -207,7 +207,7 @@ public class MapInteractionSystem extends GameMapEntitySystem {
                     gameMap.updateGraphConnectionsToNode(posMap.get(adjacentEntity).x,posMap.get(adjacentEntity).y,walkable);
             }
         }
-        gameMap.updateGraphConnectionsToNode(enemyComponent.enemyTargetPositionX,enemyComponent.enemyTargetPositionY,walkable);
+        gameMap.updateGraphConnectionsToNode(enemyComponent.enemyPosition.x, enemyComponent.enemyPosition.y,walkable);
     }
 
     private void handleNonWalkableForSelectedHero(Entity selectedHero, int mapIndexX, int mapIndexY) {
@@ -358,7 +358,7 @@ public class MapInteractionSystem extends GameMapEntitySystem {
         updateGraphConnectionsForEnemy(gameMap,mapEntity,enemyComponent,true);
         if (findPath(startNodePos, endNodePos, gameMap,heroData, lastPathTexture)) {
             success = true;
-            heroData.heroPath.getStandNodesPosition().remove(heroData.heroPath.getStandNodesPosition().size() - 1);
+            heroData.heroPath.getStand().removeLastElement();
             heroData.heroPath.setTargetEntity(mapEntity);
         }
         updateGraphConnectionsForEnemy(gameMap,mapEntity,enemyComponent,false);
@@ -370,15 +370,15 @@ public class MapInteractionSystem extends GameMapEntitySystem {
         gameMap.updateGraphConnectionsToNode(endNodePos.x, endNodePos.y, true);
         if (findPath(startNodePos, endNodePos, gameMap, heroData, lastPathTexture)) {
             success = true;
-            if(!targetEnter) heroData.heroPath.getStandNodesPosition().remove(heroData.heroPath.getStandNodesPosition().size() - 1);
+            if(!targetEnter) heroData.heroPath.getStand().removeLastElement();
             heroData.heroPath.setTargetEntity(mapEntity);
         }
         gameMap.updateGraphConnectionsToNode(endNodePos.x, endNodePos.y, false);
         return success;
     }
 
-    public void resetHeroPath(HeroDataComponent heroData) {
-        heroData.heroPath.reset();
+    public void resetHeroPath(HeroDataComponent heroData, boolean resetNodePath) {
+        heroData.heroPath.reset(resetNodePath);
         ArrayList<Entity> pathEntitiesSnapshot = EngineTools.getArraySnapshot(pathEntities);
         for(Entity pathEntity : pathEntitiesSnapshot) {
             if(pathMap.get(pathEntity).heroId == heroData.id) {
@@ -393,7 +393,7 @@ public class MapInteractionSystem extends GameMapEntitySystem {
         gameMap.findPath(startNodePos,endNodePos,heroData.heroPath.getPath());
         if(heroData.heroPath.getPathSize() < 1)  return false;
 
-        resetHeroPath(heroData);
+        resetHeroPath(heroData, false);
 
         if (heroData.heroPath.getPathSize() > 1) {
             float heroMovementPoints = heroData.movementPoints;
@@ -442,7 +442,7 @@ public class MapInteractionSystem extends GameMapEntitySystem {
                     temp.setColor(Color.RED);
                 }
 
-                heroData.heroPath.getStandNodesPosition().add(new Vector3(nodeX * gameMap.getTileWidth(), nodeY * gameMap.getTileHeight(), movementCost));
+                heroData.heroPath.getStand().addElement(nodeX * gameMap.getTileWidth(), nodeY * gameMap.getTileHeight(), movementCost);
                 Entity entity = new Entity();
 
                 entity

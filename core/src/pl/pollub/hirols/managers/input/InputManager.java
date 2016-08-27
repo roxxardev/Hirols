@@ -13,7 +13,7 @@ public class InputManager {
 
     Character lastChar;
 
-    Vector2 mouseCoords = new Vector2(0,0);
+    Vector2 mouseCoords = new Vector2();
     Vector2 mouseCoordsYUP = new Vector2();
 
     boolean pan = false;

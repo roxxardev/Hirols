@@ -100,7 +100,7 @@ public class EndNodeInteractionSystem extends GameMapEntitySystem {
                         .add(new TransparencyComponent(1))
                         .add(new RenderableComponent())
                         .add(new PositionComponent(resourcePosition.x,resourcePosition.y))
-                        .add(new VelocityComponent(new Vector2()))
+                        .add(new VelocityComponent())
                         .add(gameMapData.map.getGameMapComponent()));
                 getEngine().removeEntity(pathEntity);
                 selectedHeroData.heroPath.resetTargetPosition();
