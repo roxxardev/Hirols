@@ -94,13 +94,13 @@ public class EndNodeInteractionSystem extends GameMapEntitySystem {
                 PositionComponent resourcePosition = posMap.get(targetEntity);
                 gameMapData.map.updateGraphConnectionsToNode(resourcePosition.x,resourcePosition.y,true);
                 BitmapFont bitmapFont = game.assetManager.get("testFontSize32.ttf", BitmapFont.class);
-                getEngine().addEntity(new Entity()
-                        .add(new LifePeriodComponent(3000))
-                        .add(new BitmapFontComponent(new BitmapFont(bitmapFont.getData(), bitmapFont.getRegion(), bitmapFont.usesIntegerPositions()), resourceText))
-                        .add(new TransparencyComponent(1))
-                        .add(new RenderableComponent())
-                        .add(new PositionComponent(resourcePosition.x,resourcePosition.y))
-                        .add(new VelocityComponent())
+                getEngine().addEntity(game.engine.createEntity()
+                        .add(game.engine.createComponent(LifePeriodComponent.class).init(3000))
+                        .add(game.engine.createComponent(BitmapFontComponent.class).init(new BitmapFont(bitmapFont.getData(), bitmapFont.getRegion(), bitmapFont.usesIntegerPositions()), resourceText))
+                        .add(game.engine.createComponent(TransparencyComponent.class).init(1))
+                        .add(game.engine.createComponent(RenderableComponent.class))
+                        .add(game.engine.createComponent(PositionComponent.class).init(resourcePosition.x,resourcePosition.y))
+                        .add(game.engine.createComponent(VelocityComponent.class))
                         .add(gameMapData.map.getGameMapComponent()));
                 getEngine().removeEntity(pathEntity);
                 selectedHeroData.heroPath.resetTargetPosition();

@@ -71,7 +71,7 @@ public class BattleScreen extends GameScreen {
         int mapWidth = 12, mapHeight = 7;
         hexagonMapPolygon = new HexagonMapPolygon(mapWidth,mapHeight,0,new Vector2(200f,100f));
         hexagonMapPolygon.setBackgroundSprite(new Sprite(game.assetManager.get("battleBackground.png", Texture.class)));
-        battleEntity = new Entity()
+        battleEntity = game.engine.createEntity()
                 .add(battleComponent)
                 .add(new BattleDataComponent(battleCam,inputManager,hexagonMapPolygon));
         game.engine.addEntity(battleEntity);

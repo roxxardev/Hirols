@@ -12,7 +12,10 @@ import com.badlogic.gdx.utils.Pool;
  */
 public class TextureComponent implements Component, Pool.Poolable {
     public Sprite sprite;
-    public Vector2 additionalOffset = new Vector2();
+    public final Vector2 additionalOffset = new Vector2();
+
+    public TextureComponent() {
+    }
 
     public TextureComponent(float sizeX, float sizeY, float additionalOffsetX, float additionalOffsetY){
         this.sprite = new Sprite();
@@ -27,12 +30,29 @@ public class TextureComponent implements Component, Pool.Poolable {
     public TextureComponent(Texture texture) {
         this.sprite = new Sprite(texture);
     }
+
     public TextureComponent(Sprite sprite) {
         this.sprite = sprite;
     }
 
+    public TextureComponent setSize(float sizeX, float sizeY) {
+        sprite.setSize(sizeX,sizeY);
+        return this;
+    }
+
+    public TextureComponent setAdditionalSize(float additionalOffsetX, float additionalOffsetY) {
+        additionalOffset.set(additionalOffsetX,additionalOffsetY);
+        return this;
+    }
+
+    public TextureComponent setSprite(Sprite sprite) {
+        this.sprite = sprite;
+        return this;
+    }
+
     @Override
     public void reset() {
+        additionalOffset.set(0,0);
         sprite = null;
     }
 }

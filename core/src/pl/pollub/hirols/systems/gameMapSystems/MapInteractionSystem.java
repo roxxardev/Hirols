@@ -321,6 +321,9 @@ public class MapInteractionSystem extends GameMapEntitySystem {
     }
 
     public void deselectHero() {
+        if(selectedHeroes.size() == 0) return;
+        if(heroDataMap.get(selectedHeroes.first()).heroPath.hasWalkNodes()) return;
+
         //TODO deselect everything that belongs to selected hero
         ArrayList<Entity> selectedHeroPathEntitiesSnapshot = EngineTools.getArraySnapshot(selectedHeroPathEntities);
         for(Entity entity : selectedHeroPathEntitiesSnapshot) {
@@ -444,15 +447,15 @@ public class MapInteractionSystem extends GameMapEntitySystem {
                 }
 
                 heroData.heroPath.getStand().addElement(nodeX * gameMap.getTileWidth(), nodeY * gameMap.getTileHeight(), movementCost);
-                Entity entity = new Entity();
+                Entity entity = game.engine.createEntity();
 
                 entity
-                        .add(new PositionComponent(nodeX * gameMap.getTileWidth(), nodeY * gameMap.getTileHeight()))
-                        .add(new RenderableComponent())
-                        .add(new TextureComponent(temp))
+                        .add(game.engine.createComponent(PositionComponent.class).init(nodeX * gameMap.getTileWidth(), nodeY * gameMap.getTileHeight()))
+                        .add(game.engine.createComponent(RenderableComponent.class))
+                        .add(game.engine.createComponent(TextureComponent.class).setSprite(temp))
                         .add(gameMap.getGameMapComponent())
-                        .add(new PathComponent(heroData.id))
-                        .add(new SelectedHeroComponent());
+                        .add(game.engine.createComponent(PathComponent.class).init(heroData.id))
+                        .add(game.engine.createComponent(SelectedHeroComponent.class));
 
                 if (i == (heroData.heroPath.getPathSize() - 1)) {
                     temp.setTexture(lastPathTexture);

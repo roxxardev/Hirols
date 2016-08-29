@@ -100,7 +100,7 @@ public class GameMapScreen extends GameScreen {
                 selectedHeroData.movementPoints = value;
                 game.engine.getSystem(MapInteractionSystem.class).resetHeroPath(selectedHeroData, true);
 
-                console.log("Selected Hero id: "+ selectedHeroData.id +" movement points set to " + value + ".");
+                console.log("Selected Hero id: "+ selectedHeroData.id +" movement points init to " + value + ".");
             }
 
             public void recalculatePath() {
@@ -118,7 +118,7 @@ public class GameMapScreen extends GameScreen {
         createSystems();
 
 
-        gameMapEntity = new Entity()
+        gameMapEntity = game.engine.createEntity()
                         .add(map.getGameMapComponent())
                         .add(new GameMapDataComponent(map,gameMapCam,game.batch,inputManager, hud));
         game.engine.addEntity(gameMapEntity);

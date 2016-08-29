@@ -80,20 +80,20 @@ public class Map {
         for(int i=0; i<tileGroundLayer.getWidth();i++) {
             for(int j=0; j<tileGroundLayer.getHeight();j++) {
                 TiledMapTileLayer.Cell cell = tileGroundLayer.getCell(i, j);
-                Entity entity;
+                Entity entity = game.engine.createEntity();
                 if(cell!=null){
                     TiledMapTile tile = cell.getTile();
                     Object walkable = tile.getProperties().get("walkable");
                     if(walkable!=null) {
                         //Gdx.app.log("Tile", i+" "+j +" "+ walkable.toString());
-                        entity = new Entity().add(new MapComponent(Boolean.parseBoolean(walkable.toString()))).add(new PositionComponent(i*tileWidth,j*tileHeight));
+                        entity.add(new MapComponent(Boolean.parseBoolean(walkable.toString()))).add(new PositionComponent(i*tileWidth,j*tileHeight));
                         //game.engine.addEntity(entity);
                     } else {
                         //Gdx.app.log("Tile", i + " " + j + " no properties walkable");
-                        entity = new Entity().add(new MapComponent(false)).add(new PositionComponent(i*tileWidth,j*tileHeight));
+                        entity.add(new MapComponent(false)).add(new PositionComponent(i*tileWidth,j*tileHeight));
                     }
                 } else {
-                    entity = new Entity().add(new MapComponent(false)).add(new PositionComponent(i*tileWidth,j*tileHeight));
+                    entity.add(new MapComponent(false)).add(new PositionComponent(i*tileWidth,j*tileHeight));
                 }
                 entity.add(gameMapComponent);
                 entityMap[i][j] = entity;

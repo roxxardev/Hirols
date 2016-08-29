@@ -83,7 +83,7 @@ public class SpawnGenerator {
             Pools.free(position);
         }
 
-        Entity testText = new Entity();
+        Entity testText = game.engine.createEntity();
 
         testText.add(new PositionComponent(50, 50))
                 .add(map.getGameMapComponent())
@@ -100,7 +100,7 @@ public class SpawnGenerator {
 
     private static void spawnPlayers(Engine engine, Map<AnimationType, Map<Direction, Animation>> animationMap, pl.pollub.hirols.gameMap.Map map, ComponentMapper<MapComponent> mapMapper, Hirols game) {
         int playerId = -1;
-        Entity player = new Entity();
+        Entity player = game.engine.createEntity();
         player
                 .add(map.getGameMapComponent())
                 .add(new PlayerDataComponent())
@@ -108,7 +108,7 @@ public class SpawnGenerator {
         engine.addEntity(player);
 
         Vector2 firstHeroPos = Pools.obtain(Vector2.class);
-        engine.addEntity(new Entity()
+        engine.addEntity(game.engine.createEntity()
                 .add(new PositionComponent(1728, 1728))
                 .add(map.getGameMapComponent())
                 .add(new AnimationComponent(new AnimationSet(AnimationType.stand, Direction.getRandomDirection(), animationMap), true))
@@ -121,7 +121,7 @@ public class SpawnGenerator {
         Pools.free(firstHeroPos);
         for (int i = 0; i < 10; i++) {
             Vector2 heroPosition = Pools.obtain(Vector2.class);
-            Entity hero = new Entity();
+            Entity hero = game.engine.createEntity();
             hero
                     .add(map.getGameMapComponent())
                     .add(new AnimationComponent(new AnimationSet(AnimationType.stand, Direction.getRandomDirection(), animationMap), true))

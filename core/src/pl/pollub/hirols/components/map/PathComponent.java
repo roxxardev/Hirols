@@ -9,8 +9,17 @@ import com.badlogic.gdx.utils.Pool;
 public class PathComponent implements Component, Pool.Poolable{
     public int heroId = -1;
 
+    public PathComponent() {
+
+    }
+
     public PathComponent(int heroId) {
         this.heroId = heroId;
+    }
+
+    public PathComponent init(int heroId) {
+        this.heroId = heroId;
+        return this;
     }
 
     @Override

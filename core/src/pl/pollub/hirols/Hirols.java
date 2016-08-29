@@ -1,6 +1,6 @@
 package pl.pollub.hirols;
 
-import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
@@ -15,7 +15,7 @@ import pl.pollub.hirols.screens.LoadingScreen;
 public class Hirols extends Game {
 
 	public SpriteBatch batch;
-	public Engine engine;
+	public PooledEngine engine;
 	public AssetManager assetManager;
 	public SoundManager soundManager;
     public HudManager hudManager;
@@ -26,7 +26,7 @@ public class Hirols extends Game {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-        engine = new Engine();
+        engine = new PooledEngine(100,1000,100,1000);
 		assetManager = new AssetManager();
 		soundManager = new SoundManager(assetManager);
 		gameMapManager = new GameMapManager(this);

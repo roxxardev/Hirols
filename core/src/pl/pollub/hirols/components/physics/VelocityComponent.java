@@ -13,8 +13,14 @@ public class VelocityComponent implements Component, Pool.Poolable {
     public VelocityComponent(Vector2 velocity) {
         this.velocity.set(velocity);
     }
+
     public VelocityComponent() {
 
+    }
+
+    public VelocityComponent init(Vector2 velocity) {
+        this.velocity.set(velocity);
+        return this;
     }
 
     @Override

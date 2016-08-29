@@ -12,9 +12,11 @@ public class PositionComponent implements Component, Pool.Poolable {
     public float x = 0.0f;
     public float y = 0.0f;
 
+    public PositionComponent() {
+    }
+
     public PositionComponent(float x, float y) {
-        this.y = y;
-        this.x = x;
+        init(x,y);
     }
 
     public PositionComponent(Vector2 position) {
@@ -23,6 +25,12 @@ public class PositionComponent implements Component, Pool.Poolable {
 
     public PositionComponent(Vector3 position) {
         this(position.x,position.y);
+    }
+
+    public PositionComponent init(float x, float y) {
+        this.y = y;
+        this.x = x;
+        return this;
     }
 
     @Override

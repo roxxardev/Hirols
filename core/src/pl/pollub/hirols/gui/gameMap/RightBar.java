@@ -244,7 +244,7 @@ public class RightBar extends Table {
             hero.add(hero.getLabel());
             addActor(hero);
             heroButtonMap.put(heroData.id,hero);
-            //TODO set cell bounds to fit image expanded in Y direction
+            //TODO init cell bounds to fit image expanded in Y direction
         }
 
         public void removeHero(final HeroDataComponent heroData) {

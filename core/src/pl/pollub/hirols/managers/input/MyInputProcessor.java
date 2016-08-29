@@ -37,7 +37,7 @@ public class MyInputProcessor implements InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         Gdx.app.log("INPUT", "InputManager touchDown");
 //        InputManager.setMouseCoords(screenX, screenY);
-//        InputManager.lastTouch.set(screenX,screenY);
+//        InputManager.lastTouch.init(screenX,screenY);
         return true;
     }
 
