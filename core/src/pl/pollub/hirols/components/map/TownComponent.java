@@ -12,8 +12,9 @@ public class TownComponent implements Component, Pool.Poolable {
     public Vector2 enterPosition = new Vector2();
     public String name;
 
-    public TownComponent(Vector2 enterPosition) {
+    public TownComponent init(Vector2 enterPosition) {
         this.enterPosition.set(enterPosition);
+        return this;
     }
 
     @Override

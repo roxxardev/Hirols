@@ -14,14 +14,11 @@ public class AnimationComponent implements Component, Pool.Poolable {
     public float stateTime = 0.0f;
     public boolean looping = false;
 
-    public AnimationComponent(AnimationSet animationSet, boolean looping){
+    public AnimationComponent init(AnimationSet animationSet, boolean looping, Float stateTime) {
         this.animationSet = animationSet;
         this.looping = looping;
-    }
-
-    public AnimationComponent(AnimationSet animationSet, boolean looping, Float stateTime){
-        this(animationSet,looping);
         this.stateTime = stateTime;
+        return this;
     }
 
     @Override

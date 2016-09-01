@@ -13,9 +13,10 @@ public class ResourceComponent implements Component, Pool.Poolable{
     public Resource resourceType;
     public int amount;
 
-    public ResourceComponent(Resource resourceType, int amount) {
+    public ResourceComponent init(Resource resourceType, int amount) {
         this.resourceType = resourceType;
         this.amount = amount;
+        return this;
     }
 
     @Override

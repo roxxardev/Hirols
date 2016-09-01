@@ -53,8 +53,6 @@ public class GameMapScreen extends GameScreen {
     private final GestureDetector gestureDetector;
     private final MyInputProcessor myInputProcessor;
 
-
-
     public GameMapScreen(final Hirols game, final Map map, OrthographicCamera gameMapCam, Viewport gameMapPort) {
         super(game);
         this.gameMapCam = gameMapCam;
@@ -69,49 +67,7 @@ public class GameMapScreen extends GameScreen {
 
         hud = new GameMapHud(game, this);
 
-        CommandsContainer commandsContainer = new CommandsContainer() {
-            private Hirols hirols;
-            private Map gameMap;
-            {
-                this.hirols = game;
-                this.gameMap = map;
-            }
-
-            @Override
-            public void exit() {
-                Gdx.app.exit();
-            }
-
-            @Override
-            public void showCommands() {
-                console.showCommands();
-            }
-
-            @Override
-            public void clear() {
-                console.clear();
-            }
-
-            public void quit() { Gdx.app.exit();}
-
-            public void setMovementPoints(float value) {
-                Entity selectedHero = game.engine.getSystem(MapInteractionSystem.class).getSelectedHeroes().first();
-                HeroDataComponent selectedHeroData = ComponentMapper.getFor(HeroDataComponent.class).get(selectedHero);
-                selectedHeroData.movementPoints = value;
-                game.engine.getSystem(MapInteractionSystem.class).resetHeroPath(selectedHeroData, true);
-
-                console.log("Selected Hero id: "+ selectedHeroData.id +" movement points init to " + value + ".");
-            }
-
-            public void recalculatePath() {
-                Entity selectedHero = game.engine.getSystem(MapInteractionSystem.class).getSelectedHeroes().first();
-                HeroDataComponent selectedHeroData = ComponentMapper.getFor(HeroDataComponent.class).get(selectedHero);
-                game.engine.getSystem(MapInteractionSystem.class).recalculatePathForHero(selectedHero);
-
-                console.log("Path recalculated for selected hero id: "+ selectedHeroData.id + ".");
-            }
-        };
-        console = new GraphicalConsole(commandsContainer,
+        console = new GraphicalConsole(new GameMapCommands(),
                 game.assetManager.get("default_skin/uiskin.json", Skin.class),game);
 
 
@@ -141,6 +97,7 @@ public class GameMapScreen extends GameScreen {
         systems.add(new FontsDeathSystem(9,gameMapClass){});
         systems.add(new AnimationSystem(10,gameMapClass){});
         systems.add(new MapCamUpdateSystem(13,gameMapClass));
+
         systems.add(new TiledMapRenderSystem(14, gameMapClass));
 
         systems.add(new RenderSystem(16, game.batch, gameMapClass){});
@@ -161,7 +118,7 @@ public class GameMapScreen extends GameScreen {
         super.resize(width,height);
         hud.resize(width,height);
         gameMapPort.update(width, height);
-        gameMapCam.zoom = 1;
+        //gameMapCam.zoom = 1;
         console.resize(width,height);
     }
 
@@ -204,5 +161,48 @@ public class GameMapScreen extends GameScreen {
 
     public GraphicalConsole getConsole() {
         return console;
+    }
+
+    private class GameMapCommands extends CommandsContainer {
+        private Hirols hirols;
+        private Map gameMap;
+        {
+            this.hirols = game;
+            this.gameMap = map;
+        }
+
+        @Override
+        public void exit() {
+            Gdx.app.exit();
+        }
+
+        @Override
+        public void showCommands() {
+            console.showCommands();
+        }
+
+        @Override
+        public void clear() {
+            console.clear();
+        }
+
+        public void quit() { Gdx.app.exit();}
+
+        public void setMovementPoints(float value) {
+            Entity selectedHero = game.engine.getSystem(MapInteractionSystem.class).getSelectedHeroes().first();
+            HeroDataComponent selectedHeroData = ComponentMapper.getFor(HeroDataComponent.class).get(selectedHero);
+            selectedHeroData.movementPoints = value;
+            game.engine.getSystem(MapInteractionSystem.class).resetHeroPath(selectedHeroData, true);
+
+            console.log("Selected Hero id: "+ selectedHeroData.id +" movement points set to " + value + ".");
+        }
+
+        public void recalculatePath() {
+            Entity selectedHero = game.engine.getSystem(MapInteractionSystem.class).getSelectedHeroes().first();
+            HeroDataComponent selectedHeroData = ComponentMapper.getFor(HeroDataComponent.class).get(selectedHero);
+            game.engine.getSystem(MapInteractionSystem.class).recalculatePathForHero(selectedHero);
+
+            console.log("Path recalculated for selected hero id: "+ selectedHeroData.id + ".");
+        }
     }
 }

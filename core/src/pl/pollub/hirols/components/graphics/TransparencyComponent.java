@@ -7,14 +7,7 @@ import com.badlogic.gdx.utils.Pool;
  * Created by erykp_000 on 2016-03-08.
  */
 public class TransparencyComponent implements Component, Pool.Poolable {
-   public float transparency = 1;
-
-    public TransparencyComponent() {
-    }
-
-    public TransparencyComponent(float transparency) {
-        this.transparency = transparency;
-    }
+    public float transparency = 1;
 
     public TransparencyComponent init(float transparency) {
         this.transparency = transparency;

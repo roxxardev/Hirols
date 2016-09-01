@@ -18,34 +18,25 @@ import pl.pollub.hirols.pathfinding.NodePath;
  */
 public class HeroDataComponent implements Component, Pool.Poolable{
     public int id = -1;
-    public HeroEntity[] entities = new HeroEntity[5];
     public float movementPoints;
-    public Sprite avatar;
     public String name;
-
+    public Sprite avatar;
     public final HeroPath heroPath = new HeroPath();
 
-    public HeroDataComponent(int id, String name, float movementPoints, Sprite avatar) {
+    public HeroDataComponent init(int id, String name, float movementPoints, Sprite avatar) {
         this.id = id;
         this.movementPoints = movementPoints;
         this.avatar = avatar;
         this.name = name;
+        return this;
     }
 
     @Override
     public void reset() {
         id = -1;
-        for(int i = 0; i < 5; i++) {
-            entities[i] = null;
-        }
         movementPoints = 0;
         avatar = null;
         name = null;
         heroPath.reset(true);
-    }
-
-    private class HeroEntity {
-        int quantity;
-        String name;
     }
 }

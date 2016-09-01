@@ -12,24 +12,15 @@ public class PositionComponent implements Component, Pool.Poolable {
     public float x = 0.0f;
     public float y = 0.0f;
 
-    public PositionComponent() {
-    }
-
-    public PositionComponent(float x, float y) {
-        init(x,y);
-    }
-
-    public PositionComponent(Vector2 position) {
-        this(position.x,position.y);
-    }
-
-    public PositionComponent(Vector3 position) {
-        this(position.x,position.y);
-    }
-
     public PositionComponent init(float x, float y) {
         this.y = y;
         this.x = x;
+        return this;
+    }
+
+    public PositionComponent init(Vector2 vector2) {
+        this.y = vector2.y;
+        this.x = vector2.x;
         return this;
     }
 

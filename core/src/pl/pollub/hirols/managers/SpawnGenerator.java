@@ -27,7 +27,6 @@ import pl.pollub.hirols.components.graphics.TransparencyComponent;
 import pl.pollub.hirols.components.map.EnemyComponent;
 import pl.pollub.hirols.components.map.HeroDataComponent;
 import pl.pollub.hirols.components.map.MapComponent;
-import pl.pollub.hirols.components.map.SelectedHeroComponent;
 import pl.pollub.hirols.components.physics.PositionComponent;
 import pl.pollub.hirols.components.physics.VelocityComponent;
 import pl.pollub.hirols.managers.enums.AnimationType;
@@ -61,11 +60,11 @@ public class SpawnGenerator {
 
             Entity mapEntity = map.getEntity(indexX,indexY);
 
-            mapEntity.add(new AnimationComponent(new AnimationSet(AnimationType.stand, Direction.getRandomDirection(), snakeAnimationMap), true, rand.nextFloat()))
+            mapEntity.add(game.engine.createComponent(AnimationComponent.class).init(new AnimationSet(AnimationType.stand, Direction.getRandomDirection(), snakeAnimationMap), true, rand.nextFloat()))
                     .add(map.getGameMapComponent())
-                    .add(new TextureComponent(128, 128, -16, 0))
-                    .add(new RenderableComponent())
-                    .add(new EnemyComponent(position.x,position.y,i,true));
+                    .add(game.engine.createComponent(TextureComponent.class).setSize(128, 128).setAdditionalOffset(-16, 0))
+                    .add(game.engine.createComponent(RenderableComponent.class))
+                    .add(game.engine.createComponent(EnemyComponent.class).init(position,true));
             game.engine.addEntity(mapEntity);
 
             mapMapper.get(mapEntity).walkable = false;
@@ -75,7 +74,7 @@ public class SpawnGenerator {
 
             for(Entity entity : map.getAdjacentEntities(position.x,position.y)) {
                 if(mapMapper.get(entity).walkable) {
-                    entity.add(new EnemyComponent(position.x,position.y,i,false));
+                    entity.add(game.engine.createComponent(EnemyComponent.class).init(position,false));
                     mapMapper.get(entity).walkable = false;
                     map.updateGraphConnectionsToNode(posMap.get(entity).x,posMap.get(entity).y,false);
                 }
@@ -85,12 +84,12 @@ public class SpawnGenerator {
 
         Entity testText = game.engine.createEntity();
 
-        testText.add(new PositionComponent(50, 50))
+        testText.add(game.engine.createComponent(PositionComponent.class).init(50, 50))
                 .add(map.getGameMapComponent())
-                .add(new BitmapFontComponent(game.assetManager.get("testFontSize32.ttf",BitmapFont.class), "teeest efwkjerurhjkjfiuhrejrfjfkejfr4hfruijrigj5ffjr5678909488"))
-                .add(new RenderableComponent())
-                .add(new TransparencyComponent(1))
-                .add(new LifePeriodComponent(1000));
+                .add(game.engine.createComponent(BitmapFontComponent.class).init(game.assetManager.get("testFontSize32.ttf",BitmapFont.class), "teeest efwkjerurhjkjfiuhrejrfjfkejfr4hfruijrigj5ffjr5678909488"))
+                .add(game.engine.createComponent(RenderableComponent.class))
+                .add(game.engine.createComponent(TransparencyComponent.class).init(1))
+                .add(game.engine.createComponent(LifePeriodComponent.class).init(1000));
         game.engine.addEntity(testText);
 
         spawnPlayers(game.engine, mechAnimationMap,map,mapMapper, game);
@@ -109,13 +108,13 @@ public class SpawnGenerator {
 
         Vector2 firstHeroPos = Pools.obtain(Vector2.class);
         engine.addEntity(game.engine.createEntity()
-                .add(new PositionComponent(1728, 1728))
+                .add(game.engine.createComponent(PositionComponent.class).init(1728, 1728))
                 .add(map.getGameMapComponent())
-                .add(new AnimationComponent(new AnimationSet(AnimationType.stand, Direction.getRandomDirection(), animationMap), true))
-                .add(new TextureComponent(84, 102))
-                .add(new RenderableComponent())
-                .add(new HeroDataComponent(++playerId, "Cwel", 10.f,new Sprite(game.assetManager.get("temp/portrait.png", Texture.class))))
-                .add(new VelocityComponent())
+                .add(game.engine.createComponent(AnimationComponent.class).init(new AnimationSet(AnimationType.stand, Direction.getRandomDirection(), animationMap), true,0f))
+                .add(game.engine.createComponent(TextureComponent.class).setSize(84, 102))
+                .add(game.engine.createComponent(RenderableComponent.class))
+                .add(game.engine.createComponent(HeroDataComponent.class).init(++playerId, "Cwel", 10.f,new Sprite(game.assetManager.get("temp/portrait.png", Texture.class))))
+                .add(game.engine.createComponent(VelocityComponent.class))
                 .add(new PlayerComponent()));
                 //.add(new SelectedHeroComponent()));
         Pools.free(firstHeroPos);
@@ -124,12 +123,12 @@ public class SpawnGenerator {
             Entity hero = game.engine.createEntity();
             hero
                     .add(map.getGameMapComponent())
-                    .add(new AnimationComponent(new AnimationSet(AnimationType.stand, Direction.getRandomDirection(), animationMap), true))
-                    .add(new PositionComponent(generateRandomPositionOnMap(heroPosition,map)))
-                    .add(new RenderableComponent())
-                    .add(new TextureComponent(84, 102))
-                    .add(new HeroDataComponent(++playerId,"nołnejm", 13f, new Sprite(game.assetManager.get("temp/portrait.png", Texture.class))))
-                    .add(new VelocityComponent())
+                    .add(game.engine.createComponent(AnimationComponent.class).init(new AnimationSet(AnimationType.stand, Direction.getRandomDirection(), animationMap), true, 0f))
+                    .add(game.engine.createComponent(PositionComponent.class).init(generateRandomPositionOnMap(heroPosition,map)))
+                    .add(game.engine.createComponent(RenderableComponent.class))
+                    .add(game.engine.createComponent(TextureComponent.class).setSize(84, 102))
+                    .add(game.engine.createComponent(HeroDataComponent.class).init(++playerId,"nołnejm", 13f, new Sprite(game.assetManager.get("temp/portrait.png", Texture.class))))
+                    .add(game.engine.createComponent(VelocityComponent.class))
                     .add(new PlayerComponent());
             engine.addEntity(hero);
             Pools.free(heroPosition);

@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
@@ -86,14 +87,20 @@ public class Map {
                     Object walkable = tile.getProperties().get("walkable");
                     if(walkable!=null) {
                         //Gdx.app.log("Tile", i+" "+j +" "+ walkable.toString());
-                        entity.add(new MapComponent(Boolean.parseBoolean(walkable.toString()))).add(new PositionComponent(i*tileWidth,j*tileHeight));
+                        entity
+                                .add(game.engine.createComponent(MapComponent.class).init(Boolean.parseBoolean(walkable.toString())))
+                                .add(game.engine.createComponent(PositionComponent.class).init(i*tileWidth,j*tileHeight));
                         //game.engine.addEntity(entity);
                     } else {
                         //Gdx.app.log("Tile", i + " " + j + " no properties walkable");
-                        entity.add(new MapComponent(false)).add(new PositionComponent(i*tileWidth,j*tileHeight));
+                        entity
+                                .add(game.engine.createComponent(MapComponent.class).init(false))
+                                .add(game.engine.createComponent(PositionComponent.class).init(i*tileWidth,j*tileHeight));
                     }
                 } else {
-                    entity.add(new MapComponent(false)).add(new PositionComponent(i*tileWidth,j*tileHeight));
+                    entity
+                            .add(game.engine.createComponent(MapComponent.class).init(false))
+                            .add(game.engine.createComponent(PositionComponent.class).init(i*tileWidth,j*tileHeight));
                 }
                 entity.add(gameMapComponent);
                 entityMap[i][j] = entity;
@@ -137,7 +144,7 @@ public class Map {
                     }
                     Entity base = entityMap[x][y];
                     base
-                            .add(new TownComponent(enterPosition.set(enterPositionX,enterPositionY)));
+                            .add(game.engine.createComponent(TownComponent.class).init(enterPosition.set(enterPositionX,enterPositionY)));
                     //mapComponentMapper.get(base).walkable = walkable;
                     //graph.updateConnectionsToNode(new Vector2(position.x,position.y),walkable);
                     game.engine.addEntity(base);
@@ -146,9 +153,9 @@ public class Map {
                     Gdx.app.log("Resource Object", objectName + " " + position.toString());
                     Entity resource = entityMap[x][y];
                     resource
-                            .add(new ResourceComponent(pl.pollub.hirols.managers.enums.Resource.fromString(objectName), random.nextInt(7) + 1))
-                            .add(new TextureComponent(game.assetManager.get("gold.png", Texture.class)))
-                            .add(new RenderableComponent());
+                            .add(game.engine.createComponent(ResourceComponent.class).init(pl.pollub.hirols.managers.enums.Resource.fromString(objectName), random.nextInt(7) + 1))
+                            .add(game.engine.createComponent(TextureComponent.class).setSprite(new Sprite(game.assetManager.get("gold.png", Texture.class))))
+                            .add(game.engine.createComponent(RenderableComponent.class));
                     mapComponentMapper.get(resource).walkable = false;
 
                     graph.updateConnectionsToNode(position,false);
@@ -157,7 +164,7 @@ public class Map {
                     Gdx.app.log("Mine Object", objectName + " " + position.toString());
                     Entity mine = entityMap[x][y];
                     mine
-                            .add(new MineComponent());
+                            .add(game.engine.createComponent(MineComponent.class));
                     mapComponentMapper.get(mine).walkable = false;
                     graph.updateConnectionsToNode(position,false);
                     game.engine.addEntity(mine);

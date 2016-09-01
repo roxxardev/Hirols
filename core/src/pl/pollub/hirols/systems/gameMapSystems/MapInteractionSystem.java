@@ -205,7 +205,7 @@ public class MapInteractionSystem extends GameMapEntitySystem {
         PositionComponent enemyPosition = posMap.get(mapEntity);
         for(Entity adjacentEntity : gameMap.getAdjacentEntities(enemyPosition.x,enemyPosition.y)) {
             if(enemyMap.has(adjacentEntity)) {
-                if(enemyMap.get(adjacentEntity).id == enemyMap.get(mapEntity).id)
+                if(enemyMap.get(adjacentEntity).enemyPosition.equals(enemyMap.get(mapEntity).enemyPosition))
                     gameMap.updateGraphConnectionsToNode(posMap.get(adjacentEntity).x,posMap.get(adjacentEntity).y,walkable);
             }
         }
@@ -225,16 +225,16 @@ public class MapInteractionSystem extends GameMapEntitySystem {
         if (enemyMap.has(mapEntity)) {
             EnemyComponent enemyComponent = enemyMap.get(mapEntity);
             if (enemyComponent.trueEntity) {
-                Gdx.app.log("MapInteractionSystem", "Tap on enemy id: " + enemyComponent.id);
+                Gdx.app.log("MapInteractionSystem", "Tap on enemy");
                 if(findPathToEnemy(pathStartPosition.set(selectedHeroPosition.x,selectedHeroPosition.y), mouseWorldPosition, gameMap, selectedHeroData, mapEntity, swordPathTexture, enemyComponent)) {
                     Gdx.app.log("MapInteractionSystem", "Path created for hero id: "
-                            + selectedHeroData.id + " Length: " + selectedHeroData.heroPath.getPathSize() + " to enemy id: " + enemyComponent.id);
+                            + selectedHeroData.id + " Length: " + selectedHeroData.heroPath.getPathSize() + " to enemy");
                 }
             } else {
-                Gdx.app.log("MapInteractionSystem", "Tap nearby enemy id: " + enemyComponent.id);
+                Gdx.app.log("MapInteractionSystem", "Tap nearby enemy");
                 if(findPathNonWalkable(pathStartPosition.set(selectedHeroPosition.x, selectedHeroPosition.y), mouseWorldPosition, gameMap, selectedHeroData, mapEntity, swordPathTexture, false)) {
                     Gdx.app.log("MapInteractionSystem", "Path created for hero id: "
-                            + selectedHeroData.id + " Length: " + selectedHeroData.heroPath.getPathSize() + " nearby enemy id: " + enemyComponent.id);
+                            + selectedHeroData.id + " Length: " + selectedHeroData.heroPath.getPathSize() + " nearby enemy");
                 }
             }
         } else if (townMap.has(mapEntity)) {

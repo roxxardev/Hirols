@@ -11,13 +11,6 @@ public class LifePeriodComponent implements Component, Pool.Poolable {
     public long deathTime;
     public long duration;
 
-    public LifePeriodComponent() {
-    }
-
-    public LifePeriodComponent(long milliseconds) {
-        init(milliseconds);
-    }
-
     public LifePeriodComponent init(long milliseconds) {
         this.createTime = System.currentTimeMillis();
         this.duration = milliseconds;

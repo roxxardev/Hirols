@@ -10,14 +10,6 @@ import com.badlogic.gdx.utils.Pool;
 public class VelocityComponent implements Component, Pool.Poolable {
     public Vector2 velocity = new Vector2();
 
-    public VelocityComponent(Vector2 velocity) {
-        this.velocity.set(velocity);
-    }
-
-    public VelocityComponent() {
-
-    }
-
     public VelocityComponent init(Vector2 velocity) {
         this.velocity.set(velocity);
         return this;

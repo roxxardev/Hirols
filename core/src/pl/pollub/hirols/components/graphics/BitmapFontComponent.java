@@ -16,19 +16,6 @@ public class BitmapFontComponent implements Component, Pool.Poolable {
     public float scale;
     public Color color;
 
-    public BitmapFontComponent() {
-    }
-
-    public BitmapFontComponent(BitmapFont bitmapFont, CharSequence sequence, Color color, float scale) {
-        init(bitmapFont,sequence);
-        this.scale = scale;
-        this.color = color;
-    }
-
-    public BitmapFontComponent(BitmapFont bitmapFont, CharSequence sequence) {
-        init(bitmapFont,sequence);
-    }
-
     public BitmapFontComponent init(BitmapFont bitmapFont, CharSequence sequence) {
         this.bitmapFont = bitmapFont;
         this.sequence = sequence;

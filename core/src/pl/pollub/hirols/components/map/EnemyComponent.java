@@ -10,21 +10,17 @@ import com.badlogic.gdx.utils.Pool;
 public class EnemyComponent implements Component, Pool.Poolable {
 
     public final Vector2 enemyPosition = new Vector2();
-    public int id = -1;
     public boolean trueEntity;
-    public String enemyName;
 
-    public EnemyComponent(float enemyTargetPositionX, float enemyTargetPositionY, int id, boolean trueEntity) {
-        this.enemyPosition.set(enemyTargetPositionX,enemyTargetPositionY);
-        this.id = id;
+    public EnemyComponent init(Vector2 enemyTargetPosition, boolean trueEntity) {
+        this.enemyPosition.set(enemyTargetPosition);
         this.trueEntity = trueEntity;
+        return this;
     }
 
     @Override
     public void reset() {
         enemyPosition.set(0,0);
-        id = -1;
         trueEntity = false;
-        enemyName = null;
     }
 }
