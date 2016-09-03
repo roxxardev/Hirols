@@ -173,13 +173,15 @@ public class MapInteractionSystem extends GameMapEntitySystem {
         searchNewPathInsideMap(selectedHero,mapIndexX,mapIndexY);
     }
 
-    public void recalculatePathForHero(Entity hero) {
+    public boolean recalculatePathForHero(Entity hero) {
         GameMapDataComponent gameMapData = gameMapDataMapper.get(gameMapDataArray.first());
         Map gameMap = gameMapData.map;
         HeroDataComponent heroData = heroDataMap.get(hero);
         int mapIndexX = (int)Math.floor(heroData.heroPath.getTargetPosition().x / gameMap.getTileWidth());
         int mapIndexY = (int)Math.floor(heroData.heroPath.getTargetPosition().y / gameMap.getTileHeight());
+        if(mapIndexX == 0f && mapIndexY == 0f) return false;
         searchNewPathInsideMap(hero,mapIndexX,mapIndexY);
+        return true;
     }
 
     public void searchNewPathInsideMap(Entity selectedHero, int mapIndexX, int mapIndexY) {

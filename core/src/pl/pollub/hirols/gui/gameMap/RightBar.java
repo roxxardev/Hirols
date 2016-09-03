@@ -13,9 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -28,7 +26,6 @@ import com.kotcrab.vis.ui.widget.VisImageButton;
 import com.kotcrab.vis.ui.widget.VisImageTextButton;
 import com.kotcrab.vis.ui.widget.VisProgressBar;
 import com.kotcrab.vis.ui.widget.VisScrollPane;
-import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisWindow;
 
@@ -67,7 +64,7 @@ public class RightBar extends Table {
 
         createActors(gameMapComponent);
 
-        resize(stage.getWidth(), stage.getHeight(), 10);
+        //resize(stage.getWidth(), stage.getHeight(), 10);
 
         //TODO zmienic z Marcinowego na jakies czytelne
         addListener(new ActorGestureListener() {
@@ -209,10 +206,10 @@ public class RightBar extends Table {
         float pad = width<height ? width/30 : height/30;
 
         miniMapWindow.setBounds(pad, getHeight()*2/3, getWidth() - 2*pad, getHeight()/3 - pad);
-
         changeScrollPane.setBounds(pad, pad, getWidth() - 2 * pad, pad);
         scrollPaneHeroes.setBounds(pad, pad+changeScrollPane.getY() + pad, getWidth() - 2 * pad, getHeight() * 2 / 3 - changeScrollPane.getHeight() -3*pad);
         scrollPaneTowns.setBounds(pad, pad+changeScrollPane.getY() + pad, getWidth() - 2 * pad, getHeight() * 2 / 3 - changeScrollPane.getHeight() -3*pad);
+        //TODO change grid size when width is high enough to fit 2 rows
         int gridSize = scrollPaneHeroes.getWidth() < scrollPaneHeroes.getHeight() ? (int)(scrollPaneHeroes.getWidth() - pad) : (int)((scrollPaneHeroes.getWidth() - pad)/2);
         gridGroupHeroes.resize(gridSize - 2*gridGroupHeroes.getSpacing(),gridSize- 2*gridGroupHeroes.getSpacing());
         gridGroupTowns.setItemSize(gridSize- 2*gridGroupTowns.getSpacing(),gridSize- 2*gridGroupTowns.getSpacing());
@@ -234,7 +231,6 @@ public class RightBar extends Table {
             }
 
             Image image = new Image(heroData.avatar);
-            image.setDebug(true);
             image.addListener(new ClickListener(){
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
@@ -263,13 +259,12 @@ public class RightBar extends Table {
         public void resize(float itemWidth, float itemHeight) {
             setItemSize(itemWidth,itemHeight);
             for(HeroTable table : heroButtonMap.values()) {
+                table.setSize(itemWidth,itemHeight);
                 Image image = table.image;
-                float progressBarWidth = (itemWidth - itemWidth * (image.getPrefWidth() / image.getPrefHeight())) / 2;
 
+                float progressBarWidth = (table.getWidth() - itemWidth * (image.getPrefWidth() / image.getPrefHeight())) / 2;
                 table.movement.getStyle().background.setMinWidth(progressBarWidth);
-                table.movement.getStyle().background.setMinHeight(itemHeight);
                 table.movement.getStyle().knob.setMinWidth(progressBarWidth);
-
             }
         }
 
@@ -290,11 +285,13 @@ public class RightBar extends Table {
                     }
                 });
 
+                image.setHeight(0);
                 image.setScaling(Scaling.fit);
 
-                add(movement).expandY();
+                add(movement).fill();
                 add(image);
-                add(magic);
+                add(magic).fill();
+                row();
             }
         }
 

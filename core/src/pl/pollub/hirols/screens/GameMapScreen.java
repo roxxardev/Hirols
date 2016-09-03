@@ -200,9 +200,11 @@ public class GameMapScreen extends GameScreen {
         public void recalculatePath() {
             Entity selectedHero = game.engine.getSystem(MapInteractionSystem.class).getSelectedHeroes().first();
             HeroDataComponent selectedHeroData = ComponentMapper.getFor(HeroDataComponent.class).get(selectedHero);
-            game.engine.getSystem(MapInteractionSystem.class).recalculatePathForHero(selectedHero);
-
-            console.log("Path recalculated for selected hero id: "+ selectedHeroData.id + ".");
+            if(game.engine.getSystem(MapInteractionSystem.class).recalculatePathForHero(selectedHero)) {
+                console.log("Path recalculated for selected hero id: "+ selectedHeroData.id + ".");
+                return;
+            }
+            console.log("Hero id: "+ selectedHeroData.id + " has no path to recalculate.");
         }
     }
 }
