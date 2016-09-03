@@ -13,18 +13,22 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
 import com.kotcrab.vis.ui.layout.GridGroup;
 import com.kotcrab.vis.ui.widget.VisImageButton;
 import com.kotcrab.vis.ui.widget.VisImageTextButton;
+import com.kotcrab.vis.ui.widget.VisProgressBar;
 import com.kotcrab.vis.ui.widget.VisScrollPane;
+import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisWindow;
 
@@ -208,10 +212,9 @@ public class RightBar extends Table {
 
         changeScrollPane.setBounds(pad, pad, getWidth() - 2 * pad, pad);
         scrollPaneHeroes.setBounds(pad, pad+changeScrollPane.getY() + pad, getWidth() - 2 * pad, getHeight() * 2 / 3 - changeScrollPane.getHeight() -3*pad);
-        scrollPaneHeroes.setDebug(true);
         scrollPaneTowns.setBounds(pad, pad+changeScrollPane.getY() + pad, getWidth() - 2 * pad, getHeight() * 2 / 3 - changeScrollPane.getHeight() -3*pad);
         int gridSize = scrollPaneHeroes.getWidth() < scrollPaneHeroes.getHeight() ? (int)(scrollPaneHeroes.getWidth() - pad) : (int)((scrollPaneHeroes.getWidth() - pad)/2);
-        gridGroupHeroes.setItemSize(gridSize - 2*gridGroupHeroes.getSpacing(),gridSize- 2*gridGroupHeroes.getSpacing());
+        gridGroupHeroes.resize(gridSize - 2*gridGroupHeroes.getSpacing(),gridSize- 2*gridGroupHeroes.getSpacing());
         gridGroupTowns.setItemSize(gridSize- 2*gridGroupTowns.getSpacing(),gridSize- 2*gridGroupTowns.getSpacing());
 
         rightBarDragImage.setSize(buttonSize, 3*buttonSize);
@@ -220,7 +223,7 @@ public class RightBar extends Table {
     }
 
     private class GridGroupHeroes extends GridGroup {
-        Map<Integer, VisImageTextButton> heroButtonMap = new HashMap<Integer, VisImageTextButton>();
+        Map<Integer, HeroTable> heroButtonMap = new HashMap<Integer, HeroTable>();
 
         public void addHero(final Entity heroEntity) {
             HeroDataComponent heroData = ComponentMapper.getFor(HeroDataComponent.class).get(heroEntity);
@@ -230,21 +233,22 @@ public class RightBar extends Table {
                 return;
             }
 
-            VisImageTextButton hero = new VisImageTextButton(heroData.name + " " + heroData.id, new SpriteDrawable(heroData.avatar));
-
-            hero.getImage().addListener(new ClickListener(){
+            Image image = new Image(heroData.avatar);
+            image.setDebug(true);
+            image.addListener(new ClickListener(){
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     game.engine.getSystem(MapInteractionSystem.class).changeSelectedHero(heroEntity);
                 }
             });
 
-            hero.clearChildren();
-            hero.add(hero.getImage()).expand().fill().row();
-            hero.add(hero.getLabel());
-            addActor(hero);
-            heroButtonMap.put(heroData.id,hero);
-            //TODO init cell bounds to fit image expanded in Y direction
+            FixedProgressBar progressBarLeft = new FixedProgressBar(0,10,1,true);
+            FixedProgressBar progressBarRight = new FixedProgressBar(0,10,1,true);
+
+            HeroTable heroTable = new HeroTable(image,progressBarLeft,progressBarRight);
+
+            addActor(heroTable);
+            heroButtonMap.put(heroData.id, heroTable);
         }
 
         public void removeHero(final HeroDataComponent heroData) {
@@ -255,5 +259,64 @@ public class RightBar extends Table {
 
             heroButtonMap.remove(heroData.id);
         }
+
+        public void resize(float itemWidth, float itemHeight) {
+            setItemSize(itemWidth,itemHeight);
+            for(HeroTable table : heroButtonMap.values()) {
+                Image image = table.image;
+                float progressBarWidth = (itemWidth - itemWidth * (image.getPrefWidth() / image.getPrefHeight())) / 2;
+
+                table.movement.getStyle().background.setMinWidth(progressBarWidth);
+                table.movement.getStyle().background.setMinHeight(itemHeight);
+                table.movement.getStyle().knob.setMinWidth(progressBarWidth);
+
+            }
+        }
+
+        private class HeroTable extends Table {
+            final Image image;
+            final FixedProgressBar movement, magic;
+
+            public HeroTable(Image image, final FixedProgressBar movement, FixedProgressBar magic) {
+                this.image = image;
+                this.movement = movement;
+                this.magic = magic;
+
+                //TODO remove
+                movement.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        movement.setValue(movement.getValue() + 1);
+                    }
+                });
+
+                image.setScaling(Scaling.fit);
+
+                add(movement).expandY();
+                add(image);
+                add(magic);
+            }
+        }
+
+        private class FixedProgressBar extends VisProgressBar {
+            public FixedProgressBar(float min, float max, float stepSize, boolean vertical) {
+                super(min, max, stepSize, vertical);
+            }
+
+            @Override
+            public float getPrefWidth() {
+                final Drawable knob = getKnobDrawable();
+                final Drawable bg = (isDisabled() && getStyle().disabledBackground != null) ? getStyle().disabledBackground : getStyle().background;
+                return Math.max(knob == null ? 0 : knob.getMinWidth(), bg.getMinWidth());
+            }
+
+            @Override
+            public float getPrefHeight() {
+                final Drawable knob = getKnobDrawable();
+                final Drawable bg = (isDisabled() && getStyle().disabledBackground != null) ? getStyle().disabledBackground : getStyle().background;
+                return Math.max(knob == null ? 0 : knob.getMinHeight(), bg == null ? 0 : bg.getMinHeight());
+            }
+        }
+
     }
 }
