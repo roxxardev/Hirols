@@ -64,8 +64,6 @@ public class RightBar extends Table {
 
         createActors(gameMapComponent);
 
-        //resize(stage.getWidth(), stage.getHeight(), 10);
-
         //TODO zmienic z Marcinowego na jakies czytelne
         addListener(new ActorGestureListener() {
             @Override
@@ -276,6 +274,10 @@ public class RightBar extends Table {
                 this.image = image;
                 this.movement = movement;
                 this.magic = magic;
+
+                float duration = 0.5f;
+                magic.setAnimateDuration(duration);
+                movement.setAnimateDuration(duration);
 
                 //TODO remove
                 movement.addListener(new ClickListener() {
