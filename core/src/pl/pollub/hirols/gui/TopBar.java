@@ -35,15 +35,6 @@ public class TopBar extends Table {
         this.setBackground(game.hudManager.getTransparentBackground());
 
         addResources();
-
-        resize(stage.getWidth(), stage.getHeight());
-
-        this.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("HUD", "Clicked on topBar.");
-            }
-        });
     }
 
     private void addResources() {
@@ -84,7 +75,7 @@ public class TopBar extends Table {
         this.setPosition(0, height - this.getHeight());
 
         for(Cell cell : getCells()) {
-            cell.width(width/20);
+            cell.width(width/heightDivider);
         }
     }
 
