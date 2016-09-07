@@ -8,10 +8,11 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 
-import pl.pollub.hirols.components.map.GameMapComponent;
+import pl.pollub.hirols.Hirols;
+import pl.pollub.hirols.components.map.maps.GameMapComponent;
 import pl.pollub.hirols.components.map.GameMapDataComponent;
 import pl.pollub.hirols.components.map.HeroDataComponent;
-import pl.pollub.hirols.components.map.SelectedHeroComponent;
+import pl.pollub.hirols.components.SelectedComponent;
 import pl.pollub.hirols.components.physics.PositionComponent;
 import pl.pollub.hirols.components.physics.VelocityComponent;
 
@@ -20,25 +21,26 @@ import pl.pollub.hirols.components.physics.VelocityComponent;
  */
 public class HeroMovementSystem extends GameMapEntitySystem {
 
-    private ImmutableArray<Entity> selectedHeroes;
+    private final Hirols game;
 
     private ComponentMapper<PositionComponent> posMap = ComponentMapper.getFor(PositionComponent.class);
     private ComponentMapper<VelocityComponent> velMap = ComponentMapper.getFor(VelocityComponent.class);
     private ComponentMapper<HeroDataComponent> selectedHeroDataMap = ComponentMapper.getFor(HeroDataComponent.class);
 
-    public HeroMovementSystem(int priority, Class<? extends GameMapComponent> gameMapClass) {
+    public HeroMovementSystem(int priority, Class<? extends GameMapComponent> gameMapClass, Hirols game) {
         super(priority,gameMapClass);
+        this.game = game;
     }
 
     @Override
     public void addedToEngine(Engine engine) {
         super.addedToEngine(engine);
-        selectedHeroes = engine.getEntitiesFor(Family.all(HeroDataComponent.class, SelectedHeroComponent.class, gameMapClass).get());
     }
 
     public void update(float deltaTime) {
-        if(gameMapDataArray.size() < 1) return;
         GameMapDataComponent gameMapData = gameMapDataMapper.get(this.gameMapDataArray.first());
+
+        ImmutableArray<Entity> selectedHeroes = getEngine().getEntitiesFor(Family.all(HeroDataComponent.class, SelectedComponent.class, gameMapClass, game.gameManager.getCurrentPlayerClass()).get());
 
         for (Entity hero : selectedHeroes) {
             HeroDataComponent heroData = selectedHeroDataMap.get(hero);

@@ -8,7 +8,7 @@ import pl.pollub.hirols.systems.generalSystems.GeneralEntitySystem;
 /**
  * Created by erykp_000 on 2016-08-25.
  */
-public abstract class ConsoleRenderSystem extends GeneralEntitySystem {
+public class ConsoleRenderSystem extends GeneralEntitySystem {
 
     private Console console;
 

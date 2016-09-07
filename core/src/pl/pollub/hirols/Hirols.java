@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import pl.pollub.hirols.managers.HudManager;
 import pl.pollub.hirols.managers.SoundManager;
-import pl.pollub.hirols.managers.GameMapManager;
+import pl.pollub.hirols.managers.GameManager;
 import pl.pollub.hirols.screens.LoadingScreen;
 
 public class Hirols extends Game {
@@ -20,7 +20,7 @@ public class Hirols extends Game {
 	public SoundManager soundManager;
     public HudManager hudManager;
 
-	public GameMapManager gameMapManager;
+	public GameManager gameManager;
 	public InputMultiplexer multiplexer = new InputMultiplexer();
 
 	@Override
@@ -29,7 +29,7 @@ public class Hirols extends Game {
         engine = new PooledEngine(100,1000,100,1000);
 		assetManager = new AssetManager();
 		soundManager = new SoundManager(assetManager);
-		gameMapManager = new GameMapManager(this);
+		gameManager = new GameManager(this,4);
 
 		Gdx.input.setInputProcessor(multiplexer);
 

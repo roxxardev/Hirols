@@ -13,7 +13,7 @@ import pl.pollub.hirols.components.physics.VelocityComponent;
 /**
  * Created by erykp_000 on 2016-03-08.
  */
-public abstract class FontsDeathSystem extends GeneralIteratingSystem {
+public class FontsDeathSystem extends GeneralIteratingSystem {
 
     private ComponentMapper<LifePeriodComponent> lifePeriodMap = ComponentMapper.getFor(LifePeriodComponent.class);
     private ComponentMapper<TransparencyComponent> transparencyMap = ComponentMapper.getFor(TransparencyComponent.class);

@@ -31,7 +31,7 @@ public class TownScreen implements Screen {
     public void render(float delta) {
         townScreenHud.update(delta);
 
-        if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) game.setScreen(game.gameMapManager.getCurrentMapScreen());
+        if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) game.setScreen(game.gameManager.getCurrentMapScreen());
 
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

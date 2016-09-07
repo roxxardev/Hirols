@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import pl.pollub.hirols.Hirols;
-import pl.pollub.hirols.components.map.GameMapComponent;
+import pl.pollub.hirols.components.map.maps.GameMapComponent;
 import pl.pollub.hirols.components.map.GameMapDataComponent;
 import pl.pollub.hirols.components.map.HeroDataComponent;
 import pl.pollub.hirols.console.CommandsContainer;
@@ -75,42 +75,41 @@ public class GameMapScreen extends GameScreen {
 
 
         gameMapEntity = game.engine.createEntity()
-                        .add(map.getGameMapComponent())
+                        .add(game.engine.createComponent(map.getGameMapComponentClazz()))
                         .add(new GameMapDataComponent(map,gameMapCam,game.batch,inputManager, hud));
         game.engine.addEntity(gameMapEntity);
-
     }
 
-    public GameMapComponent getGameMapComponent() {return map.getGameMapComponent();}
+    public Class<? extends GameMapComponent> getGameMapComponent() {return map.getGameMapComponentClazz();}
 
     @Override
     protected void createSystems() {
         //TODO systems
-        Class<? extends GameMapComponent> gameMapClass = map.getGameMapComponent().getClass();
+        Class<? extends GameMapComponent> gameMapClass = map.getGameMapComponentClazz();
 
         systems.add(new MapCamMovementSystem(3,gameMapClass));
         systems.add(new EndNodeInteractionSystem(4,gameMapClass,game));
-        systems.add(new PathEntityRemovalSystem(5,gameMapClass));
+        systems.add(new PathEntityRemovalSystem(5,gameMapClass,game));
         systems.add(new MapInteractionSystem(6,game,gameMapClass));
-        systems.add(new HeroMovementSystem(7,gameMapClass));
-        systems.add(new MovementSystem(8,gameMapClass){});
-        systems.add(new FontsDeathSystem(9,gameMapClass){});
-        systems.add(new AnimationSystem(10,gameMapClass){});
+        systems.add(new HeroMovementSystem(7,gameMapClass,game));
+        systems.add(new MovementSystem(8,gameMapClass));
+        systems.add(new FontsDeathSystem(9,gameMapClass));
+        systems.add(new AnimationSystem(10,gameMapClass));
         systems.add(new MapCamUpdateSystem(13,gameMapClass));
 
         systems.add(new TiledMapRenderSystem(14, gameMapClass));
 
-        systems.add(new RenderSystem(16, game.batch, gameMapClass){});
-        systems.add(new BitmapFontRenderSystem(17,game.batch,gameMapClass){});
+        systems.add(new RenderSystem(16, game.batch, gameMapClass));
+        systems.add(new BitmapFontRenderSystem(17,game.batch,gameMapClass));
 
-        systems.add(new HudRenderSystem(21,gameMapClass,hud){});
-        systems.add(new ConsoleRenderSystem(22,gameMapClass,console){});
-        systems.add(new InputManagerUpdateSystem(50,gameMapClass,inputManager){});
+        systems.add(new HudRenderSystem(21,gameMapClass,hud));
+        systems.add(new ConsoleRenderSystem(22,gameMapClass,console));
+        systems.add(new InputManagerUpdateSystem(50,gameMapClass,inputManager));
     }
 
     @Override
     public void render(float delta) {
-        game.gameMapManager.update(delta);
+        game.gameManager.update(delta);
     }
 
     @Override
@@ -194,7 +193,7 @@ public class GameMapScreen extends GameScreen {
             selectedHeroData.movementPoints = value;
             game.engine.getSystem(MapInteractionSystem.class).resetHeroPath(selectedHeroData, true);
 
-            console.log("Selected Hero id: "+ selectedHeroData.id +" movement points set to " + value + ".");
+            console.log("SelectedComponent Hero id: "+ selectedHeroData.id +" movement points set to " + value + ".");
         }
 
         public void recalculatePath() {

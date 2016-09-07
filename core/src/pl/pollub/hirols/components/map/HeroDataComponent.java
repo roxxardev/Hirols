@@ -22,6 +22,7 @@ public class HeroDataComponent implements Component, Pool.Poolable{
     public String name;
     public Sprite avatar;
     public final HeroPath heroPath = new HeroPath();
+    public final ArrayList<Entity> pathEntities = new ArrayList<Entity>();
 
     public HeroDataComponent init(int id, String name, float movementPoints, Sprite avatar) {
         this.id = id;

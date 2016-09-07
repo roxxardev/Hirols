@@ -15,7 +15,7 @@ import pl.pollub.hirols.systems.generalSystems.GeneralIteratingSystem;
 /**
  * Created by Eryk on 2015-12-02.
  */
-public abstract class BitmapFontRenderSystem extends GeneralIteratingSystem {
+public class BitmapFontRenderSystem extends GeneralIteratingSystem {
 
     private SpriteBatch batch;
 

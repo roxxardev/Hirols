@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Disposable;
 import java.util.ArrayList;
 
 import pl.pollub.hirols.Hirols;
+import pl.pollub.hirols.systems.TempSystem;
 
 /**
  * Created by Eryk on 2016-05-03.
@@ -44,18 +45,24 @@ public abstract class GameScreen implements Screen, Disposable {
 
     @Override
     public void show() {
-        setSystemsProcessing(true);
         addSystemsToEngine();
+        setSystemsProcessing(true);
     }
 
     @Override
     public void hide() {
         setSystemsProcessing(false);
-        removeSystemsFromEngine();
     }
 
     @Override
     public void resize(int width, int height) {
         Gdx.app.log("ScreenSize", String.valueOf(Gdx.graphics.getWidth()) + " " + String.valueOf(Gdx.graphics.getHeight()));
+    }
+
+    @Override
+    public void dispose() {
+        removeSystemsFromEngine();
+        //TODO wait for ashley to fix bug and delete
+        game.engine.addSystem(new TempSystem());
     }
 }

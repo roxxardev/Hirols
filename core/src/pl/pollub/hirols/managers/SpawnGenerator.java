@@ -1,8 +1,8 @@
 package pl.pollub.hirols.managers;
 
 import com.badlogic.ashley.core.ComponentMapper;
-import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -17,8 +17,9 @@ import java.util.Random;
 import pl.pollub.hirols.animation.AnimationSet;
 import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.components.LifePeriodComponent;
-import pl.pollub.hirols.components.PlayerComponent;
-import pl.pollub.hirols.components.PlayerDataComponent;
+import pl.pollub.hirols.components.SelectedComponent;
+import pl.pollub.hirols.components.player.PlayerComponent;
+import pl.pollub.hirols.components.player.PlayerDataComponent;
 import pl.pollub.hirols.components.graphics.AnimationComponent;
 import pl.pollub.hirols.components.graphics.BitmapFontComponent;
 import pl.pollub.hirols.components.graphics.RenderableComponent;
@@ -61,7 +62,7 @@ public class SpawnGenerator {
             Entity mapEntity = map.getEntity(indexX,indexY);
 
             mapEntity.add(game.engine.createComponent(AnimationComponent.class).init(new AnimationSet(AnimationType.stand, Direction.getRandomDirection(), snakeAnimationMap), true, rand.nextFloat()))
-                    .add(map.getGameMapComponent())
+                    .add(game.engine.createComponent(map.getGameMapComponentClazz()))
                     .add(game.engine.createComponent(TextureComponent.class).setSize(128, 128).setAdditionalOffset(-16, 0))
                     .add(game.engine.createComponent(RenderableComponent.class))
                     .add(game.engine.createComponent(EnemyComponent.class).init(position,true));
@@ -85,51 +86,52 @@ public class SpawnGenerator {
         Entity testText = game.engine.createEntity();
 
         testText.add(game.engine.createComponent(PositionComponent.class).init(50, 50))
-                .add(map.getGameMapComponent())
+                .add(game.engine.createComponent(map.getGameMapComponentClazz()))
                 .add(game.engine.createComponent(BitmapFontComponent.class).init(game.assetManager.get("testFontSize32.ttf",BitmapFont.class), "teeest efwkjerurhjkjfiuhrejrfjfkejfr4hfruijrigj5ffjr5678909488"))
                 .add(game.engine.createComponent(RenderableComponent.class))
                 .add(game.engine.createComponent(TransparencyComponent.class).init(1))
                 .add(game.engine.createComponent(LifePeriodComponent.class).init(1000));
         game.engine.addEntity(testText);
 
-        spawnPlayers(game.engine, mechAnimationMap,map,mapMapper, game);
+        spawnPlayerAndHeroes(game, mechAnimationMap, map, game.gameManager.getPlayerClasses().get(0));
     }
 
 
 
-    private static void spawnPlayers(Engine engine, Map<AnimationType, Map<Direction, Animation>> animationMap, pl.pollub.hirols.gameMap.Map map, ComponentMapper<MapComponent> mapMapper, Hirols game) {
+    private static void spawnPlayerAndHeroes(Hirols game, Map<AnimationType, Map<Direction, Animation>> animationMap, pl.pollub.hirols.gameMap.Map map, Class<? extends PlayerComponent> playerClass) {
         int playerId = -1;
-        Entity player = game.engine.createEntity();
+        PooledEngine engine = game.engine;
+        Entity player = engine.createEntity();
         player
-                .add(map.getGameMapComponent())
-                .add(new PlayerDataComponent())
-                .add(new PlayerComponent());
+                .add(engine.createComponent(map.getGameMapComponentClazz()))
+                .add(engine.createComponent(playerClass))
+                .add(engine.createComponent(PlayerDataComponent.class).init(playerClass))
+                .add(engine.createComponent(SelectedComponent.class));
         engine.addEntity(player);
 
         Vector2 firstHeroPos = Pools.obtain(Vector2.class);
-        engine.addEntity(game.engine.createEntity()
-                .add(game.engine.createComponent(PositionComponent.class).init(1728, 1728))
-                .add(map.getGameMapComponent())
-                .add(game.engine.createComponent(AnimationComponent.class).init(new AnimationSet(AnimationType.stand, Direction.getRandomDirection(), animationMap), true,0f))
-                .add(game.engine.createComponent(TextureComponent.class).setSize(84, 102))
-                .add(game.engine.createComponent(RenderableComponent.class))
-                .add(game.engine.createComponent(HeroDataComponent.class).init(++playerId, "Cwel", 10.f,new Sprite(game.assetManager.get("temp/portrait.png", Texture.class))))
-                .add(game.engine.createComponent(VelocityComponent.class))
-                .add(new PlayerComponent()));
-                //.add(new SelectedHeroComponent()));
+        engine.addEntity(engine.createEntity()
+                .add(engine.createComponent(PositionComponent.class).init(1728, 1728))
+                .add(engine.createComponent(map.getGameMapComponentClazz()))
+                .add(engine.createComponent(AnimationComponent.class).init(new AnimationSet(AnimationType.stand, Direction.getRandomDirection(), animationMap), true,0f))
+                .add(engine.createComponent(TextureComponent.class).setSize(84, 102))
+                .add(engine.createComponent(RenderableComponent.class))
+                .add(engine.createComponent(HeroDataComponent.class).init(++playerId, "Cwel", 10.f,new Sprite(game.assetManager.get("temp/portrait.png", Texture.class))))
+                .add(engine.createComponent(VelocityComponent.class))
+                .add(engine.createComponent(playerClass)));
         Pools.free(firstHeroPos);
         for (int i = 0; i < 10; i++) {
             Vector2 heroPosition = Pools.obtain(Vector2.class);
-            Entity hero = game.engine.createEntity();
+            Entity hero = engine.createEntity();
             hero
-                    .add(map.getGameMapComponent())
-                    .add(game.engine.createComponent(AnimationComponent.class).init(new AnimationSet(AnimationType.stand, Direction.getRandomDirection(), animationMap), true, 0f))
-                    .add(game.engine.createComponent(PositionComponent.class).init(generateRandomPositionOnMap(heroPosition,map)))
-                    .add(game.engine.createComponent(RenderableComponent.class))
-                    .add(game.engine.createComponent(TextureComponent.class).setSize(84, 102))
-                    .add(game.engine.createComponent(HeroDataComponent.class).init(++playerId,"nołnejm", 13f, new Sprite(game.assetManager.get("temp/portrait.png", Texture.class))))
-                    .add(game.engine.createComponent(VelocityComponent.class))
-                    .add(new PlayerComponent());
+                    .add(engine.createComponent(map.getGameMapComponentClazz()))
+                    .add(engine.createComponent(AnimationComponent.class).init(new AnimationSet(AnimationType.stand, Direction.getRandomDirection(), animationMap), true, 0f))
+                    .add(engine.createComponent(PositionComponent.class).init(generateRandomPositionOnMap(heroPosition,map)))
+                    .add(engine.createComponent(RenderableComponent.class))
+                    .add(engine.createComponent(TextureComponent.class).setSize(84, 102))
+                    .add(engine.createComponent(HeroDataComponent.class).init(++playerId,"nołnejm", 13f, new Sprite(game.assetManager.get("temp/portrait.png", Texture.class))))
+                    .add(engine.createComponent(VelocityComponent.class))
+                    .add(engine.createComponent(playerClass));
             engine.addEntity(hero);
             Pools.free(heroPosition);
         }

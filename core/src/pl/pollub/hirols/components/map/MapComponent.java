@@ -6,8 +6,7 @@ import com.badlogic.gdx.utils.Pool;
 /**
  * Created by Eryk on 2016-02-20.
  */
-public class MapComponent implements Component, Pool.Poolable
-{
+public class MapComponent implements Component, Pool.Poolable {
     public boolean walkable;
 
     public MapComponent init(boolean walkable) {

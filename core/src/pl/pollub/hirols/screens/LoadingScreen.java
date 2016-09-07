@@ -174,8 +174,8 @@ public class LoadingScreen implements Screen {
             if(Gdx.input.isTouched()) {
                 //jeśli wczytano assety i naciśnieto
                 game.hudManager = new HudManager(game);
-                game.gameMapManager.createMap("temp.tmx");
-                game.gameMapManager.setCurrentMapScreen("temp.tmx");
+                game.gameManager.createMap("temp.tmx");
+                game.gameManager.setCurrentMapScreen("temp.tmx");
             }
         } else {
             Gdx.app.log("Loading progress", String.valueOf(assetManager.getProgress()*100));

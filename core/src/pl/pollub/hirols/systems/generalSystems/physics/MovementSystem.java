@@ -14,7 +14,7 @@ import pl.pollub.hirols.systems.generalSystems.GeneralIteratingSystem;
 /**
  * Created by Eryk on 2015-11-28.
  */
-public abstract class MovementSystem extends GeneralIteratingSystem {
+public class MovementSystem extends GeneralIteratingSystem {
 
     private ComponentMapper<PositionComponent> posMap = ComponentMapper.getFor(PositionComponent.class);
     private ComponentMapper<VelocityComponent> velMap = ComponentMapper.getFor(VelocityComponent.class);

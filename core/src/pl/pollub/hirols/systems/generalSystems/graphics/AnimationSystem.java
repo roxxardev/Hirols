@@ -12,10 +12,10 @@ import pl.pollub.hirols.components.graphics.TextureComponent;
 import pl.pollub.hirols.systems.generalSystems.GeneralIteratingSystem;
 
 /**
- * Created by Marcin on 2015-12-07.
+ * Created by Eryk on 2015-12-07.
  */
 
-public abstract class AnimationSystem extends GeneralIteratingSystem {
+public class AnimationSystem extends GeneralIteratingSystem {
 
     private ComponentMapper<AnimationComponent> animDataMap = ComponentMapper.getFor(AnimationComponent.class);
     private ComponentMapper<TextureComponent> textureMap = ComponentMapper.getFor(TextureComponent.class);

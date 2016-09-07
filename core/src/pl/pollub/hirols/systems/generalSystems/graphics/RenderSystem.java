@@ -19,7 +19,7 @@ import pl.pollub.hirols.systems.generalSystems.GeneralSortedIteratingSystem;
 /**
  * Created by Eryk on 2015-11-28.
  */
-public abstract class RenderSystem extends GeneralSortedIteratingSystem {
+public class RenderSystem extends GeneralSortedIteratingSystem {
 
     private SpriteBatch batch;
 

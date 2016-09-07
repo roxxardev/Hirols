@@ -7,7 +7,7 @@ import pl.pollub.hirols.managers.input.InputManager;
 /**
  * Created by Eryk on 2016-06-17.
  */
-public abstract class InputManagerUpdateSystem extends GeneralEntitySystem {
+public class InputManagerUpdateSystem extends GeneralEntitySystem {
 
     private InputManager inputManager;
 

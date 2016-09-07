@@ -1,6 +1,6 @@
 package pl.pollub.hirols.systems.gameMapSystems;
 
-import pl.pollub.hirols.components.map.GameMapComponent;
+import pl.pollub.hirols.components.map.maps.GameMapComponent;
 import pl.pollub.hirols.components.map.GameMapDataComponent;
 
 /**
@@ -18,7 +18,5 @@ public class TiledMapRenderSystem extends GameMapEntitySystem {
         GameMapDataComponent gameMapData = gameMapDataMapper.get(this.gameMapDataArray.first());
         gameMapData.tiledMapRenderer.setView(gameMapData.gameMapCam);
         gameMapData.tiledMapRenderer.render();
-        //Gdx.app.log("TiledMapRenderSystem",priority + "");
-
     }
 }

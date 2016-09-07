@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import pl.pollub.hirols.Hirols;
-import pl.pollub.hirols.components.map.GameMapComponent;
+import pl.pollub.hirols.components.map.maps.GameMapComponent;
 import pl.pollub.hirols.components.map.HeroDataComponent;
 import pl.pollub.hirols.systems.gameMapSystems.MapInteractionSystem;
 
@@ -54,7 +54,7 @@ public class RightBar extends Table {
     private Image rightBarDragImage;
     private VisWindow miniMapWindow;
 
-    public RightBar(Hirols game, final Stage stage, GameMapComponent gameMapComponent) {
+    public RightBar(Hirols game, final Stage stage, Class<? extends GameMapComponent> gameMapComponent) {
         this.game = game;
         this.stage = stage;
 
@@ -92,7 +92,7 @@ public class RightBar extends Table {
         });
     }
 
-    private void createActors(GameMapComponent gameMapComponent) {
+    private void createActors(Class<? extends GameMapComponent> gameMapComponent) {
         moveButton = new VisImageButton(new VisImageButton.VisImageButtonStyle(game.hudManager.skin.get("image-button", VisImageButton.VisImageButtonStyle.class)));
         moveButton.getStyle().imageUp = new SpriteDrawable(new Sprite(new TextureRegion(game.assetManager.get("ui/button-images.png", Texture.class), 0, 2, 128, 176)));
         turnButton = new VisImageButton(new VisImageButton.VisImageButtonStyle(game.hudManager.skin.get("image-button", VisImageButton.VisImageButtonStyle.class)));
@@ -118,7 +118,7 @@ public class RightBar extends Table {
 
         gridGroupHeroes = new GridGroupHeroes();
 
-        ImmutableArray<Entity> heroes = game.engine.getEntitiesFor(Family.all(HeroDataComponent.class, gameMapComponent.getClass()).get());
+        ImmutableArray<Entity> heroes = game.engine.getEntitiesFor(Family.all(HeroDataComponent.class, gameMapComponent).get());
 
         for(int i = 0; i < heroes.size(); i++) {
             gridGroupHeroes.addHero(heroes.get(i));

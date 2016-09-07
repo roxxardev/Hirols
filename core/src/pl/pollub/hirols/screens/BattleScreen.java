@@ -14,13 +14,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.util.ArrayList;
+
 import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.battle.HexagonMapPolygon;
 import pl.pollub.hirols.components.battle.BattleComponent;
 import pl.pollub.hirols.components.battle.BattleDataComponent;
 import pl.pollub.hirols.console.CommandsContainer;
 import pl.pollub.hirols.console.GraphicalConsole;
-import pl.pollub.hirols.managers.HudManager;
+import pl.pollub.hirols.managers.EngineTools;
 import pl.pollub.hirols.managers.input.InputManager;
 import pl.pollub.hirols.managers.input.MyGestureListener;
 import pl.pollub.hirols.managers.input.MyInputProcessor;
@@ -128,21 +130,21 @@ public class BattleScreen extends GameScreen {
     protected void createSystems() {
         Class<? extends BattleComponent> battleClass = battleComponent.getClass();
 
-        systems.add(new MovementSystem(8,battleClass){});
-        systems.add(new FontsDeathSystem(9,battleClass){});
-        systems.add(new AnimationSystem(10,battleClass){});
+        systems.add(new MovementSystem(8,battleClass));
+        systems.add(new FontsDeathSystem(9,battleClass));
+        systems.add(new AnimationSystem(10,battleClass));
         systems.add(new BattleCamUpdateSystem(13,battleClass));
         systems.add(new HexMapRenderSystem(14,battleClass,game.batch));
 
-        systems.add(new RenderSystem(16, game.batch, battleClass){});
-        systems.add(new BitmapFontRenderSystem(17,game.batch,battleClass){});
-        systems.add(new InputManagerUpdateSystem(50,battleClass,inputManager){});
+        systems.add(new RenderSystem(16, game.batch, battleClass));
+        systems.add(new BitmapFontRenderSystem(17,game.batch,battleClass));
+        systems.add(new InputManagerUpdateSystem(50,battleClass,inputManager));
     }
 
     @Override
     public void render(float delta) {
         if(inputManager.isKeyPressed(Input.Keys.ESCAPE)) {
-            game.setScreen(game.gameMapManager.getCurrentMapScreen());
+            game.setScreen(game.gameManager.getCurrentMapScreen());
             return;
         }
         hud.update(delta);
@@ -182,8 +184,10 @@ public class BattleScreen extends GameScreen {
 
     @Override
     public void dispose() {
+        super.dispose();
         ImmutableArray<Entity> battleEntities = game.engine.getEntitiesFor(Family.all(battleComponent.getClass()).get());
-        for(Entity entity : battleEntities) {
+        ArrayList<Entity> battleEntitiesSnapshot = EngineTools.getArraySnapshot(battleEntities);
+        for(Entity entity : battleEntitiesSnapshot) {
             game.engine.removeEntity(entity);
         }
         console.dispose();

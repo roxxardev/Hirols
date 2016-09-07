@@ -22,13 +22,13 @@ import java.util.List;
 import java.util.Random;
 
 import pl.pollub.hirols.Hirols;
-import pl.pollub.hirols.components.map.GameMapComponent;
 import pl.pollub.hirols.components.graphics.RenderableComponent;
 import pl.pollub.hirols.components.graphics.TextureComponent;
 import pl.pollub.hirols.components.map.MapComponent;
 import pl.pollub.hirols.components.map.MineComponent;
 import pl.pollub.hirols.components.map.ResourceComponent;
 import pl.pollub.hirols.components.map.TownComponent;
+import pl.pollub.hirols.components.map.maps.GameMapComponent;
 import pl.pollub.hirols.components.physics.PositionComponent;
 import pl.pollub.hirols.pathfinding.DiagonalHeuristic;
 import pl.pollub.hirols.pathfinding.GraphGenerator;
@@ -52,13 +52,13 @@ public class Map {
     private final DiagonalHeuristic diagonalHeuristic = new DiagonalHeuristic();
 
     private final Entity[][] entityMap;
-    private final GameMapComponent gameMapComponent;
+    private final Class<? extends GameMapComponent> gameMapComponentClazz;
 
-    public Map(Hirols game, TiledMap tiledMap, GameMapComponent gameMapComponent) {
+    public Map(Hirols game, TiledMap tiledMap, Class<? extends GameMapComponent> gameMapComponent) {
         this.tiledMap = tiledMap;
         this.game = game;
 
-        this.gameMapComponent = gameMapComponent;
+        this.gameMapComponentClazz = gameMapComponent;
 
         MapProperties properties = tiledMap.getProperties();
         tileMapWidth = properties.get("width", Integer.class);
@@ -102,7 +102,7 @@ public class Map {
                             .add(game.engine.createComponent(MapComponent.class).init(false))
                             .add(game.engine.createComponent(PositionComponent.class).init(i*tileWidth,j*tileHeight));
                 }
-                entity.add(gameMapComponent);
+                entity.add(game.engine.createComponent(gameMapComponentClazz));
                 entityMap[i][j] = entity;
             }
         }
@@ -208,8 +208,8 @@ public class Map {
         return tiledMap;
     }
 
-    public GameMapComponent getGameMapComponent() {
-        return gameMapComponent;
+    public Class<? extends GameMapComponent> getGameMapComponentClazz() {
+        return gameMapComponentClazz;
     }
 
     public int getTileMapWidth() {
