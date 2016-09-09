@@ -65,7 +65,6 @@ public class MapInteractionSystem extends GameMapEntitySystem {
     private final Texture swordPathTexture;
     private final Texture crossPathTexture;
 
-    private final Vector2 mouseWorldPosition = new Vector2();
     private final Vector2 pathStartPosition = new Vector2();
 
     public MapInteractionSystem(int priority, Hirols game, Class<? extends GameMapComponent> gameMapClass) {
@@ -101,6 +100,7 @@ public class MapInteractionSystem extends GameMapEntitySystem {
 
             Vector3 mouseTemp = Pools.obtain(Vector3.class).set(gameMapData.inputManager.getMouseCoords().x,gameMapData.inputManager.getMouseCoords().y,0);
             gameMapData.gameMapCam.unproject(mouseTemp);
+            Vector2 mouseWorldPosition = Pools.obtain(Vector2.class);
             mouseWorldPosition.set(mouseTemp.x, mouseTemp.y);
             Pools.free(mouseTemp);
 
@@ -109,29 +109,30 @@ public class MapInteractionSystem extends GameMapEntitySystem {
                 int mapIndexX = (int)Math.floor(mouseWorldPosition.x / gameMap.getTileWidth());
                 int mapIndexY = (int)Math.floor(mouseWorldPosition.y / gameMap.getTileHeight());
                 if (gameMapData.inputManager.getUnreadLongPress()) {
-                    handleLongPress(mapIndexX, mapIndexY);
+                    handleLongPress(mapIndexX, mapIndexY, mouseWorldPosition);
                 } else {
-                    handleTapInsideMap(mapIndexX, mapIndexY);
+                    handleTapInsideMap(mapIndexX, mapIndexY, mouseWorldPosition);
                 }
             } else {
-                handleTapOutsideOfMap();
+                handleTapOutsideOfMap(mouseWorldPosition);
             }
+            Pools.free(mouseWorldPosition);
         }
     }
 
-    private void handleTapInsideMap(int mapIndexX, int mapIndexY) {
+    private void handleTapInsideMap(int mapIndexX, int mapIndexY, Vector2 mousePosition) {
         Entity currentPlayer = game.gameManager.getCurrentPlayer();
         Class<? extends PlayerComponent> currentPlayerClass = playerDataMap.get(currentPlayer).playerClass;
         playerSelectedHeroes = game.engine.getEntitiesFor(Family.all(HeroDataComponent.class, SelectedComponent.class, currentPlayerClass, gameMapClass).get());
 
         if ((playerSelectedHeroes.size() > 0)) {
-            handleTapForSelectedHero(playerSelectedHeroes.first(),mapIndexX,mapIndexY);
+            handleTapForSelectedHero(playerSelectedHeroes.first(),mapIndexX,mapIndexY, mousePosition);
         } else {
-            handleTapForUnselectedHero(mapIndexX, mapIndexY);
+            handleTapForUnselectedHero(mapIndexX, mapIndexY, mousePosition);
         }
     }
 
-    private void handleTapForUnselectedHero(int mapIndexX, int mapIndexY) {
+    private void handleTapForUnselectedHero(int mapIndexX, int mapIndexY, Vector2 mousePosition) {
         GameMapDataComponent gameMapData = gameMapDataMapper.get(gameMapDataArray.first());
         Map gameMap = gameMapData.map;
         Entity mapEntity = gameMap.getEntity(mapIndexX,mapIndexY);
@@ -151,7 +152,7 @@ public class MapInteractionSystem extends GameMapEntitySystem {
 
         //TODO interaction with map objects when tap and no hero is selected
         Gdx.app.log("MapInteractionSystem", "Tap inside map "
-                + mouseWorldPosition.toString() + " (" + mapIndexX + "," + mapIndexY + ")" + " walkable: false, no hero selected");
+                + mousePosition.toString() + " (" + mapIndexX + "," + mapIndexY + ")" + " walkable: false, no hero selected");
         if (enemyMap.has(mapEntity)) {
             Gdx.app.log("MapInteractionSystem", "Tap on enemy");
         } else if (townMap.has(mapEntity)) {
@@ -166,7 +167,7 @@ public class MapInteractionSystem extends GameMapEntitySystem {
 
     }
 
-    public void handleTapForSelectedHero(Entity selectedHero, int mapIndexX, int mapIndexY) {
+    public void handleTapForSelectedHero(Entity selectedHero, int mapIndexX, int mapIndexY, Vector2 mousePosition) {
         HeroDataComponent selectedHeroData = heroDataMap.get(selectedHero);
         if(selectedHeroData.heroPath.hasWalkNodes()) {
             selectedHeroData.heroPath.stopFollowing(false);
@@ -178,7 +179,7 @@ public class MapInteractionSystem extends GameMapEntitySystem {
             return;
         }
 
-        searchNewPathInsideMap(selectedHero,mapIndexX,mapIndexY);
+        searchNewPathInsideMap(selectedHero,mapIndexX,mapIndexY, mousePosition);
     }
 
     public boolean recalculatePathForHero(Entity hero) {
@@ -187,20 +188,21 @@ public class MapInteractionSystem extends GameMapEntitySystem {
         HeroDataComponent heroData = heroDataMap.get(hero);
         int mapIndexX = (int)Math.floor(heroData.heroPath.getTargetPosition().x / gameMap.getTileWidth());
         int mapIndexY = (int)Math.floor(heroData.heroPath.getTargetPosition().y / gameMap.getTileHeight());
+        Gdx.app.log("fsdfd", mapIndexX + " " + mapIndexY);
         if(mapIndexX == 0f && mapIndexY == 0f) return false;
-        searchNewPathInsideMap(hero,mapIndexX,mapIndexY);
+        searchNewPathInsideMap(hero,mapIndexX,mapIndexY,heroData.heroPath.getTargetPosition());
         return true;
     }
 
-    public void searchNewPathInsideMap(Entity selectedHero, int mapIndexX, int mapIndexY) {
+    public void searchNewPathInsideMap(Entity selectedHero, int mapIndexX, int mapIndexY, Vector2 mousePosition) {
         GameMapDataComponent gameMapData = gameMapDataMapper.get(gameMapDataArray.first());
         Map gameMap = gameMapData.map;
         Entity mapEntity = gameMap.getEntity(mapIndexX,mapIndexY);
 
         if (mapMapper.get(mapEntity).walkable) {
-            handleWalkableForSelectedHero(selectedHero, mapIndexX, mapIndexY);
+            handleWalkableForSelectedHero(selectedHero, mapIndexX, mapIndexY, mousePosition);
         } else {
-            handleNonWalkableForSelectedHero(selectedHero, mapIndexX, mapIndexY);
+            handleNonWalkableForSelectedHero(selectedHero, mapIndexX, mapIndexY, mousePosition);
         }
     }
 
@@ -222,7 +224,7 @@ public class MapInteractionSystem extends GameMapEntitySystem {
         gameMap.updateGraphConnectionsToNode(enemyComponent.enemyPosition.x, enemyComponent.enemyPosition.y,walkable);
     }
 
-    private void handleNonWalkableForSelectedHero(Entity selectedHero, int mapIndexX, int mapIndexY) {
+    private void handleNonWalkableForSelectedHero(Entity selectedHero, int mapIndexX, int mapIndexY, Vector2 mousePosition) {
         HeroDataComponent selectedHeroData = heroDataMap.get(selectedHero);
         PositionComponent selectedHeroPosition = posMap.get(selectedHero);
         GameMapDataComponent gameMapData = gameMapDataMapper.get(gameMapDataArray.first());
@@ -230,19 +232,19 @@ public class MapInteractionSystem extends GameMapEntitySystem {
         Entity mapEntity = gameMap.getEntity(mapIndexX,mapIndexY);
 
         Gdx.app.log("MapInteractionSystem", "Tap inside map "
-                + mouseWorldPosition.toString() + " (" + mapIndexX + "," + mapIndexY + ")" + " walkable: false, selected hero id: " + selectedHeroData.id);
+                + mousePosition.toString() + " (" + mapIndexX + "," + mapIndexY + ")" + " walkable: false, selected hero id: " + selectedHeroData.id);
         //TODO map object action when tap and any player is selected
         if (enemyMap.has(mapEntity)) {
             EnemyComponent enemyComponent = enemyMap.get(mapEntity);
             if (enemyComponent.trueEntity) {
                 Gdx.app.log("MapInteractionSystem", "Tap on enemy");
-                if(findPathToEnemy(pathStartPosition.set(selectedHeroPosition.x,selectedHeroPosition.y), mouseWorldPosition, gameMap, selectedHeroData, mapEntity, swordPathTexture, enemyComponent)) {
+                if(findPathToEnemy(pathStartPosition.set(selectedHeroPosition.x,selectedHeroPosition.y), mousePosition, gameMap, selectedHeroData, mapEntity, swordPathTexture, enemyComponent)) {
                     Gdx.app.log("MapInteractionSystem", "Path created for hero id: "
                             + selectedHeroData.id + " Length: " + selectedHeroData.heroPath.getPathSize() + " to enemy");
                 }
             } else {
                 Gdx.app.log("MapInteractionSystem", "Tap nearby enemy");
-                if(findPathNonWalkable(pathStartPosition.set(selectedHeroPosition.x, selectedHeroPosition.y), mouseWorldPosition, gameMap, selectedHeroData, mapEntity, swordPathTexture, false)) {
+                if(findPathNonWalkable(pathStartPosition.set(selectedHeroPosition.x, selectedHeroPosition.y), mousePosition, gameMap, selectedHeroData, mapEntity, swordPathTexture, false)) {
                     Gdx.app.log("MapInteractionSystem", "Path created for hero id: "
                             + selectedHeroData.id + " Length: " + selectedHeroData.heroPath.getPathSize() + " nearby enemy");
                 }
@@ -259,27 +261,26 @@ public class MapInteractionSystem extends GameMapEntitySystem {
             Gdx.app.log("MapInteractionSystem", "Tap on mine");
         } else if (resourceMap.has(mapEntity)) {
             Gdx.app.log("MapInteractionSystem", "Tap on resource");
-            if (findPathNonWalkable(pathStartPosition.set(selectedHeroPosition.x, selectedHeroPosition.y), mouseWorldPosition, gameMap, selectedHeroData, mapEntity, crossPathTexture, false)) {
+            if (findPathNonWalkable(pathStartPosition.set(selectedHeroPosition.x, selectedHeroPosition.y), mousePosition, gameMap, selectedHeroData, mapEntity, crossPathTexture, false)) {
                 Gdx.app.log("MapInteractionSystem", "Path created for hero id: "
                         + selectedHeroData.id + " Length: " + selectedHeroData.heroPath.getPathSize() + " to resource");
             }
         } else if (chestMap.has(mapEntity)) {
             Gdx.app.log("MapInteractionSystem", "Tap on chest");
-            if(findPathNonWalkable(pathStartPosition.set(selectedHeroPosition.x,selectedHeroPosition.y), mouseWorldPosition, gameMap, selectedHeroData, mapEntity, crossPathTexture, false)) {
+            if(findPathNonWalkable(pathStartPosition.set(selectedHeroPosition.x,selectedHeroPosition.y), mousePosition, gameMap, selectedHeroData, mapEntity, crossPathTexture, false)) {
                 Gdx.app.log("MapInteractionSystem", "Path created for hero id: "
                         + selectedHeroData.id + " Length: " + selectedHeroData.heroPath.getPathSize() + " to chest");
             }
         }
     }
 
-    private void handleWalkableForSelectedHero(Entity selectedHero, int mapIndexX, int mapIndexY) {
-
+    private void handleWalkableForSelectedHero(Entity selectedHero, int mapIndexX, int mapIndexY, Vector2 mousePosition) {
         HeroDataComponent selectedHeroData = heroDataMap.get(selectedHero);
         PositionComponent selectedHeroPosition = posMap.get(selectedHero);
         GameMapDataComponent gameMapData = gameMapDataMapper.get(gameMapDataArray.first());
         Map gameMap = gameMapData.map;
 
-        Gdx.app.log("MapInteractionSystem", "Tap inside map " + mouseWorldPosition.toString()
+        Gdx.app.log("MapInteractionSystem", "Tap inside map " + mousePosition.toString()
                 + " (" + mapIndexX + "," + mapIndexY + ")" + " walkable: true, selected hero id: " + selectedHeroData.id);
 
         if (mapIndexX == (int)Math.floor(selectedHeroPosition.x / gameMap.getTileWidth()) && mapIndexY == (int)Math.floor(selectedHeroPosition.y / gameMap.getTileHeight())) {
@@ -297,18 +298,18 @@ public class MapInteractionSystem extends GameMapEntitySystem {
             }
         }
 
-        if (findPath(pathStartPosition.set(selectedHeroPosition.x, selectedHeroPosition.y), mouseWorldPosition, gameMap, selectedHeroData, crossPathTexture))
+        if (findPath(pathStartPosition.set(selectedHeroPosition.x, selectedHeroPosition.y), mousePosition, gameMap, selectedHeroData, crossPathTexture))
             Gdx.app.log("MapInteractionSystem", "Path created for hero id: "
                     + selectedHeroData.id + " Length: " + selectedHeroData.heroPath.getPathSize());
 
     }
 
-    private void handleLongPress(int mapIndexX, int mapIndexY) {
+    private void handleLongPress(int mapIndexX, int mapIndexY, Vector2 mousePosition) {
         GameMapDataComponent gameMapData = gameMapDataMapper.get(gameMapDataArray.first());
         Map gameMap = gameMapData.map;
         Entity mapEntity = gameMap.getEntity(mapIndexX,mapIndexY);
 
-        Gdx.app.log("MapInteractionSystem", "Long press inside map " + mouseWorldPosition.toString() + " (" + mapIndexX + "," + mapIndexY + ")");
+        Gdx.app.log("MapInteractionSystem", "Long press inside map " + mousePosition.toString() + " (" + mapIndexX + "," + mapIndexY + ")");
         for (Entity hero : heroes) { //TODO action for long press on hero
             HeroDataComponent heroData = heroDataMap.get(hero);
             PositionComponent heroPosition = posMap.get(hero);
@@ -331,29 +332,30 @@ public class MapInteractionSystem extends GameMapEntitySystem {
         }
     }
 
-    public void deselectHero(Class<? extends PlayerComponent> playerClass) {
+    public boolean deselectHero(Class<? extends PlayerComponent> playerClass) {
         ImmutableArray<Entity> selected = game.engine.getEntitiesFor(Family.all(playerClass, SelectedComponent.class, HeroDataComponent.class, gameMapClass).get());
-        if(selected.size() == 0) return;
-        if(heroDataMap.get(selected.first()).heroPath.hasWalkNodes()) return;
+        if(selected.size() == 0) return true;
+        if(heroDataMap.get(selected.first()).heroPath.hasWalkNodes()) return false;
 
         //TODO deselect everything that belongs to selected hero
 
         selected.first().remove(SelectedComponent.class);
+        return true;
     }
 
-    public void changeSelectedHero(Entity hero) {
+    public boolean changeSelectedHero(Entity hero) {
         //TODO player hero
-        deselectHero(game.gameManager.getCurrentPlayerClass());
+        if(!deselectHero(game.gameManager.getCurrentPlayerClass())) return false;
 
         hero.add(game.engine.createComponent(SelectedComponent.class));
-
+        recalculatePathForHero(hero);
         PositionComponent heroPosition = posMap.get(hero);
         gameMapDataMapper.get(gameMapDataArray.first()).gameMapCam.position.set(heroPosition.x,heroPosition.y,0);
-
+        return true;
     }
 
-    private void handleTapOutsideOfMap() {
-        Gdx.app.log("MapInteractionSystem", "Tap outside map of " + mouseWorldPosition.toString());
+    private void handleTapOutsideOfMap(Vector2 mousePosition) {
+        Gdx.app.log("MapInteractionSystem", "Tap outside map of " + mousePosition.toString());
     }
 
     public boolean findPathToEnemy(Vector2 startNodePos, Vector2 endNodePos, Map gameMap, HeroDataComponent heroData, Entity mapEntity, Texture lastPathTexture, EnemyComponent enemyComponent) {
