@@ -42,7 +42,7 @@ public class LongPressMenu extends VisTable {
         this.debug = debug;
         this.skin = game.hudManager.skin;
 
-        sprite = new Sprite(game.hudManager.whiteTexture);
+        sprite = new Sprite(game.hudManager.getWhiteTexture());
         sprite.setColor(0,0,0,0.7f);
 
         labelStyle = skin.get("label-white", Label.LabelStyle.class);

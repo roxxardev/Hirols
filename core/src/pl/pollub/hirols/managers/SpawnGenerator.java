@@ -44,13 +44,16 @@ public class SpawnGenerator {
         Random rand = new Random();
 
         Map<AnimationType, Map<Direction, Animation>> snakeAnimationMap = new HashMap<AnimationType, Map<Direction, Animation>>();
-        Direction[] snakeStayDirections = new Direction[] {Direction.N, Direction.NE, Direction.E, Direction.SE, Direction.S, Direction.SW, Direction.W, Direction.NW};
-        snakeAnimationMap.put(AnimationType.stand, AnimationManager.createAnimation(snakeStayDirections,
+        Direction[] snakeAnimationDirections = new Direction[] {Direction.N, Direction.NE, Direction.E, Direction.SE, Direction.S, Direction.SW, Direction.W, Direction.NW};
+        snakeAnimationMap.put(AnimationType.stand, AnimationManager.createAnimation(snakeAnimationDirections,
                 game.assetManager.get("animations/snake_stay_animation.png", Texture.class), 32, 8, 0.06f));
 
-        Map<AnimationType, Map<Direction, Animation>> mechAnimationMap = new HashMap<AnimationType, Map<Direction, Animation>>();
-        mechAnimationMap.put(AnimationType.stand, AnimationManager.createAnimation(snakeStayDirections,
-                game.assetManager.get("animations/standing_mech.png", Texture.class), 13, 8, 0.06f));
+        Direction[] heroAnimationDirections = new Direction[] {Direction.S, Direction.SE, Direction.E, Direction.NE, Direction.N, Direction.NW, Direction.W, Direction.SW};
+        Map<AnimationType, Map<Direction, Animation>> playerAnimationMap = new HashMap<AnimationType, Map<Direction, Animation>>();
+        playerAnimationMap.put(AnimationType.run, AnimationManager.createAnimation(heroAnimationDirections,
+                game.assetManager.get("animations/temp_HeroWalkAnimation.png", Texture.class), 8, 8, 0.06f));
+        playerAnimationMap.put(AnimationType.stand, AnimationManager.createAnimation(heroAnimationDirections,
+                game.assetManager.get("animations/temp_HeroStandAnimation.png", Texture.class), 1, 8, 0f));
 
         for (int i = 0; i < 50; i++) {
             Vector2 position = Pools.obtain(Vector2.class);
@@ -93,7 +96,7 @@ public class SpawnGenerator {
                 .add(game.engine.createComponent(LifePeriodComponent.class).init(1000));
         game.engine.addEntity(testText);
 
-        spawnPlayerAndHeroes(game, mechAnimationMap, map, game.gameManager.getPlayerClasses().get(0));
+        spawnPlayerAndHeroes(game, playerAnimationMap, map, game.gameManager.getPlayerClasses().get(0));
     }
 
 
@@ -114,7 +117,7 @@ public class SpawnGenerator {
                 .add(engine.createComponent(PositionComponent.class).init(1728, 1728))
                 .add(engine.createComponent(map.getGameMapComponentClazz()))
                 .add(engine.createComponent(AnimationComponent.class).init(new AnimationSet(AnimationType.stand, Direction.getRandomDirection(), animationMap), true,0f))
-                .add(engine.createComponent(TextureComponent.class).setSize(84, 102))
+                .add(engine.createComponent(TextureComponent.class).setSize(128, 96))
                 .add(engine.createComponent(RenderableComponent.class))
                 .add(engine.createComponent(HeroDataComponent.class).init(++playerId, "Cwel", 10.f,new Sprite(game.assetManager.get("temp/portrait.png", Texture.class))))
                 .add(engine.createComponent(VelocityComponent.class))
@@ -128,7 +131,7 @@ public class SpawnGenerator {
                     .add(engine.createComponent(AnimationComponent.class).init(new AnimationSet(AnimationType.stand, Direction.getRandomDirection(), animationMap), true, 0f))
                     .add(engine.createComponent(PositionComponent.class).init(generateRandomPositionOnMap(heroPosition,map)))
                     .add(engine.createComponent(RenderableComponent.class))
-                    .add(engine.createComponent(TextureComponent.class).setSize(84, 102))
+                    .add(engine.createComponent(TextureComponent.class).setSize(128, 96))
                     .add(engine.createComponent(HeroDataComponent.class).init(++playerId,"nołnejm", 13f, new Sprite(game.assetManager.get("temp/portrait.png", Texture.class))))
                     .add(engine.createComponent(VelocityComponent.class))
                     .add(engine.createComponent(playerClass));

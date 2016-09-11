@@ -111,7 +111,7 @@ public class BattleScreenHud implements Disposable {
             setBounds(stage.getWidth() / 5, stage.getHeight() / 10, stage.getWidth() * 3 / 5, stage.getHeight() * 4 / 5);
             setTouchable(Touchable.enabled);
 
-            Sprite sprite = new Sprite(game.hudManager.whiteTexture){{
+            Sprite sprite = new Sprite(game.hudManager.getWhiteTexture()){{
                 setColor(0f, 0f, 0f, 0.7f);}};
 
             setBackground(new SpriteDrawable(sprite));

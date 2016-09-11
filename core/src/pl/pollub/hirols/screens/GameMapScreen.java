@@ -21,6 +21,7 @@ import pl.pollub.hirols.gameMap.Map;
 import pl.pollub.hirols.managers.input.MyGestureListener;
 import pl.pollub.hirols.managers.input.MyInputProcessor;
 import pl.pollub.hirols.systems.gameMapSystems.EndNodeInteractionSystem;
+import pl.pollub.hirols.systems.gameMapSystems.HeroAnimationChangerSystem;
 import pl.pollub.hirols.systems.gameMapSystems.MapCamMovementSystem;
 import pl.pollub.hirols.systems.gameMapSystems.MapCamUpdateSystem;
 import pl.pollub.hirols.systems.gameMapSystems.HeroMovementSystem;
@@ -94,6 +95,7 @@ public class GameMapScreen extends GameScreen {
         systems.add(new HeroMovementSystem(7,gameMapClass,game));
         systems.add(new MovementSystem(8,gameMapClass));
         systems.add(new FontsDeathSystem(9,gameMapClass));
+        systems.add(new HeroAnimationChangerSystem(9,gameMapClass,game));
         systems.add(new AnimationSystem(10,gameMapClass));
         systems.add(new MapCamUpdateSystem(13,gameMapClass));
 

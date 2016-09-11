@@ -35,6 +35,7 @@ import pl.pollub.hirols.components.player.PlayerComponent;
 import pl.pollub.hirols.components.player.PlayerDataComponent;
 import pl.pollub.hirols.gameMap.Map;
 import pl.pollub.hirols.managers.EngineTools;
+import pl.pollub.hirols.managers.enums.Direction;
 import pl.pollub.hirols.managers.input.InputManager;
 import pl.pollub.hirols.pathfinding.Node;
 
@@ -188,7 +189,6 @@ public class MapInteractionSystem extends GameMapEntitySystem {
         HeroDataComponent heroData = heroDataMap.get(hero);
         int mapIndexX = (int)Math.floor(heroData.heroPath.getTargetPosition().x / gameMap.getTileWidth());
         int mapIndexY = (int)Math.floor(heroData.heroPath.getTargetPosition().y / gameMap.getTileHeight());
-        Gdx.app.log("fsdfd", mapIndexX + " " + mapIndexY);
         if(mapIndexX == 0f && mapIndexY == 0f) return false;
         searchNewPathInsideMap(hero,mapIndexX,mapIndexY,heroData.heroPath.getTargetPosition());
         return true;
@@ -405,65 +405,82 @@ public class MapInteractionSystem extends GameMapEntitySystem {
                 int nodeX = node.getXIndex();
                 int nodeY = node.getYIndex();
 
-                Sprite temp = new Sprite(lastPathTexture);
-                temp.setSize(96, 96);
-                temp.setColor(Color.GREEN);
+                Sprite tempSprite = new Sprite(lastPathTexture);
+                tempSprite.setSize(gameMap.getTileWidth(), gameMap.getTileHeight());
+                tempSprite.setColor(Color.GREEN);
 
                 Node previousNode = heroData.heroPath.getPath().get(i-1);
                 int previousNodeX = previousNode.getXIndex();
                 int previousNodeY = previousNode.getYIndex();
 
                 float movementCost = 0;
+
+                Direction direction = null;
+
                 if (previousNodeX == nodeX) {
                     movementCost = 1f;
                     if (previousNodeY < nodeY) {
-                        temp.setTexture(game.assetManager.get("arrows/arrow_N.png", Texture.class)); //góra
+                        tempSprite.setTexture(game.assetManager.get("arrows/arrow_N.png", Texture.class)); //góra
+                        direction = Direction.N;
                     } else if (previousNodeY > nodeY) {
-                        temp.setTexture(game.assetManager.get("arrows/arrow_S.png", Texture.class)); //dół
+                        tempSprite.setTexture(game.assetManager.get("arrows/arrow_S.png", Texture.class)); //dół
+                        direction = Direction.S;
                     }
                 } else if (previousNodeY == nodeY) {
                     movementCost = 1f;
-                    if (previousNodeX > nodeX)
-                        temp.setTexture(game.assetManager.get("arrows/arrow_W.png", Texture.class)); //lewo
-                    else if (previousNodeX < nodeX)
-                        temp.setTexture(game.assetManager.get("arrows/arrow_E.png", Texture.class)); //prawo
+                    if (previousNodeX > nodeX) {
+                        tempSprite.setTexture(game.assetManager.get("arrows/arrow_W.png", Texture.class)); //lewo
+                        direction = Direction.W;
+                    }
+                    else if (previousNodeX < nodeX) {
+                        tempSprite.setTexture(game.assetManager.get("arrows/arrow_E.png", Texture.class)); //prawo
+                        direction = Direction.E;
+                    }
                 } else if (previousNodeY < nodeY) {
                     movementCost = 1.41421356f;
-                    if (previousNodeX < nodeX)
-                        temp.setTexture(game.assetManager.get("arrows/arrow_NE.png", Texture.class)); //góraprawo
-                    else if (previousNodeX > nodeX)
-                        temp.setTexture(game.assetManager.get("arrows/arrow_NW.png", Texture.class)); //góralewo
+                    if (previousNodeX < nodeX) {
+                        tempSprite.setTexture(game.assetManager.get("arrows/arrow_NE.png", Texture.class)); //góraprawo
+                        direction = Direction.NE;
+                    }
+                    else if (previousNodeX > nodeX) {
+                        tempSprite.setTexture(game.assetManager.get("arrows/arrow_NW.png", Texture.class)); //góralewo
+                        direction = Direction.NW;
+                    }
                 } else if (previousNodeY > nodeY) {
                     movementCost = 1.41421356f;
-                    if (previousNodeX < nodeX)
-                        temp.setTexture(game.assetManager.get("arrows/arrow_SE.png", Texture.class)); //dółprawo
-                    else if (previousNodeX > nodeX)
-                        temp.setTexture(game.assetManager.get("arrows/arrow_SW.png", Texture.class)); //dółlewo
+                    if (previousNodeX < nodeX) {
+                        tempSprite.setTexture(game.assetManager.get("arrows/arrow_SE.png", Texture.class)); //dółprawo
+                        direction = Direction.SE;
+                    }
+                    else if (previousNodeX > nodeX) {
+                        tempSprite.setTexture(game.assetManager.get("arrows/arrow_SW.png", Texture.class)); //dółlewo
+                        direction = Direction.SW;
+                    }
                 }
                 heroMovementPoints -= movementCost;
                 if (heroMovementPoints < 0) {
-                    temp.setColor(Color.RED);
+                    tempSprite.setColor(Color.RED);
                 }
 
                 Vector2 position = Pools.obtain(Vector2.class).set(nodeX * gameMap.getTileWidth(), nodeY * gameMap.getTileHeight());
                 heroData.heroPath.getStand().addElement(position.x,position.y, movementCost);
-                Entity entity = game.engine.createEntity();
+                Entity pathEntity = game.engine.createEntity();
 
-                entity
+                pathEntity
                         .add(game.engine.createComponent(PositionComponent.class).init(position))
                         .add(game.engine.createComponent(RenderableComponent.class))
-                        .add(game.engine.createComponent(TextureComponent.class).setSprite(temp))
+                        .add(game.engine.createComponent(TextureComponent.class).setSprite(tempSprite))
                         .add(game.engine.createComponent(gameMap.getGameMapComponentClazz()))
-                        .add(game.engine.createComponent(PathComponent.class).init(heroData.id));
+                        .add(game.engine.createComponent(PathComponent.class).init(heroData.id,direction));
 
                 if (i == (heroData.heroPath.getPathSize() - 1)) {
-                    temp.setTexture(lastPathTexture);
+                    tempSprite.setTexture(lastPathTexture);
                     heroData.heroPath.getTargetPosition().set(position);
                 }
 
                 Pools.free(position);
-                getEngine().addEntity(entity);
-                heroData.pathEntities.add(entity);
+                getEngine().addEntity(pathEntity);
+                heroData.pathEntities.add(pathEntity);
             }
         } else return false;
 

@@ -92,7 +92,7 @@ public class LoadingScreen implements Screen {
         //tutaj wszystko do załadowania:
         loadAssets();
 
-        //Texture.setAssetManager(assetManager);
+        Texture.setAssetManager(assetManager);
     }
 
     private void loadAssets() {
@@ -110,7 +110,6 @@ public class LoadingScreen implements Screen {
         assetManager.load("arrows/arrow_W.png", Texture.class, textureParameter);
         assetManager.load("arrows/cross.png", Texture.class, textureParameter);
         assetManager.load("arrows/sword.png", Texture.class, textureParameter);
-        assetManager.load("animations/walking_swamp.png", Texture.class, textureParameter);
         assetManager.load("animations/standing_mech.png", Texture.class, textureParameter);
         FreetypeFontLoader.FreeTypeFontLoaderParameter fontLoaderParameter = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         fontLoaderParameter.fontFileName = "fonts/test.TTF";
@@ -126,11 +125,11 @@ public class LoadingScreen implements Screen {
         assetManager.load("gold.png", Texture.class, textureParameter);
         assetManager.load("animations/snake_stay_animation.png", Texture.class, textureParameter);
         assetManager.load("animations/loadingLongPress.png", Texture.class, textureParameter);
-        assetManager.load("hexagon.png", Texture.class, textureParameter);
-        assetManager.load("hexagon2.png", Texture.class, textureParameter);
         assetManager.load("battleBackground.png", Texture.class, textureParameter);
-        assetManager.load("rect.png", Texture.class, textureParameter);
         assetManager.load("towns/snow-town.png", Texture.class, textureParameter);
+
+        assetManager.load("animations/temp_HeroStandAnimation.png", Texture.class, textureParameter);
+        assetManager.load("animations/temp_HeroWalkAnimation.png", Texture.class, textureParameter);
 
         //GUI
 
@@ -153,7 +152,7 @@ public class LoadingScreen implements Screen {
         assetManager.load("ui/button-images.png", Texture.class, textureParameter);
         assetManager.load("ui/menuDrag.png", Texture.class, textureParameter);
         assetManager.load("ui/minimapDrag.png", Texture.class, textureParameter);
-        //assetManager.load("ui/townheroDrag.png", Texture.class, textureParameter);
+
         assetManager.load("temp/portrait.png", Texture.class, textureParameter);
         assetManager.load("temp/town.gif", Texture.class, textureParameter);
 

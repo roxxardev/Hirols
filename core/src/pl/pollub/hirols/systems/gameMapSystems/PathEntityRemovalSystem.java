@@ -10,7 +10,6 @@ import com.badlogic.gdx.math.Vector3;
 import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.components.map.maps.GameMapComponent;
 import pl.pollub.hirols.components.map.HeroDataComponent;
-import pl.pollub.hirols.components.map.PathComponent;
 import pl.pollub.hirols.components.SelectedComponent;
 import pl.pollub.hirols.components.physics.PositionComponent;
 
@@ -50,6 +49,5 @@ public class PathEntityRemovalSystem extends GameMapEntitySystem {
                 heroData.heroPath.getWalk().removeFirstElement();
             }
         }
-
     }
 }

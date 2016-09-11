@@ -23,7 +23,7 @@ public class HudManager {
     private Hirols game;
     public Skin skin;
 
-    public Texture whiteTexture;
+    private Texture whiteTexture;
     private SpriteDrawable transparentBackground;
     public BitmapFont bitmapFont;
     public boolean debug;
@@ -124,5 +124,9 @@ public class HudManager {
 
     public SpriteDrawable getTransparentBackground() {
         return transparentBackground;
+    }
+
+    public Texture getWhiteTexture() {
+        return whiteTexture;
     }
 }

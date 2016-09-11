@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -14,11 +15,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.kotcrab.vis.ui.layout.GridGroup;
@@ -258,9 +261,10 @@ public class RightBar extends Table {
             setItemSize(itemWidth,itemHeight);
             for(HeroTable table : heroButtonMap.values()) {
                 table.setSize(itemWidth,itemHeight);
-                Image image = table.image;
-
-                float progressBarWidth = (table.getWidth() - itemWidth * (image.getPrefWidth() / image.getPrefHeight())) / 2;
+                //Image image = table.image;
+                //float imageWidth = itemWidth * (image.getPrefWidth() / image.getPrefHeight());
+                //float progressBarWidth = (table.getWidth() - imageWidth) / 2 + 1;
+                float progressBarWidth = itemWidth / 10;
                 table.movement.getStyle().background.setMinWidth(progressBarWidth);
                 table.movement.getStyle().knob.setMinWidth(progressBarWidth);
             }
@@ -269,11 +273,18 @@ public class RightBar extends Table {
         private class HeroTable extends Table {
             final Image image;
             final FixedProgressBar movement, magic;
+            private Sprite backgroundSprite;
 
             public HeroTable(Image image, final FixedProgressBar movement, FixedProgressBar magic) {
                 this.image = image;
                 this.movement = movement;
                 this.magic = magic;
+
+                //setDebug(true);
+
+                backgroundSprite = new Sprite(game.hudManager.getWhiteTexture());
+                backgroundSprite.setColor(0,0,0,0.9f);
+                setBackground(new SpriteDrawable(backgroundSprite));
 
                 float duration = 0.5f;
                 magic.setAnimateDuration(duration);
@@ -289,10 +300,9 @@ public class RightBar extends Table {
 
                 image.setHeight(0);
                 image.setScaling(Scaling.fit);
-
-                add(movement).fill();
+                add(movement).fillY();
                 add(image);
-                add(magic).fill();
+                add(magic).fillY();
                 row();
             }
         }

@@ -36,7 +36,7 @@ public class TopBar extends VisTable {
         initAndAddResources();
 
 
-        this.setBackground(new SpriteDrawable(new Sprite(game.hudManager.whiteTexture){{
+        this.setBackground(new SpriteDrawable(new Sprite(game.hudManager.getWhiteTexture()){{
             setColor(0,0,0,0.3f);
         }}));
         this.setTouchable(Touchable.enabled);
