@@ -3,6 +3,7 @@ package pl.pollub.hirols.managers;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -108,7 +109,7 @@ public class SpawnGenerator {
         player
                 .add(engine.createComponent(map.getGameMapComponentClazz()))
                 .add(engine.createComponent(playerClass))
-                .add(engine.createComponent(PlayerDataComponent.class).init(playerClass))
+                .add(engine.createComponent(PlayerDataComponent.class).init(playerClass, Color.BROWN, "Gracz cwel"))
                 .add(engine.createComponent(SelectedComponent.class));
         engine.addEntity(player);
 
