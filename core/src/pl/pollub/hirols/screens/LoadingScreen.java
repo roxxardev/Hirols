@@ -128,8 +128,8 @@ public class LoadingScreen implements Screen {
         assetManager.load("battleBackground.png", Texture.class, textureParameter);
         assetManager.load("towns/snow-town.png", Texture.class, textureParameter);
 
-        assetManager.load("animations/temp_HeroStandAnimation.png", Texture.class, textureParameter);
-        assetManager.load("animations/temp_HeroWalkAnimation.png", Texture.class, textureParameter);
+        assetManager.load("animations/Orc_Staying.png", Texture.class, textureParameter);
+        assetManager.load("animations/Orc_Walking.png", Texture.class, textureParameter);
 
         //GUI
 
