@@ -82,7 +82,9 @@ public class GameManager {
 
     public void createMap(String filePath) {
         //TODO exception handling
-        pl.pollub.hirols.gameMap.Map map = new pl.pollub.hirols.gameMap.Map(game,tmxMapLoader.load(filePath),getNewGameMapComponentClass());
+        TmxMapLoader.Parameters parameters = new TmxMapLoader.Parameters();
+
+        pl.pollub.hirols.gameMap.Map map = new pl.pollub.hirols.gameMap.Map(game,tmxMapLoader.load(filePath, parameters),getNewGameMapComponentClass());
         GameMapScreen gameMapScreen = new GameMapScreen(game,map,gameMapCam,gameMapPort);
         mapScreens.put(filePath,gameMapScreen);
         if(currentGameMapScreen == null) currentGameMapScreen = gameMapScreen; else gameMapScreen.setSystemsProcessing(false);

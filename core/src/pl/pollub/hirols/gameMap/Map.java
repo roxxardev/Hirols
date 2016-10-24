@@ -15,6 +15,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Pools;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ import pl.pollub.hirols.pathfinding.NodePath;
 /**
  * Created by Eryk on 2016-04-23.
  */
-public class Map {
+public class Map implements Disposable {
 
     private final Hirols game;
 
@@ -61,10 +62,10 @@ public class Map {
         this.gameMapComponentClazz = gameMapComponent;
 
         MapProperties properties = tiledMap.getProperties();
-        tileMapWidth = properties.get("width", Integer.class);
-        tileMapHeight = properties.get("height", Integer.class);
-        tileWidth = properties.get("tilewidth", Integer.class);
-        tileHeight = properties.get("tileheight", Integer.class);
+        tileMapWidth = properties.get("width", Integer.class)/2;
+        tileMapHeight = properties.get("height", Integer.class)/2;
+        tileWidth = properties.get("tilewidth", Integer.class)*2;
+        tileHeight = properties.get("tileheight", Integer.class)*2;
         mapRect = new Rectangle(0,0,tileMapWidth*tileWidth,tileMapHeight*tileHeight);
 
         entityMap = new Entity[tileMapWidth][tileMapHeight];
@@ -76,34 +77,34 @@ public class Map {
     }
 
     private void createEntities() {
-        MapLayer groundLayer = tiledMap.getLayers().get(0);
-        TiledMapTileLayer tileGroundLayer = (TiledMapTileLayer)groundLayer;
-        for(int i=0; i<tileGroundLayer.getWidth();i++) {
-            for(int j=0; j<tileGroundLayer.getHeight();j++) {
-                TiledMapTileLayer.Cell cell = tileGroundLayer.getCell(i, j);
+
+        TiledMapTileLayer tileGroundLayer = (TiledMapTileLayer) tiledMap.getLayers().get("ground");
+        for(int i=0; i<tileGroundLayer.getWidth();i=i+2) {
+            for(int j=0; j<tileGroundLayer.getHeight();j=j+2) {
+                TiledMapTileLayer.Cell[] cells = new TiledMapTileLayer.Cell[4];
+                cells[0] = tileGroundLayer.getCell(i, j);
+                cells[1] = tileGroundLayer.getCell(i+1, j);
+                cells[2] = tileGroundLayer.getCell(i+1, j+1);
+                cells[3] = tileGroundLayer.getCell(i, j+1);
+
                 Entity entity = game.engine.createEntity();
-                if(cell!=null){
-                    TiledMapTile tile = cell.getTile();
-                    Object walkable = tile.getProperties().get("walkable");
-                    if(walkable!=null) {
-                        //Gdx.app.log("Tile", i+" "+j +" "+ walkable.toString());
-                        entity
-                                .add(game.engine.createComponent(MapComponent.class).init(Boolean.parseBoolean(walkable.toString())))
-                                .add(game.engine.createComponent(PositionComponent.class).init(i*tileWidth,j*tileHeight));
-                        //game.engine.addEntity(entity);
-                    } else {
-                        //Gdx.app.log("Tile", i + " " + j + " no properties walkable");
-                        entity
-                                .add(game.engine.createComponent(MapComponent.class).init(false))
-                                .add(game.engine.createComponent(PositionComponent.class).init(i*tileWidth,j*tileHeight));
+                boolean walkable = false;
+                for(TiledMapTileLayer.Cell cell : cells) {
+                    if(cell != null) {
+                        Object property = cell.getTile().getProperties().get("walkable");
+                        if(property != null) {
+                            walkable = Boolean.parseBoolean(property.toString());
+                            if(!walkable) break;
+                        }
                     }
-                } else {
-                    entity
-                            .add(game.engine.createComponent(MapComponent.class).init(false))
-                            .add(game.engine.createComponent(PositionComponent.class).init(i*tileWidth,j*tileHeight));
                 }
-                entity.add(game.engine.createComponent(gameMapComponentClazz));
-                entityMap[i][j] = entity;
+
+                entity
+                        .add(game.engine.createComponent(MapComponent.class).init(walkable))
+                        .add(game.engine.createComponent(PositionComponent.class).init(i/2*tileWidth,j/2*tileHeight))
+                        .add(game.engine.createComponent(gameMapComponentClazz));
+
+                entityMap[i/2][j/2] = entity;
             }
         }
 
@@ -232,8 +233,10 @@ public class Map {
         return mapRect;
     }
 
+    @Override
     public void dispose() {
         tiledMap.dispose();
     }
+
 
 }
