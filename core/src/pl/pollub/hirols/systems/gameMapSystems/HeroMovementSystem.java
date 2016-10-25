@@ -65,7 +65,7 @@ public class HeroMovementSystem extends GameMapEntitySystem {
         float speed = 600.0f; //TODO selectedHeroes speed setting in options
         if (sub1 > 0) {
             tmp1 = heroPosition.x + speed * deltaTime;
-            cam.position.x = tmp1 + cameraOffset;
+            cam.position.x = Math.round(tmp1 + cameraOffset);
             if (tmp1 >= destinationPosition.x) {
                 heroPosition.x = destinationPosition.x;
                 velocity.velocity.x = 0;
@@ -74,18 +74,18 @@ public class HeroMovementSystem extends GameMapEntitySystem {
             }
         } else if (sub1 < 0) {
             tmp1 = heroPosition.x - speed * deltaTime;
-            cam.position.x = tmp1 + cameraOffset;
+            cam.position.x = Math.round(tmp1 + cameraOffset);
             if (tmp1 <= destinationPosition.x) {
                 heroPosition.x = destinationPosition.x;
                 velocity.velocity.x = 0;
             } else {
                 velocity.velocity.x = -speed;
             }
-        } else cam.position.x = heroPosition.x + cameraOffset;
+        } else cam.position.x = Math.round(heroPosition.x + cameraOffset);
 
         if (sub2 > 0) {
             tmp2 = heroPosition.y + speed * deltaTime;
-            cam.position.y = tmp2 + cameraOffset;
+            cam.position.y = Math.round(tmp2 + cameraOffset);
             if (tmp2 >= destinationPosition.y) {
                 heroPosition.y = destinationPosition.y;
                 velocity.velocity.y = 0;
@@ -94,14 +94,14 @@ public class HeroMovementSystem extends GameMapEntitySystem {
             }
         } else if (sub2 < 0) {
             tmp2 = heroPosition.y - speed * deltaTime;
-            cam.position.y = tmp2 + cameraOffset;
+            cam.position.y = Math.round(tmp2 + cameraOffset);
             if (tmp2 <= destinationPosition.y) {
                 heroPosition.y = destinationPosition.y;
                 velocity.velocity.y = 0;
             } else {
                 velocity.velocity.y = -speed;
             }
-        } else cam.position.y = heroPosition.y + cameraOffset;
+        } else cam.position.y = Math.round(heroPosition.y + cameraOffset);
     }
 }
 

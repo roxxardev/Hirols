@@ -55,9 +55,9 @@ public class GameManager {
 
     public GameManager(Hirols game, int playersNumber) {
         this.game = game;
-        parameters.generateMipMaps = true;
-        parameters.textureMagFilter = Texture.TextureFilter.Linear;
-        parameters.textureMinFilter = Texture.TextureFilter.MipMap;
+        parameters.generateMipMaps = false;
+        parameters.textureMagFilter = Texture.TextureFilter.Nearest;
+        parameters.textureMinFilter = Texture.TextureFilter.Nearest;
 
         gameMapCam = new OrthographicCamera();
         gameMapCam.setToOrtho(false);
@@ -82,8 +82,6 @@ public class GameManager {
 
     public void createMap(String filePath) {
         //TODO exception handling
-        TmxMapLoader.Parameters parameters = new TmxMapLoader.Parameters();
-
         pl.pollub.hirols.gameMap.Map map = new pl.pollub.hirols.gameMap.Map(game,tmxMapLoader.load(filePath, parameters),getNewGameMapComponentClass());
         GameMapScreen gameMapScreen = new GameMapScreen(game,map,gameMapCam,gameMapPort);
         mapScreens.put(filePath,gameMapScreen);

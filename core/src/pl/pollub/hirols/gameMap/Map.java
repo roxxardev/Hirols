@@ -11,7 +11,6 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -73,7 +72,6 @@ public class Map implements Disposable {
         graph = GraphGenerator.generateGraph(this,tileWidth,tileHeight,tileMapWidth,tileMapHeight);
         pathFinder = new IndexedAStarPathFinder<Node>(graph);
         loadObjects();
-
     }
 
     private void createEntities() {
@@ -127,7 +125,7 @@ public class Map implements Disposable {
                 //TODO probably dividing bug
                 int x = ((int) position.x)/tileWidth;
                 int y = ((int) position.y)/tileHeight;
-                boolean walkable = false;
+                boolean walkable;
                 if(type.equals("castle")) {
                     float enterPositionX = position.x;
                     float enterPositionY = position.y;

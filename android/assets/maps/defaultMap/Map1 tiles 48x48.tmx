@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="128" height="128" tilewidth="48" tileheight="48" nextobjectid="4268">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="128" height="128" tilewidth="48" tileheight="48" nextobjectid="4371">
  <tileset firstgid="1" name="water" tilewidth="48" tileheight="48" tilecount="32" columns="8">
-  <image source="Texutres/ani water 0000.bmp" width="384" height="192"/>
+  <image source="Textures/ani water 0000.bmp" width="384" height="192"/>
   <tile id="0">
+   <properties>
+    <property name="tile" type="int" value="1"/>
+   </properties>
    <animation>
     <frame tileid="0" duration="100"/>
     <frame tileid="2" duration="100"/>
@@ -15,6 +18,9 @@
    </animation>
   </tile>
   <tile id="1">
+   <properties>
+    <property name="tile" type="int" value="2"/>
+   </properties>
    <animation>
     <frame tileid="1" duration="100"/>
     <frame tileid="3" duration="100"/>
@@ -27,6 +33,9 @@
    </animation>
   </tile>
   <tile id="8">
+   <properties>
+    <property name="tile" type="int" value="3"/>
+   </properties>
    <animation>
     <frame tileid="8" duration="100"/>
     <frame tileid="10" duration="100"/>
@@ -39,6 +48,9 @@
    </animation>
   </tile>
   <tile id="9">
+   <properties>
+    <property name="tile" type="int" value="4"/>
+   </properties>
    <animation>
     <frame tileid="9" duration="100"/>
     <frame tileid="11" duration="100"/>
@@ -52,7 +64,7 @@
   </tile>
  </tileset>
  <tileset firstgid="33" name="ZestawSnieg" tilewidth="48" tileheight="48" tilecount="144" columns="12">
-  <image source="Texutres/ZestawSnieg.png" width="576" height="576"/>
+  <image source="Textures/ZestawSnieg.png" width="576" height="576"/>
   <tile id="0">
    <properties>
     <property name="walkable" value="false"/>
@@ -775,7 +787,7 @@
   </tile>
  </tileset>
  <tileset firstgid="177" name="SummerTrees" tilewidth="96" tileheight="96" tilecount="18" columns="6">
-  <image source="Texutres/SummerTrees.png" width="576" height="288"/>
+  <image source="Textures/SummerTrees.png" width="576" height="288"/>
   <tile id="0">
    <properties>
     <property name="walkable" value="false"/>
@@ -838,10 +850,10 @@
   </tile>
  </tileset>
  <tileset firstgid="195" name="SummerTreesShadows" tilewidth="96" tileheight="96" tilecount="18" columns="6">
-  <image source="Texutres/SummerTreesShadows.png" width="576" height="288"/>
+  <image source="Textures/SummerTreesShadows.png" width="576" height="288"/>
  </tileset>
  <tileset firstgid="213" name="WinterTrees" tilewidth="96" tileheight="96" tilecount="18" columns="6">
-  <image source="Texutres/WinterTrees.png" width="576" height="288"/>
+  <image source="Textures/WinterTrees.png" width="576" height="288"/>
   <tile id="0">
    <properties>
     <property name="walkable" value="false"/>
@@ -904,10 +916,10 @@
   </tile>
  </tileset>
  <tileset firstgid="231" name="WinterTreesShadows" tilewidth="96" tileheight="96" tilecount="18" columns="6">
-  <image source="Texutres/WinterTreesShadows.png" width="576" height="288"/>
+  <image source="Textures/WinterTreesShadows.png" width="576" height="288"/>
  </tileset>
  <tileset firstgid="249" name="OrcTown" tilewidth="48" tileheight="48" tilecount="36" columns="6">
-  <image source="Texutres/OrcTown.png" width="288" height="288"/>
+  <image source="Textures/OrcTown.png" width="288" height="288"/>
   <tile id="0">
    <properties>
     <property name="walkable" value="false"/>
@@ -1090,7 +1102,7 @@
   </tile>
  </tileset>
  <tileset firstgid="285" name="Mine" tilewidth="48" tileheight="48" tilecount="8" columns="4">
-  <image source="Texutres/Mine.png" width="192" height="96"/>
+  <image source="Textures/Mine.png" width="192" height="96"/>
   <tile id="0">
    <properties>
     <property name="walkable" value="false"/>
@@ -1133,7 +1145,7 @@
   </tile>
  </tileset>
  <tileset firstgid="293" name="GroundObstacles" tilewidth="48" tileheight="48" tilecount="100" columns="10">
-  <image source="Texutres/GroundObstacles.png" width="512" height="512"/>
+  <image source="Textures/GroundObstacles.png" width="512" height="512"/>
   <tile id="0">
    <properties>
     <property name="walkable" value="false"/>
@@ -1377,12 +1389,12 @@
  </tileset>
  <layer name="water" width="128" height="128">
   <data encoding="base64" compression="zlib">
-   eJzt07ERACAMA7GEDvYfGDpGcBEVPi3g76pab82R7rfDsab/R/1T/9Q/9U/9U//UP/VP/VP/1D/1T/1T/9Q/9U/9U//UP/VP/VP/1D/1T/1T/9Q/9U/9U//UP/P/o/6pf+qf+qf+qX/qn/qn/ql/6p/6p/6pf+qf+qf+qX/qn/qn/ql/6p/6p/6pf+qf+qf+qX/qn/n/Uf/UP/VP/VP/1D/1T/1T/9Q/9U/9U//UP/VP/VP/1D/1T/1T/9Q/9U/9U//UP/VP/VP/1D/1z/z/qH/qn/qn/ql/6p/6p/6pf+qf+qf+qX/qn/qn/ql/6p/6p/6pf+qf+qf+qX/qn/qn/ql/fi/Bw2AQ
+   eJzt2NtuGzEMRVG3b+3/f3BDBAKawcQWHJHniNobCPjmkYJZzOXxeDx+f3z9Yh45o78fX3+YR87I4T1k4p+Jfyb+mfhn4p+Jfyb+mfhn4p+5v/9r6vf/9BlVv2//p37/T5+R0v8o63NXP6fbjJT+R1mfu/o53WakdH8t63NXPa/bjJTur2V97qrndZuRk/9RtvvZ53SfkZP/Ubb72ed0n5GDd1Vqf+oZOXhXpfanntFJ3q+p/alndJL3a2p/6hmd7H+kdoh/bWqHu/rvktrhrv67pHa4q/8ue0DtcFf/XfaA2iH+takd4l+b2iH+takd4l+b2uHu/nffA1n3V/uu8r/7Hsi6v9o3/ufKurfaN/7nyrq32ne1/133QPZ91c6r/O+6B7Lvq3aO/+dV3VftHf/3Vd1X7R3/91XdT+0d//dV3U/tHf/3Vd9L7R7/X6u+l9o9/r+muhf+PVLdC/9zdd07I/w/r+veGXXxvyqXc1S3u/9VuZyjOvx/5nKOqrr8/F+Vyzmq4uf/fS7nyA7/97mcIzv8P8/lHFnh/3ku58hqd//ZuZ7rp6ncr/afneu5fprK/W7+R67nmk3tfVf/I9dzzab2jn9Nauf416Z23sX/yPVc19S+u/kfuZ7rmtp3V/+jXc/lMqMd/Y92PZfLjHb275ra9Sn+XVO7xr82tWv8a1O7xr9Hat/416b2ne2f5lI7z/JPc6md4987/J/drv7f3QPsk7nc/b+7B9gnc+GfIvyf3Sn+2QP3neKfPXAf/inC/9m5+p91e8r/FbPu5ep/1u0p/1fMupe7/1fveVf/Lr83qf2/es+7+nf5vcnF/3fvd7YPVS5708X/d+93tg9VLnvTzX/23xPqXPemi//svyfUue7NLv7d94D6+9Ldv/seUH9fTvHPHjjbP3sA/+wB/LMH8L/Cf/Xnus7I4T2s9l/9ua4zcngPq/yr94vbjBzewyr/6v3iNiOH99DNf/Vz8O/lv/o5+K/ZA9XPVX9/uvp/12f1c9Xfn+7+X/lUn8N9Rg7vYdZeUJ/DfUYO7yET/0z8M/HPxD8T/0z8M/HPxD8T/0z8M/HPxD8T/0z8M/HPxD/zff90bv8ArEnqXA==
   </data>
  </layer>
  <layer name="ground" width="128" height="128">
   <data encoding="base64" compression="zlib">
-   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
+   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
   </data>
  </layer>
  <layer name="groundobstacles" width="128" height="128">
@@ -1406,854 +1418,296 @@
   </data>
  </layer>
  <objectgroup name="objects">
-  <object id="4123" name="OrcCastle1" x="1440" y="1248" width="96" height="96">
+  <object id="4313" name="stone" type="resource" x="4032" y="3072" width="96" height="96"/>
+  <object id="4314" name="stone" type="resource" x="3072" y="3936" width="96" height="96"/>
+  <object id="4315" name="stone" type="resource" x="1248" y="3360" width="96" height="96"/>
+  <object id="4316" name="stone" type="resource" x="1536" y="1536" width="96" height="96"/>
+  <object id="4317" name="wood" type="resource" x="3552" y="4128" width="96" height="96"/>
+  <object id="4318" name="wood" type="resource" x="4320" y="3648" width="96" height="96"/>
+  <object id="4319" name="wood" type="resource" x="1920" y="3072" width="96" height="96"/>
+  <object id="4320" name="wood" type="resource" x="2112" y="1536" width="96" height="96"/>
+  <object id="4321" name="wood" type="resource" x="1824" y="1920" width="96" height="96"/>
+  <object id="4322" name="wood" type="resource" x="2208" y="4320" width="96" height="96"/>
+  <object id="4323" name="steel" type="resource" x="1728" y="3648" width="96" height="96"/>
+  <object id="4324" name="steel" type="resource" x="2880" y="2880" width="96" height="96"/>
+  <object id="4325" name="steel" type="resource" x="3744" y="3552" width="96" height="96"/>
+  <object id="4326" name="steel" type="resource" x="1152" y="2112" width="96" height="96"/>
+  <object id="4327" name="steel" type="resource" x="2880" y="1536" width="96" height="96"/>
+  <object id="4328" name="OrcCastle1" type="castle" x="1440" y="1248" width="96" height="96">
    <properties>
-    <property name="EnterX" value="1632,00"/>
+    <property name="EnterX" type="float" value="1632"/>
     <property name="EnterY" value="1248,00"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
-  <object id="4124" name="OrcCastle1" x="1536" y="1248" width="96" height="96">
+  <object id="4329" name="OrcCastle1" type="castle" x="1536" y="1248" width="96" height="96">
    <properties>
-    <property name="EnterX" value="1632,00"/>
+    <property name="EnterX" type="float" value="1632"/>
     <property name="EnterY" value="1248,00"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
-  <object id="4125" name="OrcCastle1" x="1440" y="1152" width="96" height="96">
+  <object id="4330" name="OrcCastle1" type="castle" x="1440" y="1152" width="96" height="96">
    <properties>
-    <property name="EnterX" value="1632,00"/>
+    <property name="EnterX" type="float" value="1632"/>
     <property name="EnterY" value="1248,00"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
-  <object id="4126" name="OrcCastle1" x="1440" y="1056" width="96" height="96">
+  <object id="4331" name="OrcCastle1" type="castle" x="1440" y="1056" width="96" height="96">
    <properties>
-    <property name="EnterX" value="1632,00"/>
+    <property name="EnterX" type="float" value="1632"/>
     <property name="EnterY" value="1248,00"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
-  <object id="4127" name="OrcCastle1" x="1536" y="1152" width="96" height="96">
+  <object id="4332" name="OrcCastle1" type="castle" x="1536" y="1152" width="96" height="96">
    <properties>
-    <property name="EnterX" value="1632,00"/>
+    <property name="EnterX" type="float" value="1632"/>
     <property name="EnterY" value="1248,00"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
-  <object id="4128" name="OrcCastle1" x="1536" y="1056" width="96" height="96">
+  <object id="4333" name="OrcCastle1" type="castle" x="1536" y="1056" width="96" height="96">
    <properties>
-    <property name="EnterX" value="1632,00"/>
+    <property name="EnterX" type="float" value="1632"/>
     <property name="EnterY" value="1248,00"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
-  <object id="4129" name="OrcCastle1" x="1632" y="1056" width="96" height="96">
+  <object id="4334" name="OrcCastle1" type="castle" x="1632" y="1056" width="96" height="96">
    <properties>
-    <property name="EnterX" value="1632,00"/>
+    <property name="EnterX" type="float" value="1632"/>
     <property name="EnterY" value="1248,00"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
-  <object id="4130" name="OrcCastle1" x="1632" y="1152" width="96" height="96">
+  <object id="4335" name="OrcCastle1" type="castle" x="1632" y="1152" width="96" height="96">
    <properties>
-    <property name="EnterX" value="1632,00"/>
+    <property name="EnterX" type="float" value="1632"/>
     <property name="EnterY" value="1248,00"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
-  <object id="4131" name="OrcCastle1" x="1632" y="1248" width="96" height="96">
+  <object id="4336" name="OrcCastle1" type="castle" x="1632" y="1248" width="96" height="96">
    <properties>
     <property name="isEnter" value="true"/>
    </properties>
   </object>
-  <object id="4132" name="OrcTown2" x="3936" y="2688" width="96" height="96">
+  <object id="4337" name="OrcCastle2" type="castle" x="3936" y="2688" width="96" height="96">
    <properties>
     <property name="EnterX" value="4128,00"/>
-    <property name="EnterY" value="2688,00"/>
+    <property name="EnterY" type="float" value="2688"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
-  <object id="4133" name="OrcTown2" x="4032" y="2688" width="96" height="96">
+  <object id="4338" name="OrcCastle2" type="castle" x="4032" y="2688" width="96" height="96">
    <properties>
     <property name="EnterX" value="4128,00"/>
-    <property name="EnterY" value="2688,00"/>
+    <property name="EnterY" type="float" value="2688"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
-  <object id="4134" name="OrcTown2" x="3936" y="2592" width="96" height="96">
+  <object id="4339" name="OrcCastle2" type="castle" x="3936" y="2592" width="96" height="96">
    <properties>
     <property name="EnterX" value="4128,00"/>
-    <property name="EnterY" value="2688,00"/>
+    <property name="EnterY" type="float" value="2688"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
-  <object id="4135" name="OrcTown2" x="3936" y="2496" width="96" height="96">
+  <object id="4340" name="OrcCastle2" type="castle" x="3936" y="2496" width="96" height="96">
    <properties>
     <property name="EnterX" value="4128,00"/>
-    <property name="EnterY" value="2688,00"/>
+    <property name="EnterY" type="float" value="2688"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
-  <object id="4136" name="OrcTown2" x="4032" y="2592" width="96" height="96">
+  <object id="4341" name="OrcCastle2" type="castle" x="4032" y="2592" width="96" height="96">
    <properties>
     <property name="EnterX" value="4128,00"/>
-    <property name="EnterY" value="2688,00"/>
+    <property name="EnterY" type="float" value="2688"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
-  <object id="4137" name="OrcTown2" x="4032" y="2496" width="96" height="96">
+  <object id="4342" name="OrcCastle2" type="castle" x="4032" y="2496" width="96" height="96">
    <properties>
     <property name="EnterX" value="4128,00"/>
-    <property name="EnterY" value="2688,00"/>
+    <property name="EnterY" type="float" value="2688"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
-  <object id="4138" name="OrcTown2" x="4128" y="2496" width="96" height="96">
+  <object id="4343" name="OrcCastle2" type="castle" x="4128" y="2496" width="96" height="96">
    <properties>
     <property name="EnterX" value="4128,00"/>
-    <property name="EnterY" value="2688,00"/>
+    <property name="EnterY" type="float" value="2688"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
-  <object id="4139" name="OrcTown2" x="4128" y="2592" width="96" height="96">
+  <object id="4344" name="OrcCastle2" type="castle" x="4128" y="2592" width="96" height="96">
    <properties>
     <property name="EnterX" value="4128,00"/>
-    <property name="EnterY" value="2688,00"/>
+    <property name="EnterY" type="float" value="2688"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
-  <object id="4140" name="OrcTown2" x="4128" y="2688" width="96" height="96">
+  <object id="4345" name="OrcCastle2" type="castle" x="4128" y="2688" width="96" height="96">
    <properties>
     <property name="isEnter" value="true"/>
    </properties>
   </object>
-  <object id="4141" name="OrcTown3" x="2688" y="4704" width="96" height="96">
+  <object id="4346" name="OrcCastle3" type="castle" x="2688" y="4704" width="96" height="96">
    <properties>
     <property name="EnterX" value="2880,00"/>
     <property name="EnterY" value="4704,00"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
-  <object id="4142" name="OrcTown3" x="2784" y="4704" width="96" height="96">
+  <object id="4347" name="OrcCastle3" type="castle" x="2784" y="4704" width="96" height="96">
    <properties>
     <property name="EnterX" value="2880,00"/>
     <property name="EnterY" value="4704,00"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
-  <object id="4143" name="OrcTown3" x="2688" y="4608" width="96" height="96">
+  <object id="4348" name="OrcCastle3" type="castle" x="2688" y="4608" width="96" height="96">
    <properties>
     <property name="EnterX" value="2880,00"/>
     <property name="EnterY" value="4704,00"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
-  <object id="4144" name="OrcTown3" x="2688" y="4512" width="96" height="96">
+  <object id="4349" name="OrcCastle3" type="castle" x="2688" y="4512" width="96" height="96">
    <properties>
     <property name="EnterX" value="2880,00"/>
     <property name="EnterY" value="4704,00"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
-  <object id="4145" name="OrcTown3" x="2784" y="4608" width="96" height="96">
+  <object id="4350" name="OrcCastle3" type="castle" x="2784" y="4608" width="96" height="96">
    <properties>
     <property name="EnterX" value="2880,00"/>
     <property name="EnterY" value="4704,00"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
-  <object id="4146" name="OrcTown3" x="2784" y="4512" width="96" height="96">
+  <object id="4351" name="OrcCastle3" type="castle" x="2784" y="4512" width="96" height="96">
    <properties>
     <property name="EnterX" value="2880,00"/>
     <property name="EnterY" value="4704,00"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
-  <object id="4147" name="OrcTown3" x="2880" y="4512" width="96" height="96">
+  <object id="4352" name="OrcCastle3" type="castle" x="2880" y="4512" width="96" height="96">
    <properties>
     <property name="EnterX" value="2880,00"/>
     <property name="EnterY" value="4704,00"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
-  <object id="4148" name="OrcTown3" x="2880" y="4608" width="96" height="96">
+  <object id="4353" name="OrcCastle3" type="castle" x="2880" y="4608" width="96" height="96">
    <properties>
     <property name="EnterX" value="2880,00"/>
     <property name="EnterY" value="4704,00"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
-  <object id="4149" name="OrcTown3" x="2880" y="4704" width="96" height="96">
+  <object id="4354" name="OrcCastle3" type="castle" x="2880" y="4704" width="96" height="96">
    <properties>
     <property name="isEnter" value="true"/>
    </properties>
   </object>
-  <object id="4150" name="Mine2" x="2304" y="1152" width="96" height="96">
+  <object id="4355" name="Mine1" type="mine" x="2304" y="1152" width="96" height="96">
    <properties>
     <property name="EnterX" type="float" value="2400"/>
     <property name="EnterY" type="float" value="1152"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
-  <object id="4151" name="Mine2" x="2400" y="1152" width="96" height="96">
+  <object id="4356" name="Mine1" type="mine" x="2400" y="1152" width="96" height="96">
    <properties>
     <property name="isEnter" value="true"/>
    </properties>
   </object>
-  <object id="4152" name="Mine1" x="1248" y="1728" width="96" height="96">
+  <object id="4357" name="Mine2" type="mine" x="1248" y="1728" width="96" height="96">
    <properties>
     <property name="EnterX" type="float" value="1344"/>
     <property name="EnterY" type="float" value="1728"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
-  <object id="4153" name="Mine1" x="1344" y="1728" width="96" height="96">
+  <object id="4358" name="Mine2" type="mine" x="1344" y="1728" width="96" height="96">
    <properties>
     <property name="isEnter" value="true"/>
    </properties>
   </object>
-  <object id="4154" name="Mine3" x="2592" y="2304" width="96" height="96">
+  <object id="4359" name="Mine3" type="mine" x="2592" y="2304" width="96" height="96">
    <properties>
     <property name="EnterX" type="float" value="2688"/>
     <property name="EnterY" type="float" value="2304"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
-  <object id="4155" name="Mine3" x="2688" y="2304" width="96" height="96">
+  <object id="4360" name="Mine3" type="mine" x="2688" y="2304" width="96" height="96">
    <properties>
     <property name="isEnter" value="true"/>
    </properties>
   </object>
-  <object id="4156" name="Mine4" x="1056" y="3072" width="96" height="96">
+  <object id="4361" name="Mine8" type="mine" x="1056" y="3072" width="96" height="96">
    <properties>
     <property name="EnterX" type="float" value="1152"/>
     <property name="EnterY" type="float" value="3072"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
-  <object id="4157" name="Mine4" x="1152" y="3072" width="96" height="96">
+  <object id="4362" name="Mine8" type="mine" x="1152" y="3072" width="96" height="96">
    <properties>
     <property name="isEnter" value="true"/>
    </properties>
   </object>
-  <object id="4158" name="Mine5" x="3744" y="3072" width="96" height="96">
+  <object id="4363" name="Mine4" type="mine" x="3744" y="3072" width="96" height="96">
    <properties>
     <property name="EnterX" type="float" value="3840"/>
     <property name="EnterY" type="float" value="3072"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
-  <object id="4159" name="Mine5" x="3840" y="3072" width="96" height="96">
+  <object id="4364" name="Mine4" type="mine" x="3840" y="3072" width="96" height="96">
    <properties>
     <property name="isEnter" value="true"/>
    </properties>
   </object>
-  <object id="4160" name="Mine7" x="2880" y="3744" width="96" height="96">
+  <object id="4365" name="Mine5" type="mine" x="2880" y="3744" width="96" height="96">
    <properties>
     <property name="EnterX" type="float" value="2976"/>
     <property name="EnterY" type="float" value="3744"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
-  <object id="4161" name="Mine7" x="2976" y="3744" width="96" height="96">
+  <object id="4366" name="Mine5" type="mine" x="2976" y="3744" width="96" height="96">
    <properties>
     <property name="isEnter" value="true"/>
    </properties>
   </object>
-  <object id="4162" name="Mine6" x="4224" y="4032" width="96" height="96">
+  <object id="4367" name="Mine6" type="mine" x="4224" y="4032" width="96" height="96">
    <properties>
     <property name="EnterX" type="float" value="4320"/>
     <property name="EnterY" type="float" value="4032"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
-  <object id="4163" name="Mine6" x="4320" y="4032" width="96" height="96">
+  <object id="4368" name="Mine6" type="mine" x="4320" y="4032" width="96" height="96">
    <properties>
     <property name="isEnter" value="true"/>
    </properties>
   </object>
-  <object id="4164" name="Mine8" x="3456" y="4416" width="96" height="96">
+  <object id="4369" name="Mine7" type="mine" x="3456" y="4416" width="96" height="96">
    <properties>
     <property name="EnterX" type="float" value="3552"/>
     <property name="EnterY" type="float" value="4416"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
-  <object id="4165" name="Mine8" x="3552" y="4416" width="96" height="96">
-   <properties>
-    <property name="isEnter" value="true"/>
-   </properties>
-  </object>
-  <object id="4167" name="stone" x="4032" y="3072" width="96" height="96"/>
-  <object id="4168" name="stone" x="3072" y="3936" width="96" height="96"/>
-  <object id="4169" name="stone" x="1248" y="3360" width="96" height="96"/>
-  <object id="4170" name="stone" x="1536" y="1536" width="96" height="96"/>
-  <object id="4171" name="wood" x="3552" y="4128" width="96" height="96"/>
-  <object id="4172" name="wood" x="4320" y="3648" width="96" height="96"/>
-  <object id="4173" name="wood" x="1920" y="3072" width="96" height="96"/>
-  <object id="4174" name="wood" x="2112" y="1536" width="96" height="96"/>
-  <object id="4175" name="wood" x="1824" y="1920" width="96" height="96"/>
-  <object id="4176" name="wood" x="2208" y="4320" width="96" height="96"/>
-  <object id="4177" name="steel" x="1728" y="3648" width="96" height="96"/>
-  <object id="4178" name="steel" x="2880" y="2880" width="96" height="96"/>
-  <object id="4179" name="steel" x="3744" y="3552" width="96" height="96"/>
-  <object id="4180" name="steel" x="1152" y="2112" width="96" height="96"/>
-  <object id="4181" name="steel" x="2880" y="1536" width="96" height="96"/>
-  <object id="4182" x="1440" y="1248" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4183" x="1536" y="1248" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4184" x="1440" y="1152" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4185" x="1440" y="1056" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4186" x="1536" y="1152" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4187" x="1536" y="1056" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4188" x="1632" y="1056" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4189" x="1632" y="1152" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4190" x="1632" y="1248" width="96" height="96">
-   <properties>
-    <property name="isEnter" value="true"/>
-   </properties>
-  </object>
-  <object id="4191" x="3936" y="2688" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4192" x="4032" y="2688" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4193" x="3936" y="2592" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4194" x="3936" y="2496" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4195" x="4032" y="2592" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4196" x="4032" y="2496" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4197" x="4128" y="2496" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4198" x="4128" y="2592" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4199" x="4128" y="2688" width="96" height="96">
-   <properties>
-    <property name="isEnter" value="true"/>
-   </properties>
-  </object>
-  <object id="4200" x="2688" y="4704" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4201" x="2784" y="4704" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4202" x="2688" y="4608" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4203" x="2688" y="4512" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4204" x="2784" y="4608" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4205" x="2784" y="4512" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4206" x="2880" y="4512" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4207" x="2880" y="4608" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4208" x="2880" y="4704" width="96" height="96">
-   <properties>
-    <property name="isEnter" value="true"/>
-   </properties>
-  </object>
-  <object id="4209" x="2304" y="1152" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="0"/>
-    <property name="EnterY" type="float" value="0"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4210" x="2400" y="1152" width="96" height="96">
-   <properties>
-    <property name="isEnter" value="true"/>
-   </properties>
-  </object>
-  <object id="4211" x="1248" y="1728" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="0"/>
-    <property name="EnterY" type="float" value="0"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4212" x="1344" y="1728" width="96" height="96">
-   <properties>
-    <property name="isEnter" value="true"/>
-   </properties>
-  </object>
-  <object id="4213" x="2592" y="2304" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="0"/>
-    <property name="EnterY" type="float" value="0"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4214" x="2688" y="2304" width="96" height="96">
-   <properties>
-    <property name="isEnter" value="true"/>
-   </properties>
-  </object>
-  <object id="4215" x="1056" y="3072" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="0"/>
-    <property name="EnterY" type="float" value="0"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4216" x="1152" y="3072" width="96" height="96">
-   <properties>
-    <property name="isEnter" value="true"/>
-   </properties>
-  </object>
-  <object id="4217" x="3744" y="3072" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="0"/>
-    <property name="EnterY" type="float" value="0"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4218" x="3840" y="3072" width="96" height="96">
-   <properties>
-    <property name="isEnter" value="true"/>
-   </properties>
-  </object>
-  <object id="4219" x="2880" y="3744" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="0"/>
-    <property name="EnterY" type="float" value="0"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4220" x="2976" y="3744" width="96" height="96">
-   <properties>
-    <property name="isEnter" value="true"/>
-   </properties>
-  </object>
-  <object id="4221" x="4224" y="4032" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="0"/>
-    <property name="EnterY" type="float" value="0"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4222" x="4320" y="4032" width="96" height="96">
-   <properties>
-    <property name="isEnter" value="true"/>
-   </properties>
-  </object>
-  <object id="4223" x="3456" y="4416" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="0"/>
-    <property name="EnterY" type="float" value="0"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4224" x="3552" y="4416" width="96" height="96">
-   <properties>
-    <property name="isEnter" value="true"/>
-   </properties>
-  </object>
-  <object id="4225" x="1440" y="1248" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4226" x="1536" y="1248" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4227" x="1440" y="1152" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4228" x="1440" y="1056" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4229" x="1536" y="1152" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4230" x="1536" y="1056" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4231" x="1632" y="1056" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4232" x="1632" y="1152" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4233" x="1632" y="1248" width="96" height="96">
-   <properties>
-    <property name="isEnter" value="true"/>
-   </properties>
-  </object>
-  <object id="4234" x="3936" y="2688" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4235" x="4032" y="2688" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4236" x="3936" y="2592" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4237" x="3936" y="2496" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4238" x="4032" y="2592" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4239" x="4032" y="2496" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4240" x="4128" y="2496" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4241" x="4128" y="2592" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4242" x="4128" y="2688" width="96" height="96">
-   <properties>
-    <property name="isEnter" value="true"/>
-   </properties>
-  </object>
-  <object id="4243" x="2688" y="4704" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4244" x="2784" y="4704" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4245" x="2688" y="4608" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4246" x="2688" y="4512" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4247" x="2784" y="4608" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4248" x="2784" y="4512" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4249" x="2880" y="4512" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4250" x="2880" y="4608" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="240"/>
-    <property name="EnterY" type="float" value="192"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4251" x="2880" y="4704" width="96" height="96">
-   <properties>
-    <property name="isEnter" value="true"/>
-   </properties>
-  </object>
-  <object id="4252" x="2304" y="1152" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="0"/>
-    <property name="EnterY" type="float" value="0"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4253" x="2400" y="1152" width="96" height="96">
-   <properties>
-    <property name="isEnter" value="true"/>
-   </properties>
-  </object>
-  <object id="4254" x="1248" y="1728" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="0"/>
-    <property name="EnterY" type="float" value="0"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4255" x="1344" y="1728" width="96" height="96">
-   <properties>
-    <property name="isEnter" value="true"/>
-   </properties>
-  </object>
-  <object id="4256" x="2592" y="2304" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="0"/>
-    <property name="EnterY" type="float" value="0"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4257" x="2688" y="2304" width="96" height="96">
-   <properties>
-    <property name="isEnter" value="true"/>
-   </properties>
-  </object>
-  <object id="4258" x="1056" y="3072" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="0"/>
-    <property name="EnterY" type="float" value="0"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4259" x="1152" y="3072" width="96" height="96">
-   <properties>
-    <property name="isEnter" value="true"/>
-   </properties>
-  </object>
-  <object id="4260" x="3744" y="3072" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="0"/>
-    <property name="EnterY" type="float" value="0"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4261" x="3840" y="3072" width="96" height="96">
-   <properties>
-    <property name="isEnter" value="true"/>
-   </properties>
-  </object>
-  <object id="4262" x="2880" y="3744" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="0"/>
-    <property name="EnterY" type="float" value="0"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4263" x="2976" y="3744" width="96" height="96">
-   <properties>
-    <property name="isEnter" value="true"/>
-   </properties>
-  </object>
-  <object id="4264" x="4224" y="4032" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="0"/>
-    <property name="EnterY" type="float" value="0"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4265" x="4320" y="4032" width="96" height="96">
-   <properties>
-    <property name="isEnter" value="true"/>
-   </properties>
-  </object>
-  <object id="4266" x="3456" y="4416" width="96" height="96">
-   <properties>
-    <property name="EnterX" type="float" value="0"/>
-    <property name="EnterY" type="float" value="0"/>
-    <property name="isEnter" value="false"/>
-   </properties>
-  </object>
-  <object id="4267" x="3552" y="4416" width="96" height="96">
+  <object id="4370" name="Mine7" type="mine" x="3552" y="4416" width="96" height="96">
    <properties>
     <property name="isEnter" value="true"/>
    </properties>

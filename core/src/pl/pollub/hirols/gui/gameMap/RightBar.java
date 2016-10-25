@@ -278,7 +278,6 @@ public class RightBar extends Table {
                 this.movement = movement;
                 this.magic = magic;
 
-                //setDebug(true);
 
                 backgroundSprite = new Sprite(game.hudManager.getWhiteTexture());
                 backgroundSprite.setColor(0,0,0,0.9f);

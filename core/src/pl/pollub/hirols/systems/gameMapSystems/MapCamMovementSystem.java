@@ -1,13 +1,21 @@
 package pl.pollub.hirols.systems.gameMapSystems;
 
+import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+import pl.pollub.hirols.Hirols;
+import pl.pollub.hirols.components.SelectedComponent;
+import pl.pollub.hirols.components.map.HeroDataComponent;
 import pl.pollub.hirols.components.map.maps.GameMapComponent;
 import pl.pollub.hirols.components.map.GameMapDataComponent;
+import pl.pollub.hirols.components.physics.PositionComponent;
 
 /**
  * Created by Eryk on 2016-05-01.
@@ -18,8 +26,14 @@ public class MapCamMovementSystem extends GameMapEntitySystem {
     private float origZoom;
     private Vector2 panDelta = new Vector2();
 
-    public MapCamMovementSystem(int priority, Class<? extends GameMapComponent> gameMapClass) {
+    private Hirols game;
+
+    private ComponentMapper<PositionComponent> posMap = ComponentMapper.getFor(PositionComponent.class);
+
+
+    public MapCamMovementSystem(int priority, Class<? extends GameMapComponent> gameMapClass, Hirols game) {
         super(priority, gameMapClass);
+        this.game = game;
     }
 
     @Override

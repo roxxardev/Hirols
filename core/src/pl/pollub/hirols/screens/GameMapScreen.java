@@ -88,7 +88,7 @@ public class GameMapScreen extends GameScreen {
         //TODO systems
         Class<? extends GameMapComponent> gameMapClass = map.getGameMapComponentClazz();
 
-        systems.add(new MapCamMovementSystem(3,gameMapClass));
+        systems.add(new MapCamMovementSystem(3,gameMapClass, game));
         systems.add(new EndNodeInteractionSystem(4,gameMapClass,game));
         systems.add(new PathEntityRemovalSystem(5,gameMapClass,game));
         systems.add(new MapInteractionSystem(6,game,gameMapClass));
