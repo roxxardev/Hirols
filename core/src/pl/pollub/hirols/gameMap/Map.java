@@ -106,6 +106,35 @@ public class Map implements Disposable {
             }
         }
 
+        TiledMapTileLayer[] layers = new TiledMapTileLayer[3];
+        layers[0] = (TiledMapTileLayer) tiledMap.getLayers().get("groundobstacles");
+        layers[1] = (TiledMapTileLayer) tiledMap.getLayers().get("buildings");
+        layers[2] = (TiledMapTileLayer) tiledMap.getLayers().get("trees");
+
+        ComponentMapper<MapComponent> mapComponentMapper = ComponentMapper.getFor(MapComponent.class);
+
+        for(TiledMapTileLayer layer : layers) {
+            for(int i=0; i<layer.getWidth();i=i+2) {
+                for (int j = 0; j < layer.getHeight(); j = j + 2) {
+                    TiledMapTileLayer.Cell[] cells = new TiledMapTileLayer.Cell[4];
+                    cells[0] = layer.getCell(i, j);
+                    cells[1] = layer.getCell(i + 1, j);
+                    cells[2] = layer.getCell(i + 1, j + 1);
+                    cells[3] = layer.getCell(i, j + 1);
+
+
+                    for(TiledMapTileLayer.Cell cell : cells) {
+                        if(cell == null) continue;
+                        Object property = cell.getTile().getProperties().get("walkable");
+                        if(property == null) continue;
+                        boolean walkable = Boolean.parseBoolean(property.toString());
+                        Entity entity = entityMap[i/2][j/2];
+                        mapComponentMapper.get(entity).walkable = walkable;
+                        break;
+                    }
+                }
+            }
+        }
 
     }
 
@@ -113,7 +142,7 @@ public class Map implements Disposable {
         ComponentMapper<MapComponent> mapComponentMapper = ComponentMapper.getFor(MapComponent.class);
 
         Random random = new Random();
-        MapLayer objectLayer = tiledMap.getLayers().get(1);
+        MapLayer objectLayer = tiledMap.getLayers().get("objects");
         MapObjects mapObjects = objectLayer.getObjects();
         for(MapObject object: mapObjects) {
             String objectName = object.getName();
@@ -134,8 +163,8 @@ public class Map implements Disposable {
                         walkable = Boolean.valueOf(object.getProperties().get("isEnter").toString());
                         boolean isEnter = walkable;
                         if(!isEnter) {
-                            enterPositionX = Float.parseFloat(object.getProperties().get("EnterX").toString());
-                            enterPositionY = mapRect.getHeight() - tileHeight - Float.parseFloat(object.getProperties().get("EnterY").toString());
+                            //enterPositionX = Float.parseFloat(object.getProperties().get("EnterX").toString());
+                            //enterPositionY = mapRect.getHeight() - tileHeight - Float.parseFloat(object.getProperties().get("EnterY").toString());
                         }
                         Gdx.app.log("Castle Object", objectName + " " +position.toString() + " Enter: "+isEnter +enterPosition.set(enterPositionX,enterPositionY).toString());
                     } else {
@@ -148,7 +177,7 @@ public class Map implements Disposable {
                     //graph.updateConnectionsToNode(new Vector2(position.x,position.y),walkable);
                     game.engine.addEntity(base);
                     Pools.free(enterPosition);
-                } else if(type.equals("resources")) {
+                } else if(type.equals("resource")) {
                     Gdx.app.log("Resource Object", objectName + " " + position.toString());
                     Entity resource = entityMap[x][y];
                     resource
