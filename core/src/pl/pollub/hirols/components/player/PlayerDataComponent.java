@@ -32,5 +32,6 @@ public class PlayerDataComponent implements Component, Pool.Poolable {
         resources.clear();
         color = null;
         name = null;
+        playerClass = null;
     }
 }

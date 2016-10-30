@@ -56,7 +56,7 @@ public class SpawnGenerator {
         playerAnimationMap.put(AnimationType.stand, AnimationManager.createAnimation(heroAnimationDirections,
                 game.assetManager.get("animations/Orc_Staying.png", Texture.class), 16, 8, 0.08f));
 
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 5; i++) {
             Vector2 position = Pools.obtain(Vector2.class);
             generateRandomPositionOnMap(position,map);
 
@@ -64,6 +64,8 @@ public class SpawnGenerator {
             int indexY = (int)Math.floor(position.y / map.getTileHeight());
 
             Entity mapEntity = map.getEntity(indexX,indexY);
+
+            //if(game.engine.getEntities().contains(mapEntity, true)) continue;
 
             mapEntity.add(game.engine.createComponent(AnimationComponent.class).init(new AnimationSet(AnimationType.stand, Direction.getRandomDirection(), snakeAnimationMap), true, rand.nextFloat()))
                     .add(game.engine.createComponent(map.getGameMapComponentClazz()))

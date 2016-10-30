@@ -2,13 +2,18 @@ package pl.pollub.hirols.screens;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.StringBuilder;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import pl.pollub.hirols.Hirols;
+import pl.pollub.hirols.components.map.MineComponent;
+import pl.pollub.hirols.components.map.MineDataComponent;
 import pl.pollub.hirols.components.map.maps.GameMapComponent;
 import pl.pollub.hirols.components.map.GameMapDataComponent;
 import pl.pollub.hirols.components.map.HeroDataComponent;
@@ -81,7 +86,7 @@ public class GameMapScreen extends GameScreen {
         game.engine.addEntity(gameMapEntity);
     }
 
-    public Class<? extends GameMapComponent> getGameMapComponent() {return map.getGameMapComponentClazz();}
+    public Class<? extends GameMapComponent> getGameMapComponentClass() {return map.getGameMapComponentClazz();}
 
     @Override
     protected void createSystems() {
@@ -206,6 +211,20 @@ public class GameMapScreen extends GameScreen {
                 return;
             }
             console.log("Hero id: "+ selectedHeroData.id + " has no path to recalculate.");
+        }
+
+        public void showPlayersMines() {
+            StringBuilder stringBuilder = new StringBuilder();
+            for(Class player : game.gameManager.getPlayerClasses()) {
+                stringBuilder.append("\n");
+                ImmutableArray<Entity> mines = game.engine.getEntitiesFor(Family.all(player, MineComponent.class, MineDataComponent.class, getGameMapComponentClass()).get());
+
+                stringBuilder.append(player.getSimpleName()).append(" mines:");
+                for(Entity mine : mines) {
+                    stringBuilder.append(ComponentMapper.getFor(MineDataComponent.class).get(mine).type.toString()).append(", ");
+                }
+            }
+            console.log(stringBuilder.toString());
         }
     }
 }

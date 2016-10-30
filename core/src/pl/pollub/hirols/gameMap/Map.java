@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Pools;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -26,10 +27,12 @@ import pl.pollub.hirols.components.graphics.RenderableComponent;
 import pl.pollub.hirols.components.graphics.TextureComponent;
 import pl.pollub.hirols.components.map.MapComponent;
 import pl.pollub.hirols.components.map.MineComponent;
+import pl.pollub.hirols.components.map.MineDataComponent;
 import pl.pollub.hirols.components.map.ResourceComponent;
 import pl.pollub.hirols.components.map.TownComponent;
 import pl.pollub.hirols.components.map.maps.GameMapComponent;
 import pl.pollub.hirols.components.physics.PositionComponent;
+import pl.pollub.hirols.managers.enums.Resource;
 import pl.pollub.hirols.pathfinding.DiagonalHeuristic;
 import pl.pollub.hirols.pathfinding.GraphGenerator;
 import pl.pollub.hirols.pathfinding.MapGraph;
@@ -135,7 +138,6 @@ public class Map implements Disposable {
                 }
             }
         }
-
     }
 
     private void loadObjects() {
@@ -144,6 +146,10 @@ public class Map implements Disposable {
         Random random = new Random();
         MapLayer objectLayer = tiledMap.getLayers().get("objects");
         MapObjects mapObjects = objectLayer.getObjects();
+
+        java.util.Map<String, ArrayList<Entity>> mineMap = new HashMap<String, ArrayList<Entity>>();
+        java.util.Map<String, Entity> enterMineMap = new HashMap<String, Entity>();
+
         for(MapObject object: mapObjects) {
             String objectName = object.getName();
             Object typ = object.getProperties().get("type");
@@ -151,9 +157,8 @@ public class Map implements Disposable {
                 String type = typ.toString();
                 Vector2 position = Pools.obtain(Vector2.class);
                 position.set(Float.parseFloat(object.getProperties().get("x").toString()), Float.parseFloat(object.getProperties().get("y").toString()));
-                //TODO probably dividing bug
-                int x = ((int) position.x)/tileWidth;
-                int y = ((int) position.y)/tileHeight;
+                int x = (int)Math.floor(position.x)/tileWidth;
+                int y = (int)Math.floor(position.y)/tileHeight;
                 boolean walkable;
                 if(type.equals("castle")) {
                     float enterPositionX = position.x;
@@ -191,15 +196,35 @@ public class Map implements Disposable {
                 } else if(type.equals("mine")) {
                     Gdx.app.log("Mine Object", objectName + " " + position.toString());
                     Entity mine = entityMap[x][y];
-                    mine
-                            .add(game.engine.createComponent(MineComponent.class));
-                    mapComponentMapper.get(mine).walkable = false;
-                    graph.updateConnectionsToNode(position,false);
-                    game.engine.addEntity(mine);
+                    if(object.getProperties().containsKey("isEnter")) {
+                        if(Boolean.valueOf(object.getProperties().get("isEnter", String.class))) {
+                            enterMineMap.put(objectName, mine);
+                            mine
+                                    .add(game.engine.createComponent(MineDataComponent.class).init(Resource.Wood, 2))
+                                    .add(game.engine.createComponent(MineComponent.class).init(mine));
+                            game.engine.addEntity(mine);
+                        } else {
+                            if(!mineMap.containsKey(objectName)) {
+                                mineMap.put(objectName, new ArrayList<Entity>());
+                                mineMap.get(objectName).add(mine);
+                            } else {
+                                mineMap.get(objectName).add(mine);
+                            }
+                        }
+                    }
                 }
                 Pools.free(position);
             }
         }
+
+        for(java.util.Map.Entry<String, ArrayList<Entity>> e : mineMap.entrySet()) {
+            String key = e.getKey();
+            ArrayList<Entity> value = e.getValue();
+            for(Entity mine : value) {
+                mine.add(game.engine.createComponent(MineComponent.class).init(enterMineMap.get(key)));
+            }
+        }
+
     }
 
     public List<Entity> getAdjacentEntities(float positionX, float positionY) {
@@ -264,6 +289,4 @@ public class Map implements Disposable {
     public void dispose() {
         tiledMap.dispose();
     }
-
-
 }

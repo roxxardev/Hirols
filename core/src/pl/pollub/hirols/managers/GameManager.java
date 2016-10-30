@@ -45,6 +45,7 @@ public class GameManager {
 
     private final ArrayList<Class<? extends GameMapComponent>> availableGameMapComponents = new ArrayList<Class<? extends GameMapComponent>>();
     private final ArrayList<Class<? extends PlayerComponent>> availablePlayerComponents = new ArrayList<Class<? extends PlayerComponent>>();
+
     private final ArrayList<Class<? extends PlayerComponent>> players = new ArrayList<Class<? extends PlayerComponent>>();
 
     private final TmxMapLoader tmxMapLoader = new TmxMapLoader();
@@ -141,6 +142,13 @@ public class GameManager {
 
     public Class<? extends PlayerComponent> getCurrentPlayerClass() {
         return ComponentMapper.getFor(PlayerDataComponent.class).get(getCurrentPlayer()).playerClass;
+    }
+
+    public Class<? extends PlayerComponent> attachedToPlayer(Entity entity) {
+        for(Class<? extends PlayerComponent> playerClass : players) {
+            if(ComponentMapper.getFor(playerClass).has(entity)) return playerClass;
+        }
+        return null;
     }
 
     public void dispose() {

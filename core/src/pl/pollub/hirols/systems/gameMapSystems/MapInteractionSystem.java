@@ -13,8 +13,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Pools;
 
-import java.util.ArrayList;
-
 import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.components.graphics.RenderableComponent;
 import pl.pollub.hirols.components.graphics.TextureComponent;
@@ -30,11 +28,9 @@ import pl.pollub.hirols.components.map.ResourceComponent;
 import pl.pollub.hirols.components.SelectedComponent;
 import pl.pollub.hirols.components.map.TownComponent;
 import pl.pollub.hirols.components.physics.PositionComponent;
-import pl.pollub.hirols.components.player.Player1;
 import pl.pollub.hirols.components.player.PlayerComponent;
 import pl.pollub.hirols.components.player.PlayerDataComponent;
 import pl.pollub.hirols.gameMap.Map;
-import pl.pollub.hirols.managers.EngineTools;
 import pl.pollub.hirols.managers.enums.Direction;
 import pl.pollub.hirols.managers.input.InputManager;
 import pl.pollub.hirols.pathfinding.Node;
@@ -257,8 +253,16 @@ public class MapInteractionSystem extends GameMapEntitySystem {
                         + selectedHeroData.id + " Length: " + selectedHeroData.heroPath.getPathSize() + " to town");
             }
         } else if (mineMap.has(mapEntity)) {
-            //TODO czekaj na mape
             Gdx.app.log("MapInteractionSystem", "Tap on mine");
+            Entity mineEnterEntity = mineMap.get(mapEntity).enterEntity;
+            PositionComponent mineEnterPosition = posMap.get(mineEnterEntity);
+            Vector2 minePos = Pools.obtain(Vector2.class).set(mineEnterPosition.x, mineEnterPosition.y);
+            if(findPathNonWalkable(pathStartPosition.set(selectedHeroPosition.x, selectedHeroPosition.y), minePos, gameMap, selectedHeroData, mineEnterEntity, crossPathTexture, true)) {
+                Gdx.app.log("MapInteractionSystem", "Path created for hero id: "
+                        + selectedHeroData.id + " Length: " + selectedHeroData.heroPath.getPathSize() + " to mine");
+            }
+            Pools.free(minePos);
+
         } else if (resourceMap.has(mapEntity)) {
             Gdx.app.log("MapInteractionSystem", "Tap on resource");
             if (findPathNonWalkable(pathStartPosition.set(selectedHeroPosition.x, selectedHeroPosition.y), mousePosition, gameMap, selectedHeroData, mapEntity, crossPathTexture, false)) {

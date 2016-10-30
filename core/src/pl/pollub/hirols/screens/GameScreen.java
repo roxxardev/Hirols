@@ -62,7 +62,7 @@ public abstract class GameScreen implements Screen, Disposable {
     @Override
     public void dispose() {
         removeSystemsFromEngine();
-        //TODO wait for ashley to fix bug and delete
-        game.engine.addSystem(new TempSystem());
+//        //TODO wait for ashley to fix bug and delete
+//        game.engine.addSystem(new TempSystem());
     }
 }

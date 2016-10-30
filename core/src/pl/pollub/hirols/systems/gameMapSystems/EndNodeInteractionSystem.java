@@ -23,7 +23,6 @@ import pl.pollub.hirols.components.map.GameMapDataComponent;
 import pl.pollub.hirols.components.map.HeroDataComponent;
 import pl.pollub.hirols.components.map.MapComponent;
 import pl.pollub.hirols.components.map.MineComponent;
-import pl.pollub.hirols.components.map.PathComponent;
 import pl.pollub.hirols.components.map.ResourceComponent;
 import pl.pollub.hirols.components.SelectedComponent;
 import pl.pollub.hirols.components.map.TownComponent;
@@ -61,7 +60,8 @@ public class EndNodeInteractionSystem extends GameMapEntitySystem {
 
     @Override
     public void update(float deltaTime) {
-        ImmutableArray<Entity> selectedHeroes = getEngine().getEntitiesFor(Family.all(HeroDataComponent.class, SelectedComponent.class, gameMapClass, game.gameManager.getCurrentPlayerClass()).get());
+        Class<? extends PlayerComponent> currentPlayerClass = game.gameManager.getCurrentPlayerClass();
+        ImmutableArray<Entity> selectedHeroes = getEngine().getEntitiesFor(Family.all(HeroDataComponent.class, SelectedComponent.class, gameMapClass, currentPlayerClass).get());
         if (selectedHeroes.size() < 1) return;
         GameMapDataComponent gameMapData = gameMapDataMapper.get(this.gameMapDataArray.first());
         Entity selectedHero = selectedHeroes.first();
@@ -75,12 +75,17 @@ public class EndNodeInteractionSystem extends GameMapEntitySystem {
         if(selectedHeroData.pathEntities.isEmpty()){
             if (townMap.has(targetEntity)) {
                 TownComponent townComponent = townMap.get(targetEntity);
-                selectedHeroData.heroPath.setTargetEntity(null);
                 Gdx.app.log("EndNodeInteractionSystem", "Interaction with town: ");
                 game.setScreen(new TownScreen(game));
             } else if (mineMap.has(targetEntity)) {
-                Gdx.app.log("EndNodeInteractionSystem", "Interaction with mine: ");
+                Gdx.app.log("EndNodeInteractionSystem", "Interaction with mine");
+                Class<? extends PlayerComponent> mineOwner = game.gameManager.attachedToPlayer(targetEntity);
+                if(mineOwner != currentPlayerClass) {
+                    targetEntity.add(game.engine.createComponent(currentPlayerClass));
+                    Gdx.app.log("EndNodeInteractionSystem", "Mine taken by "+currentPlayerClass.getSimpleName() + " from " + ((mineOwner != null) ? mineOwner.getSimpleName() : "no one"));
+                }
             }
+            selectedHeroData.heroPath.setTargetEntity(null);
             return;
         }
 
@@ -94,7 +99,6 @@ public class EndNodeInteractionSystem extends GameMapEntitySystem {
             targetEntity.remove(ResourceComponent.class);
             targetEntity.remove(RenderableComponent.class);
             targetEntity.remove(TextureComponent.class);
-            selectedHeroData.heroPath.setTargetEntity(null);
             mapMapper.get(targetEntity).walkable = true;
             PositionComponent resourcePosition = posMap.get(targetEntity);
             gameMapData.map.updateGraphConnectionsToNode(resourcePosition.x, resourcePosition.y, true);
@@ -112,14 +116,14 @@ public class EndNodeInteractionSystem extends GameMapEntitySystem {
             Gdx.app.log("EndNodeInteractionSystem", "Interaction with resource: " + resourceText);
         } else if (chestMap.has(targetEntity)) {
             ChestComponent chestComponent = chestMap.get(targetEntity);
-            selectedHeroData.heroPath.setTargetEntity(null);
             Gdx.app.log("EndNodeInteractionSystem", "Interaction with chest: ");
             getEngine().removeEntity(pathEntity);
         } else if (enemyMap.has(targetEntity)) {
-            selectedHeroData.heroPath.setTargetEntity(null);
             Gdx.app.log("EndNodeInteractionSystem", "Interaction with enemy: ");
             getEngine().removeEntity(pathEntity);
             game.setScreen(new BattleScreen(game));
         }
+
+        selectedHeroData.heroPath.setTargetEntity(null);
     }
 }
