@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.GL20;
 
 import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.gui.town.TownHud;
-import pl.pollub.hirols.ui.townScreenUI.TownScreenHud;
 
 /**
  * Created by Marcin on 2016-04-26.

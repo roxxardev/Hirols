@@ -26,6 +26,8 @@ public class TownHud extends Hud {
         super(game);
 
         createActors();
+
+        //stage.setDebugAll(true);
     }
 
     private void createActors() {
