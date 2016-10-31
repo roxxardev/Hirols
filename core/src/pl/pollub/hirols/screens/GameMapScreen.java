@@ -129,16 +129,6 @@ public class GameMapScreen extends GameScreen {
     }
 
     @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
     public void show() {
         super.show();
         game.multiplexer.addProcessor(hud.getStage());

@@ -60,6 +60,16 @@ public abstract class GameScreen implements Screen, Disposable {
     }
 
     @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
     public void dispose() {
         removeSystemsFromEngine();
 //        //TODO wait for ashley to fix bug and delete
