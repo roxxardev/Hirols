@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 
 import pl.pollub.hirols.Hirols;
+import pl.pollub.hirols.gui.town.TownHud;
 import pl.pollub.hirols.ui.townScreenUI.TownScreenHud;
 
 /**
@@ -12,35 +13,35 @@ import pl.pollub.hirols.ui.townScreenUI.TownScreenHud;
  */
 public class TownScreen extends GameScreen {
 
-    private TownScreenHud townScreenHud;
+    private TownHud townHud;
 
     public TownScreen(Hirols game) {
         super(game);
 
-        townScreenHud = new TownScreenHud(game);
+        townHud = new TownHud(game);
     }
 
     @Override
     public void show() {
         super.show();
-        game.multiplexer.addProcessor(townScreenHud.stage);
+        game.multiplexer.addProcessor(townHud.getStage());
     }
 
     @Override
     public void hide() {
         super.hide();
-        game.multiplexer.removeProcessor(townScreenHud.stage);
+        game.multiplexer.removeProcessor(townHud.getStage());
     }
 
     @Override
     public void dispose() {
         super.dispose();
-        townScreenHud.dispose();
+        townHud.dispose();
     }
 
     @Override
     public void render(float delta) {
-        townScreenHud.update(delta);
+        townHud.update(delta);
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
             game.setScreen(game.gameManager.getCurrentMapScreen());
@@ -51,13 +52,14 @@ public class TownScreen extends GameScreen {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        game.batch.setProjectionMatrix(townScreenHud.stage.getCamera().combined);
-        townScreenHud.stage.draw();
+        game.batch.setProjectionMatrix(townHud.getStage().getCamera().combined);
+        townHud.getStage().draw();
     }
 
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
+        townHud.resize(width,height);
     }
 
     @Override

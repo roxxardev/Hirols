@@ -252,7 +252,7 @@ public class RightBar extends Table {
                 return;
             }
 
-            heroButtonMap.remove(heroData.id);
+            removeActor(heroButtonMap.remove(heroData.id));
         }
 
         public void resize(float itemWidth, float itemHeight) {
