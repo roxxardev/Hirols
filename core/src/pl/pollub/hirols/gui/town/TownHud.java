@@ -1,12 +1,18 @@
 package pl.pollub.hirols.gui.town;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.utils.Scaling;
 import com.kotcrab.vis.ui.layout.GridGroup;
 import com.kotcrab.vis.ui.widget.VisImageButton;
+import com.kotcrab.vis.ui.widget.VisImageTextButton;
 
 import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.gui.Hud;
@@ -22,18 +28,19 @@ public class TownHud extends Hud {
     private VisImageButton exitButton;
     private GridGroup inTown, outTown;
 
+    private Table inTownTable, outTownTable;
+    private VisImageTextButton heroInTown, heroOutOfTown;
+
     public TownHud(Hirols game) {
         super(game);
 
         createActors();
-
-        //stage.setDebugAll(true);
     }
 
     private void createActors() {
         topBar = new TopBar(game, stage);
 
-        ButtonGroup<VisImageButton> buttonGroup = new ButtonGroup<VisImageButton>();
+        ButtonGroup<VisImageTextButton> buttonGroup = new ButtonGroup<VisImageTextButton>();
         buttonGroup.setMaxCheckCount(1);
         buttonGroup.setMinCheckCount(0);
         buttonGroup.setUncheckLast(false);
@@ -41,25 +48,51 @@ public class TownHud extends Hud {
         outTown = new GridGroup(40f,2);
 
         for(int i = 0; i < 5; i++) {
-            VisImageButton in = new VisImageButton(new VisImageButton.VisImageButtonStyle(game.hudManager.skin.get("image-button", VisImageButton.VisImageButtonStyle.class)));
-            in.getStyle().imageChecked = new SpriteDrawable(new Sprite(new TextureRegion(game.assetManager.get("ui/button-images.png", Texture.class),338, 208, 112, 112)));
+            VisImageTextButton in = new VisImageTextButton("Dupa", game.hudManager.skin.get("units-style", VisImageTextButton.VisImageTextButtonStyle.class));
             inTown.addActor(in);
             buttonGroup.add(in);
+            in.getImage().setScaling(Scaling.stretch);
+            in.clearChildren();
+            in.add(in.getImage()).expand().fill().row();
+            in.add(in.getLabel());
 
-            VisImageButton out = new VisImageButton(new VisImageButton.VisImageButtonStyle(game.hudManager.skin.get("image-button", VisImageButton.VisImageButtonStyle.class)));
-            out.getStyle().imageChecked = new SpriteDrawable(new Sprite(new TextureRegion(game.assetManager.get("ui/button-images.png", Texture.class),338, 208, 112, 112)));
+            VisImageTextButton out = new VisImageTextButton("Dupa", game.hudManager.skin.get("units-style", VisImageTextButton.VisImageTextButtonStyle.class));
+            out.getImage().setScaling(Scaling.stretch);
+            out.clearChildren();
+            out.add(out.getImage()).expand().fill().row();
+            out.add(out.getLabel());
             outTown.addActor(out);
             buttonGroup.add(out);
         }
 
-        inTown.setDebug(true);
-        outTown.setDebug(true);
-        inTown.setPosition(100,400);
-        inTown.setSize(300,50);
+        heroInTown = new VisImageTextButton("Hero", game.hudManager.skin.get("units-style", VisImageTextButton.VisImageTextButtonStyle.class));
+        heroInTown.getImage().setScaling(Scaling.stretch);
+        heroInTown.clearChildren();
+        heroInTown.add(heroInTown.getImage()).expand().fill().row();
+        heroInTown.add(heroInTown.getLabel());
+        buttonGroup.add(heroInTown);
 
+        inTownTable = new Table();
+        inTownTable.addActor(inTown);
+        inTownTable.addActor(heroInTown);
+
+        heroOutOfTown = new VisImageTextButton("Hero", game.hudManager.skin.get("units-style", VisImageTextButton.VisImageTextButtonStyle.class));
+        heroOutOfTown.getImage().setScaling(Scaling.stretch);
+        heroOutOfTown.clearChildren();
+        heroOutOfTown.add(heroOutOfTown.getImage()).expand().fill().row();
+        heroOutOfTown.add(heroOutOfTown.getLabel());
+        buttonGroup.add(heroOutOfTown);
+
+        outTownTable = new Table();
+        outTownTable.addActor(outTown);
+        outTownTable.addActor(heroOutOfTown);
+
+        Image townBackground = new Image(game.assetManager.get("towns/snow-town.png", Texture.class));
+        townBackground.setFillParent(true);
+        stage.addActor(townBackground);
         stage.addActor(topBar);
-        stage.addActor(inTown);
-        stage.addActor(outTown);
+        stage.addActor(inTownTable);
+        stage.addActor(outTownTable);
     }
 
     @Override
@@ -68,12 +101,15 @@ public class TownHud extends Hud {
         topBar.resize(width,height);
 
 
-        inTown.setBounds(topBar.getHeight(),topBar.getHeight(), topBar.getHeight()*10 + 2, topBar.getHeight()*2);
+        inTown.setSize(topBar.getHeight()*10 + 2, topBar.getHeight()*2);
         inTown.setItemSize((int)topBar.getHeight()*2 - 2);
+        inTownTable.setBounds(topBar.getHeight(),topBar.getHeight(),inTown.getWidth(), inTown.getHeight()*2);
+        heroInTown.setBounds(inTownTable.getWidth(), 0, inTown.getItemWidth()*2, inTown.getHeight()*2);
 
-        outTown.setBounds(stage.getWidth() - topBar.getHeight()*11, topBar.getHeight(), topBar.getHeight()*10 + 2, topBar.getHeight()*2);
+        outTown.setSize(topBar.getHeight()*10 + 2, topBar.getHeight()*2);
         outTown.setItemSize((int)topBar.getHeight()*2 - 2);
-
+        outTownTable.setBounds(stage.getWidth() - topBar.getHeight()*11, topBar.getHeight(), inTownTable.getWidth(), inTownTable.getHeight());
+        heroOutOfTown.setBounds(-outTown.getItemWidth()*2, 0, outTown.getItemWidth()*2, outTown.getHeight()*2);
     }
 }
 

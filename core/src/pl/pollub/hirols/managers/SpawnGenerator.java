@@ -65,7 +65,7 @@ public class SpawnGenerator {
 
             Entity mapEntity = map.getEntity(indexX,indexY);
 
-            //if(game.engine.getEntities().contains(mapEntity, true)) continue;
+            if(game.engine.getEntities().contains(mapEntity, true)) continue;
 
             mapEntity.add(game.engine.createComponent(AnimationComponent.class).init(new AnimationSet(AnimationType.stand, Direction.getRandomDirection(), snakeAnimationMap), true, rand.nextFloat()))
                     .add(game.engine.createComponent(map.getGameMapComponentClazz()))

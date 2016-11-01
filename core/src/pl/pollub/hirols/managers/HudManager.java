@@ -5,10 +5,12 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisImageButton;
 import com.kotcrab.vis.ui.widget.VisImageTextButton;
@@ -80,6 +82,12 @@ public class HudManager {
         buttonStyle.over = new SpriteDrawable(sprite);
         //buttonStyle.font = font;
 
+        sprite = new Sprite(whiteTexture);
+        sprite.setColor(1f,0f,0f,0.1f);
+        buttonStyle.checked = new SpriteDrawable(sprite);
+
+        final SpriteDrawable spriteDrawable = new SpriteDrawable(new Sprite(game.assetManager.get("resources/fuel.png", Texture.class)));
+
         skin.add("button-custom", buttonStyle, Button.ButtonStyle.class);
 
         Label.LabelStyle labelStyleWhite = new Label.LabelStyle(bitmapFont, Color.WHITE);
@@ -90,7 +98,10 @@ public class HudManager {
             up = buttonStyle.up;
             down = buttonStyle.down;
             over = buttonStyle.over;
+            //checked = spriteDrawable;
+            imageChecked = spriteDrawable;
         }};
+
         skin.add("image-button", imageButtonStyle, VisImageButton.VisImageButtonStyle.class);
 
         textButtonStyle = new VisTextButton.VisTextButtonStyle(){{
@@ -108,18 +119,16 @@ public class HudManager {
             font = bitmapFont;
         }};
         skin.add("image-text-button", imageTextButtonStyle, VisImageTextButton.VisImageTextButtonStyle.class);
-/*
 
-        buttonStyleRoundedOver = new VisImageTextButton.VisImageTextButtonStyle();
-        buttonStyleRoundedOver.up = new SpriteDrawable(new Sprite(game.assetManager.get("ui/round-button-up.png", Texture.class)));
-        buttonStyleRoundedOver.down = new SpriteDrawable(new Sprite(game.assetManager.get("ui/round-button-down.png", Texture.class)));
-        buttonStyleRoundedOver.over = new SpriteDrawable(new Sprite(game.assetManager.get("ui/round-button-over.png", Texture.class)));
 
-        buttonStyleRoundedChecked = new VisImageTextButton.VisImageTextButtonStyle();
-        buttonStyleRoundedChecked.up = buttonStyleRoundedOver.up;
-        buttonStyleRoundedChecked.checked = buttonStyleRoundedOver.down;
-        buttonStyleRoundedChecked.over = buttonStyleRoundedOver.over;
-*/
+        VisImageTextButton.VisImageTextButtonStyle unitsStyle = new VisImageTextButton.VisImageTextButtonStyle();
+        unitsStyle.up = new TextureRegionDrawable(new TextureRegion(whiteTexture)).tint(new Color(0,0,0,0.6f));
+        unitsStyle.imageChecked = new TextureRegionDrawable(new TextureRegion(game.assetManager.get("ui/button-images.png", Texture.class),338, 208, 112, 112));
+        unitsStyle.font = game.assetManager.get("testFontSize12.ttf", BitmapFont.class);
+        unitsStyle.over = new SpriteDrawable(new Sprite(whiteTexture)).tint(new Color(0,0,0,0.8f));
+
+        skin.add("units-style", unitsStyle, VisImageTextButton.VisImageTextButtonStyle.class);
+
     }
 
     public SpriteDrawable getTransparentBackground() {
