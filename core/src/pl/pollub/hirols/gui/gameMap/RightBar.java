@@ -103,8 +103,9 @@ public class RightBar extends Table {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 MapInteractionSystem mapInteractionSystem = game.engine.getSystem(MapInteractionSystem.class);
-                Entity selectedHero = mapInteractionSystem.getSelectedHeroes().first();
-                if(selectedHero == null) return;
+                ImmutableArray<Entity> heroes = mapInteractionSystem.getSelectedHeroes();
+                if(heroes.size() < 1) return;
+                Entity selectedHero = heroes.first();
                 HeroDataComponent selectedHeroData = ComponentMapper.getFor(HeroDataComponent.class).get(selectedHero);
                 selectedHeroData.heroPath.followPath();
             }
@@ -298,7 +299,7 @@ public class RightBar extends Table {
                 image.setHeight(0);
                 image.setScaling(Scaling.fit);
                 add(movement).fillY();
-                add(image);
+                add(image).expand().fill();
                 add(magic).fillY();
                 row();
             }

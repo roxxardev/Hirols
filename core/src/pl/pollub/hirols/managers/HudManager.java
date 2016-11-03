@@ -42,7 +42,7 @@ public class HudManager {
         this.game = game;
         skin = new Skin();
 
-        bitmapFont = game.assetManager.get("fonts/test2.fnt", BitmapFont.class);
+        bitmapFont = game.assetManager.get("testFontSize12.ttf", BitmapFont.class);
         bitmapFont.getData().setScale(1);
 
         int width = 1, height= 1, radius = 10;
@@ -67,57 +67,47 @@ public class HudManager {
     }
 
     private void createStyles(){
-        final Button.ButtonStyle buttonStyle = new Button.ButtonStyle();
-
         Sprite sprite = new Sprite(whiteTexture);
         sprite.setColor(0f, 0f, 0f, 0.7f);
-        buttonStyle.up = new SpriteDrawable(sprite);
+        SpriteDrawable drawableUp = new SpriteDrawable(sprite);
 
         sprite = new Sprite(whiteTexture);
         sprite.setColor(1f,1f,1f, 0.7f);
-        buttonStyle.down =  new SpriteDrawable(sprite);
+        SpriteDrawable drawableDown=  new SpriteDrawable(sprite);
 
         sprite = new Sprite(whiteTexture);
         sprite.setColor(0f, 0f, 0f, 1f);
-        buttonStyle.over = new SpriteDrawable(sprite);
-        //buttonStyle.font = font;
+        SpriteDrawable drawableOver = new SpriteDrawable(sprite);
 
         sprite = new Sprite(whiteTexture);
         sprite.setColor(1f,0f,0f,0.1f);
-        buttonStyle.checked = new SpriteDrawable(sprite);
+        SpriteDrawable drawableChecked = new SpriteDrawable(sprite);
 
-        final SpriteDrawable spriteDrawable = new SpriteDrawable(new Sprite(game.assetManager.get("resources/fuel.png", Texture.class)));
-
-        skin.add("button-custom", buttonStyle, Button.ButtonStyle.class);
 
         Label.LabelStyle labelStyleWhite = new Label.LabelStyle(bitmapFont, Color.WHITE);
-
         skin.add("label-white", labelStyleWhite, Label.LabelStyle.class);
 
-        imageButtonStyle = new VisImageButton.VisImageButtonStyle(){{
-            up = buttonStyle.up;
-            down = buttonStyle.down;
-            over = buttonStyle.over;
-            //checked = spriteDrawable;
-            imageChecked = spriteDrawable;
-        }};
+        imageButtonStyle = new VisImageButton.VisImageButtonStyle();
+        imageButtonStyle.up = drawableUp;
+        imageButtonStyle.down = drawableDown;
+        imageButtonStyle.over = drawableOver;
 
         skin.add("image-button", imageButtonStyle, VisImageButton.VisImageButtonStyle.class);
 
-        textButtonStyle = new VisTextButton.VisTextButtonStyle(){{
-            up = buttonStyle.up;
-            down = buttonStyle.down;
-            over = buttonStyle.over;
-            font = bitmapFont;
-        }};
+        textButtonStyle = new VisTextButton.VisTextButtonStyle();
+        textButtonStyle.up = drawableUp;
+        textButtonStyle.down = drawableDown;
+        textButtonStyle.over = drawableOver;
+        textButtonStyle.font = bitmapFont;
+
         skin.add("text-button", textButtonStyle, VisTextButton.VisTextButtonStyle.class);
 
-        imageTextButtonStyle = new VisImageTextButton.VisImageTextButtonStyle(){{
-            up = buttonStyle.up;
-            down = buttonStyle.down;
-            over = buttonStyle.over;
-            font = bitmapFont;
-        }};
+        imageTextButtonStyle = new VisImageTextButton.VisImageTextButtonStyle();
+        imageTextButtonStyle.imageUp = drawableUp;
+        imageTextButtonStyle.imageDown = drawableDown;
+        imageTextButtonStyle.imageOver = drawableOver;
+        imageTextButtonStyle.font = bitmapFont;
+
         skin.add("image-text-button", imageTextButtonStyle, VisImageTextButton.VisImageTextButtonStyle.class);
 
 

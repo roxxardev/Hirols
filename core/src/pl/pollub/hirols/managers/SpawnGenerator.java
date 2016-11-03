@@ -122,7 +122,7 @@ public class SpawnGenerator {
                 .add(engine.createComponent(AnimationComponent.class).init(new AnimationSet(AnimationType.stand, Direction.getRandomDirection(), animationMap), true,0f))
                 .add(engine.createComponent(TextureComponent.class).setSize(128, 128).setAdditionalOffset(-16, 0))
                 .add(engine.createComponent(RenderableComponent.class))
-                .add(engine.createComponent(HeroDataComponent.class).init(++playerId, "Cwel", 10.f,new Sprite(game.assetManager.get("temp/portrait.png", Texture.class))))
+                .add(engine.createComponent(HeroDataComponent.class).init(++playerId, "Cwel", 10.f,new Sprite(animationMap.get(AnimationType.stand).get(Direction.S).getKeyFrame(0))))
                 .add(engine.createComponent(VelocityComponent.class))
                 .add(engine.createComponent(playerClass)));
         Pools.free(firstHeroPos);
