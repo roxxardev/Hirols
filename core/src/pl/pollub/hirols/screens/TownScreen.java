@@ -42,7 +42,7 @@ public class TownScreen extends GameScreen {
     public void render(float delta) {
         townHud.update(delta);
 
-        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE) || townHud.isExitRequest()){
             game.setScreen(game.gameManager.getCurrentMapScreen());
             dispose();
             return;

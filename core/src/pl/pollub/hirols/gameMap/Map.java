@@ -30,6 +30,7 @@ import pl.pollub.hirols.components.map.MineComponent;
 import pl.pollub.hirols.components.map.MineDataComponent;
 import pl.pollub.hirols.components.map.ResourceComponent;
 import pl.pollub.hirols.components.map.TownComponent;
+import pl.pollub.hirols.components.map.TownDataComponent;
 import pl.pollub.hirols.components.map.maps.GameMapComponent;
 import pl.pollub.hirols.components.physics.PositionComponent;
 import pl.pollub.hirols.managers.enums.Resource;
@@ -148,7 +149,8 @@ public class Map implements Disposable {
         MapObjects mapObjects = objectLayer.getObjects();
 
         java.util.Map<String, ArrayList<Entity>> mineMap = new HashMap<String, ArrayList<Entity>>();
-        java.util.Map<String, Entity> enterMineMap = new HashMap<String, Entity>();
+        java.util.Map<String, ArrayList<Entity>> townMap = new HashMap<String, ArrayList<Entity>>();
+        java.util.Map<String, Entity> enterEntityMap = new HashMap<String, Entity>();
 
         for(MapObject object: mapObjects) {
             String objectName = object.getName();
@@ -159,29 +161,27 @@ public class Map implements Disposable {
                 position.set(Float.parseFloat(object.getProperties().get("x").toString()), Float.parseFloat(object.getProperties().get("y").toString()));
                 int x = (int)Math.floor(position.x)/tileWidth;
                 int y = (int)Math.floor(position.y)/tileHeight;
-                boolean walkable;
                 if(type.equals("castle")) {
-                    float enterPositionX = position.x;
-                    float enterPositionY = position.y;
-                    Vector2 enterPosition = Pools.obtain(Vector2.class);
+                    Gdx.app.log("Castle Object", objectName + " " +position.toString());
+                    Entity town = entityMap[x][y];
                     if(object.getProperties().containsKey("isEnter")) {
-                        walkable = Boolean.valueOf(object.getProperties().get("isEnter").toString());
-                        boolean isEnter = walkable;
-                        if(!isEnter) {
-                            //enterPositionX = Float.parseFloat(object.getProperties().get("EnterX").toString());
-                            //enterPositionY = mapRect.getHeight() - tileHeight - Float.parseFloat(object.getProperties().get("EnterY").toString());
+                        if(Boolean.valueOf(object.getProperties().get("isEnter").toString())) {
+                            enterEntityMap.put(objectName, town);
+                            town
+                                    .add(game.engine.createComponent(TownComponent.class).init(town))
+                                    .add(game.engine.createComponent(TownDataComponent.class).init(objectName));
+                            game.engine.addEntity(town);
+                        } else {
+                            if(!townMap.containsKey(objectName)) {
+                                townMap.put(objectName, new ArrayList<Entity>());
+                                townMap.get(objectName).add(town);
+                            } else {
+                                townMap.get(objectName).add(town);
+                            }
                         }
-                        Gdx.app.log("Castle Object", objectName + " " +position.toString() + " Enter: "+isEnter +enterPosition.set(enterPositionX,enterPositionY).toString());
                     } else {
                         Gdx.app.log("Castle Object", objectName + " " +position.toString() + " has no enter");
                     }
-                    Entity base = entityMap[x][y];
-                    base
-                            .add(game.engine.createComponent(TownComponent.class).init(enterPosition.set(enterPositionX,enterPositionY)));
-                    //mapComponentMapper.get(base).walkable = walkable;
-                    //graph.updateConnectionsToNode(new Vector2(position.x,position.y),walkable);
-                    game.engine.addEntity(base);
-                    Pools.free(enterPosition);
                 } else if(type.equals("resource")) {
                     Gdx.app.log("Resource Object", objectName + " " + position.toString());
                     Entity resource = entityMap[x][y];
@@ -198,7 +198,7 @@ public class Map implements Disposable {
                     Entity mine = entityMap[x][y];
                     if(object.getProperties().containsKey("isEnter")) {
                         if(Boolean.valueOf(object.getProperties().get("isEnter", String.class))) {
-                            enterMineMap.put(objectName, mine);
+                            enterEntityMap.put(objectName, mine);
                             mine
                                     .add(game.engine.createComponent(MineDataComponent.class).init(Resource.Wood, 2))
                                     .add(game.engine.createComponent(MineComponent.class).init(mine));
@@ -221,7 +221,15 @@ public class Map implements Disposable {
             String key = e.getKey();
             ArrayList<Entity> value = e.getValue();
             for(Entity mine : value) {
-                mine.add(game.engine.createComponent(MineComponent.class).init(enterMineMap.get(key)));
+                mine.add(game.engine.createComponent(MineComponent.class).init(enterEntityMap.get(key)));
+            }
+        }
+
+        for(java.util.Map.Entry<String, ArrayList<Entity>> e : townMap.entrySet()) {
+            String key = e.getKey();
+            ArrayList<Entity> value = e.getValue();
+            for(Entity town : value) {
+                town.add(game.engine.createComponent(TownComponent.class).init(enterEntityMap.get(key)));
             }
         }
 

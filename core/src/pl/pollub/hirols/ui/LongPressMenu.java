@@ -23,6 +23,7 @@ import javax.xml.soap.Text;
 
 import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.components.map.TownComponent;
+import pl.pollub.hirols.components.map.TownDataComponent;
 
 /**
  * Created by Marcin on 2016-04-14.
@@ -68,7 +69,7 @@ public class LongPressMenu extends VisTable {
         this.addActor(infoMenu);
     }
 
-    public void createLongPressMenuOnTown(TownComponent townComponent){
+    public void createLongPressMenuOnTown(TownDataComponent townDataComponent){
         VisTable infoMenu = new VisTable(true){{
             setDebug(debug);
             setBounds(stage.getWidth() / 2 - stage.getWidth() / 8, stage.getHeight() / 2 - stage.getHeight() / 8, stage.getWidth() / 4, stage.getHeight() / 4);
@@ -82,7 +83,7 @@ public class LongPressMenu extends VisTable {
         }};
 
 
-        VisLabel label = new VisLabel("Town name "+townComponent.name, labelStyle);
+        VisLabel label = new VisLabel("Town name "+townDataComponent.name, labelStyle);
         //label.setPosition(enemyInfoMenu.getWidth()/2,enemyInfoMenu.getHeight()/2);
         infoMenu.add(label);
 

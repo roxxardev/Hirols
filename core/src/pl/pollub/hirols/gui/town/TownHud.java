@@ -1,9 +1,14 @@
 package pl.pollub.hirols.gui.town;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.kotcrab.vis.ui.layout.GridGroup;
 import com.kotcrab.vis.ui.widget.VisImageButton;
@@ -22,7 +27,8 @@ public class TownHud extends Hud {
 
     private Garrison inTown, outTown;
 
-    private VisImageButton exitButton;
+    private VisImageTextButton exitButton;
+    private boolean exitRequest;
 
     public TownHud(Hirols game) {
         super(game);
@@ -44,14 +50,25 @@ public class TownHud extends Hud {
         inTown = new Garrison(buttonGroup,false);
         outTown = new Garrison(buttonGroup, true);
 
+        exitButton = new VisImageTextButton("Exit", game.hudManager.skin.get("image-text-button", VisImageTextButton.VisImageTextButtonStyle.class));
+        exitButton.getStyle().imageUp = new SpriteDrawable(new Sprite(new TextureRegion(game.assetManager.get("ui/button-images.png", Texture.class),338, 208, 112, 112)));
+        moveTextLabelBelowImage(exitButton, Scaling.fill);
+        exitButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                exitRequest = true;
+            }
+        });
+
         stage.addActor(townBackground);
         stage.addActor(topBar);
         stage.addActor(inTown);
         stage.addActor(outTown);
+        stage.addActor(exitButton);
     }
 
-    private void moveTextLabelBelowImage(VisImageTextButton button) {
-        button.getImage().setScaling(Scaling.stretch);
+    private void moveTextLabelBelowImage(VisImageTextButton button, Scaling scaling) {
+        button.getImage().setScaling(scaling);
         button.clearChildren();
         button.add(button.getImage()).expand().fill().row();
         button.add(button.getLabel());
@@ -64,6 +81,18 @@ public class TownHud extends Hud {
 
         inTown.resize(width,height);
         outTown.resize(width,height);
+
+        float buttonSize = width<height ? width/10 : height/10;
+        float imagePadding = buttonSize/10;
+
+        exitButton.setBounds(buttonSize, height - buttonSize*2, buttonSize, buttonSize);
+        exitButton.pad(imagePadding);
+    }
+
+    public boolean isExitRequest() {
+        boolean temp = exitRequest;
+        exitRequest = false;
+        return temp;
     }
 
     private class Garrison extends Table {
@@ -82,11 +111,11 @@ public class TownHud extends Hud {
                 VisImageTextButton in = new VisImageTextButton("Dupa", game.hudManager.skin.get("units-style", VisImageTextButton.VisImageTextButtonStyle.class));
                 units.addActor(in);
                 buttonGroup.add(in);
-                moveTextLabelBelowImage(in);
+                moveTextLabelBelowImage(in, Scaling.stretch);
             }
 
             heroButton = new VisImageTextButton("Hero", game.hudManager.skin.get("units-style", VisImageTextButton.VisImageTextButtonStyle.class));
-            moveTextLabelBelowImage(heroButton);
+            moveTextLabelBelowImage(heroButton, Scaling.stretch);
             buttonGroup.add(heroButton);
 
             addActor(units);

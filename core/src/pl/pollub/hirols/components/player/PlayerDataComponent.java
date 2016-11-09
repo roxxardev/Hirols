@@ -15,13 +15,10 @@ import pl.pollub.hirols.managers.enums.Resource;
 public class PlayerDataComponent implements Component, Pool.Poolable {
     public final Map<Resource, Integer> resources = new HashMap<Resource, Integer>();
 
-    public Class<? extends PlayerComponent> playerClass;
-
     public Color color;
     public String name;
 
-    public PlayerDataComponent init(Class<? extends PlayerComponent> playerClass, Color color, String name) {
-        this.playerClass = playerClass;
+    public PlayerDataComponent init(Color color, String name) {
         this.color = color;
         this.name = name;
         return this;
@@ -32,6 +29,5 @@ public class PlayerDataComponent implements Component, Pool.Poolable {
         resources.clear();
         color = null;
         name = null;
-        playerClass = null;
     }
 }

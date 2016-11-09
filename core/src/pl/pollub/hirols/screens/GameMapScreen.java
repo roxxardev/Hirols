@@ -14,6 +14,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.components.map.MineComponent;
 import pl.pollub.hirols.components.map.MineDataComponent;
+import pl.pollub.hirols.components.map.TownComponent;
+import pl.pollub.hirols.components.map.TownDataComponent;
 import pl.pollub.hirols.components.map.maps.GameMapComponent;
 import pl.pollub.hirols.components.map.GameMapDataComponent;
 import pl.pollub.hirols.components.map.HeroDataComponent;
@@ -209,8 +211,23 @@ public class GameMapScreen extends GameScreen {
                 stringBuilder.append("\n");
                 ImmutableArray<Entity> mines = game.engine.getEntitiesFor(Family.all(player, MineComponent.class, MineDataComponent.class, getGameMapComponentClass()).get());
 
+
                 stringBuilder.append(player.getSimpleName()).append(" mines:");
                 for(Entity mine : mines) {
+                    stringBuilder.append(ComponentMapper.getFor(MineDataComponent.class).get(mine).type.toString()).append(", ");
+                }
+            }
+            console.log(stringBuilder.toString());
+        }
+
+        public void showPlayersTowns() {
+            StringBuilder stringBuilder = new StringBuilder();
+            for(Class player : game.gameManager.getPlayerClasses()) {
+                stringBuilder.append("\n");
+                ImmutableArray<Entity> towns = game.engine.getEntitiesFor(Family.all(player, TownComponent.class, TownDataComponent.class, getGameMapComponentClass()).get());
+
+                stringBuilder.append(player.getSimpleName()).append(" towns:");
+                for(Entity mine : towns) {
                     stringBuilder.append(ComponentMapper.getFor(MineDataComponent.class).get(mine).type.toString()).append(", ");
                 }
             }

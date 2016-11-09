@@ -1092,12 +1092,12 @@
   </tile>
   <tile id="34">
    <properties>
-    <property name="walkable" value="true"/>
+    <property name="walkable" value="false"/>
    </properties>
   </tile>
   <tile id="35">
    <properties>
-    <property name="walkable" value="true"/>
+    <property name="walkable" value="false"/>
    </properties>
   </tile>
  </tileset>

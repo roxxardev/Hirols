@@ -141,7 +141,7 @@ public class GameManager {
     }
 
     public Class<? extends PlayerComponent> getCurrentPlayerClass() {
-        return ComponentMapper.getFor(PlayerDataComponent.class).get(getCurrentPlayer()).playerClass;
+        return attachedToPlayer(getCurrentPlayer());
     }
 
     public Class<? extends PlayerComponent> attachedToPlayer(Entity entity) {

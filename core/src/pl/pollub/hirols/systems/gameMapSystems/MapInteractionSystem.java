@@ -119,7 +119,7 @@ public class MapInteractionSystem extends GameMapEntitySystem {
 
     private void handleTapInsideMap(int mapIndexX, int mapIndexY, Vector2 mousePosition) {
         Entity currentPlayer = game.gameManager.getCurrentPlayer();
-        Class<? extends PlayerComponent> currentPlayerClass = playerDataMap.get(currentPlayer).playerClass;
+        Class<? extends PlayerComponent> currentPlayerClass = game.gameManager.attachedToPlayer(currentPlayer);
         playerSelectedHeroes = game.engine.getEntitiesFor(Family.all(HeroDataComponent.class, SelectedComponent.class, currentPlayerClass, gameMapClass).get());
 
         if ((playerSelectedHeroes.size() > 0)) {
@@ -134,7 +134,7 @@ public class MapInteractionSystem extends GameMapEntitySystem {
         Map gameMap = gameMapData.map;
         Entity mapEntity = gameMap.getEntity(mapIndexX,mapIndexY);
 
-        Class<? extends PlayerComponent> currentPlayerClass = playerDataMap.get(game.gameManager.getCurrentPlayer()).playerClass;
+        Class<? extends PlayerComponent> currentPlayerClass = game.gameManager.getCurrentPlayerClass();
         playerUnselectedHeroes = game.engine.getEntitiesFor(Family.all(HeroDataComponent.class, currentPlayerClass, gameMapClass).exclude(SelectedComponent.class).get());
 
         for (Entity unselectedHero : playerUnselectedHeroes) {
@@ -248,7 +248,9 @@ public class MapInteractionSystem extends GameMapEntitySystem {
         } else if (townMap.has(mapEntity)) {
             Gdx.app.log("MapInteractionSystem", "Tap on town");
             TownComponent townComponent = townMap.get(mapEntity);
-            if(findPathNonWalkable(pathStartPosition.set(selectedHeroPosition.x, selectedHeroPosition.y), townComponent.enterPosition, gameMap, selectedHeroData, mapEntity, crossPathTexture, true)) {
+            PositionComponent townEnterPosition = posMap.get(townComponent.enterEntity);
+            Vector2 townPos = Pools.obtain(Vector2.class).set(townEnterPosition.x,townEnterPosition.y);
+            if(findPathNonWalkable(pathStartPosition.set(selectedHeroPosition.x, selectedHeroPosition.y), townPos, gameMap, selectedHeroData, mapEntity, crossPathTexture, true)) {
                 Gdx.app.log("MapInteractionSystem", "Path created for hero id: "
                         + selectedHeroData.id + " Length: " + selectedHeroData.heroPath.getPathSize() + " to town");
             }
