@@ -111,7 +111,7 @@ public class SpawnGenerator {
         player
                 .add(engine.createComponent(map.getGameMapComponentClazz()))
                 .add(engine.createComponent(playerClass))
-                .add(engine.createComponent(PlayerDataComponent.class).init(Color.BROWN, "Gracz cwel"))
+                .add(engine.createComponent(PlayerDataComponent.class).init(playerClass, Color.BROWN, "Gracz Michau"))
                 .add(engine.createComponent(SelectedComponent.class));
         engine.addEntity(player);
 
@@ -122,7 +122,7 @@ public class SpawnGenerator {
                 .add(engine.createComponent(AnimationComponent.class).init(new AnimationSet(AnimationType.stand, Direction.getRandomDirection(), animationMap), true,0f))
                 .add(engine.createComponent(TextureComponent.class).setSize(128, 128).setAdditionalOffset(-16, 0))
                 .add(engine.createComponent(RenderableComponent.class))
-                .add(engine.createComponent(HeroDataComponent.class).init(++playerId, "Cwel", 10.f,new Sprite(animationMap.get(AnimationType.stand).get(Direction.S).getKeyFrame(0))))
+                .add(engine.createComponent(HeroDataComponent.class).init(++playerId, "Hero " + playerId, 10.f,new Sprite(animationMap.get(AnimationType.stand).get(Direction.S).getKeyFrame(0))))
                 .add(engine.createComponent(VelocityComponent.class))
                 .add(engine.createComponent(playerClass)));
         Pools.free(firstHeroPos);
