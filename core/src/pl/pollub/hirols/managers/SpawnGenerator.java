@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.utils.Pools;
 
 import java.util.HashMap;
@@ -44,17 +45,18 @@ public class SpawnGenerator {
         ComponentMapper<MapComponent> mapMapper = ComponentMapper.getFor(MapComponent.class);
         Random rand = new Random();
 
-        Map<AnimationType, Map<Direction, Animation>> snakeAnimationMap = new HashMap<AnimationType, Map<Direction, Animation>>();
+        Map<AnimationType, Map<Direction, Animation>> wyvernAnimationMap = new HashMap<AnimationType, Map<Direction, Animation>>();
         Direction[] snakeAnimationDirections = new Direction[] {Direction.E, Direction.N, Direction.NE, Direction.NW, Direction.S, Direction.SE, Direction.SW, Direction.W};
-        snakeAnimationMap.put(AnimationType.stand, AnimationManager.createAnimation(snakeAnimationDirections,
-                game.assetManager.get("animations/snake_stay_animation.png", Texture.class), 32, 8, 0.06f));
+        wyvernAnimationMap.put(AnimationType.stand, AnimationManager.createAnimation(snakeAnimationDirections,
+                game.assetManager.get("animations/OrcWyvern_Standing.png", Texture.class), 16, 8, 0.06f));
 
-        Direction[] heroAnimationDirections = new Direction[] {Direction.E, Direction.N, Direction.NE, Direction.NW, Direction.S, Direction.SE, Direction.SW, Direction.W};
-        Map<AnimationType, Map<Direction, Animation>> playerAnimationMap = new HashMap<AnimationType, Map<Direction, Animation>>();
-        playerAnimationMap.put(AnimationType.run, AnimationManager.createAnimation(heroAnimationDirections,
-                game.assetManager.get("animations/Orc_Walking.png", Texture.class), 16, 8, 0.05f));
-        playerAnimationMap.put(AnimationType.stand, AnimationManager.createAnimation(heroAnimationDirections,
-                game.assetManager.get("animations/Orc_Staying.png", Texture.class), 16, 8, 0.08f));
+
+        Map<AnimationType, Map<Direction, Animation>> wyvern2AnimationMap = new HashMap<AnimationType, Map<Direction, Animation>>();
+        wyvern2AnimationMap.put(AnimationType.stand, AnimationManager.createAnimation(snakeAnimationDirections,
+                game.assetManager.get("animations/OrcWyvern_Standing.png", Texture.class), 16, 8, 0.06f));
+        wyvern2AnimationMap.put(AnimationType.run, AnimationManager.createAnimation(snakeAnimationDirections,
+                game.assetManager.get("animations/OrcWyvern_Walking.png", Texture.class), 16, 8, 0.06f));
+
 
         for (int i = 0; i < 5; i++) {
             Vector2 position = Pools.obtain(Vector2.class);
@@ -67,9 +69,9 @@ public class SpawnGenerator {
 
             if(game.engine.getEntities().contains(mapEntity, true)) continue;
 
-            mapEntity.add(game.engine.createComponent(AnimationComponent.class).init(new AnimationSet(AnimationType.stand, Direction.getRandomDirection(), snakeAnimationMap), true, rand.nextFloat()))
+            mapEntity.add(game.engine.createComponent(AnimationComponent.class).init(new AnimationSet(AnimationType.stand, Direction.getRandomDirection(), wyvernAnimationMap), true, rand.nextFloat()))
                     .add(game.engine.createComponent(map.getGameMapComponentClazz()))
-                    .add(game.engine.createComponent(TextureComponent.class).setSize(128, 128).setAdditionalOffset(-16, 0))
+                    .add(game.engine.createComponent(TextureComponent.class).setSize(176, 176).setAdditionalOffset(-40, -40))
                     .add(game.engine.createComponent(RenderableComponent.class))
                     .add(game.engine.createComponent(EnemyComponent.class).init(position,true));
             game.engine.addEntity(mapEntity);
@@ -99,12 +101,12 @@ public class SpawnGenerator {
                 .add(game.engine.createComponent(LifePeriodComponent.class).init(1000));
         game.engine.addEntity(testText);
 
-        spawnPlayerAndHeroes(game, playerAnimationMap, map, game.gameManager.getPlayerClasses().get(0));
+        spawnPlayerAndHeroes(game, wyvern2AnimationMap, map, game.gameManager.getPlayerClasses().get(0));
     }
 
 
 
-    private static void spawnPlayerAndHeroes(Hirols game, Map<AnimationType, Map<Direction, Animation>> animationMap, pl.pollub.hirols.gameMap.Map map, Class<? extends PlayerComponent> playerClass) {
+    private static void spawnPlayerAndHeroes(Hirols game,Map<AnimationType, Map<Direction, Animation>> wywernMap, pl.pollub.hirols.gameMap.Map map, Class<? extends PlayerComponent> playerClass) {
         int playerId = -1;
         PooledEngine engine = game.engine;
         Entity player = engine.createEntity();
@@ -115,18 +117,35 @@ public class SpawnGenerator {
                 .add(engine.createComponent(SelectedComponent.class));
         engine.addEntity(player);
 
+        Direction[] heroAnimationDirections = new Direction[] {Direction.E, Direction.N, Direction.NE, Direction.NW, Direction.S, Direction.SE, Direction.SW, Direction.W};
+        Map<AnimationType, Map<Direction, Animation>> orcHeroAnimationMap = new HashMap<AnimationType, Map<Direction, Animation>>();
+        orcHeroAnimationMap.put(AnimationType.run, AnimationManager.createAnimation(heroAnimationDirections,
+                game.assetManager.get("animations/OrcHero_Walking.png", Texture.class), 16, 8, 0.05f));
+        orcHeroAnimationMap.put(AnimationType.stand, AnimationManager.createAnimation(heroAnimationDirections,
+                game.assetManager.get("animations/OrcHero_Standing.png", Texture.class), 16, 8, 0.08f));
+
+        Map<AnimationType, Map<Direction, Animation>> orcMageHeroAnimationMap = new HashMap<AnimationType, Map<Direction, Animation>>();
+        orcMageHeroAnimationMap.put(AnimationType.run, AnimationManager.createAnimation(heroAnimationDirections,
+                game.assetManager.get("animations/OrcMageHero_Walking.png", Texture.class), 16, 8, 0.05f));
+        orcMageHeroAnimationMap.put(AnimationType.stand, AnimationManager.createAnimation(heroAnimationDirections,
+                game.assetManager.get("animations/OrcMageHero_Standing.png", Texture.class), 16, 8, 0.08f));
+
         Vector2 firstHeroPos = Pools.obtain(Vector2.class);
         engine.addEntity(engine.createEntity()
                 .add(engine.createComponent(PositionComponent.class).init(1728, 1728))
                 .add(engine.createComponent(map.getGameMapComponentClazz()))
-                .add(engine.createComponent(AnimationComponent.class).init(new AnimationSet(AnimationType.stand, Direction.getRandomDirection(), animationMap), true,0f))
-                .add(engine.createComponent(TextureComponent.class).setSize(128, 128).setAdditionalOffset(-16, 0))
+                .add(engine.createComponent(AnimationComponent.class).init(new AnimationSet(AnimationType.stand, Direction.getRandomDirection(), orcHeroAnimationMap), true,0f))
+                .add(engine.createComponent(TextureComponent.class).setSize(128, 128).setAdditionalOffset(-40, -40))
                 .add(engine.createComponent(RenderableComponent.class))
-                .add(engine.createComponent(HeroDataComponent.class).init(++playerId, "Sebek", 10.f,new Sprite(animationMap.get(AnimationType.stand).get(Direction.S).getKeyFrame(0))))
+                .add(engine.createComponent(HeroDataComponent.class).init(++playerId, "Sebek", 10.f,new Sprite(orcHeroAnimationMap.get(AnimationType.stand).get(Direction.S).getKeyFrame(0))))
                 .add(engine.createComponent(VelocityComponent.class))
                 .add(engine.createComponent(playerClass)));
         Pools.free(firstHeroPos);
         for (int i = 0; i < 10; i++) {
+            Map<AnimationType, Map<Direction, Animation>> animationMap = orcHeroAnimationMap;
+            if(i%2 == 0){
+                animationMap = orcMageHeroAnimationMap;
+            }
             Vector2 heroPosition = Pools.obtain(Vector2.class);
             Entity hero = engine.createEntity();
             hero
@@ -135,7 +154,22 @@ public class SpawnGenerator {
                     .add(engine.createComponent(PositionComponent.class).init(generateRandomPositionOnMap(heroPosition,map)))
                     .add(engine.createComponent(RenderableComponent.class))
                     .add(engine.createComponent(TextureComponent.class).setSize(128, 128).setAdditionalOffset(-16, 0))
-                    .add(engine.createComponent(HeroDataComponent.class).init(++playerId,"nołnejm", 13f, new Sprite(game.assetManager.get("temp/portrait.png", Texture.class))))
+                    .add(engine.createComponent(HeroDataComponent.class).init(++playerId,"nołnejm", 100000f, new Sprite(game.assetManager.get("temp/portrait.png", Texture.class))))
+                    .add(engine.createComponent(VelocityComponent.class))
+                    .add(engine.createComponent(playerClass));
+            engine.addEntity(hero);
+            Pools.free(heroPosition);
+        }
+        for (int i = 0; i < 5; i++) {
+            Vector2 heroPosition = Pools.obtain(Vector2.class);
+            Entity hero = engine.createEntity();
+            hero
+                    .add(engine.createComponent(map.getGameMapComponentClazz()))
+                    .add(engine.createComponent(AnimationComponent.class).init(new AnimationSet(AnimationType.stand, Direction.getRandomDirection(), wywernMap), true, 0f))
+                    .add(engine.createComponent(PositionComponent.class).init(generateRandomPositionOnMap(heroPosition,map)))
+                    .add(engine.createComponent(RenderableComponent.class))
+                    .add(engine.createComponent(TextureComponent.class).setSize(256, 256).setAdditionalOffset(-80, -70))
+                    .add(engine.createComponent(HeroDataComponent.class).init(++playerId,"nołnejm", 100000f, new Sprite(game.assetManager.get("temp/portrait.png", Texture.class))))
                     .add(engine.createComponent(VelocityComponent.class))
                     .add(engine.createComponent(playerClass));
             engine.addEntity(hero);

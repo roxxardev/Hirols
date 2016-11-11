@@ -62,7 +62,7 @@ public class HeroMovementSystem extends GameMapEntitySystem {
         float sub2 = destinationPosition.y - heroPosition.y;
         float tmp1, tmp2;
         float cameraOffset = 48;
-        float speed = 600.0f; //TODO selectedHeroes speed setting in options
+        float speed = 200.0f; //TODO selectedHeroes speed setting in options
         if (sub1 > 0) {
             tmp1 = heroPosition.x + speed * deltaTime;
             cam.position.x = Math.round(tmp1 + cameraOffset);

@@ -123,13 +123,16 @@ public class LoadingScreen implements Screen {
         assetManager.load("testFontSize12.ttf", BitmapFont.class, fontLoaderParameter2);
         assetManager.load("test.mp3", Music.class);
         assetManager.load("gold.png", Texture.class, textureParameter);
-        assetManager.load("animations/snake_stay_animation.png", Texture.class, textureParameter);
         assetManager.load("animations/loadingLongPress.png", Texture.class, textureParameter);
         assetManager.load("battleBackground.png", Texture.class, textureParameter);
         assetManager.load("towns/snow-town.png", Texture.class, textureParameter);
 
-        assetManager.load("animations/Orc_Staying.png", Texture.class, textureParameter);
-        assetManager.load("animations/Orc_Walking.png", Texture.class, textureParameter);
+        assetManager.load("animations/OrcWyvern_Standing.png", Texture.class, textureParameter);
+        assetManager.load("animations/OrcWyvern_Walking.png", Texture.class, textureParameter);
+        assetManager.load("animations/OrcHero_Standing.png", Texture.class, textureParameter);
+        assetManager.load("animations/OrcHero_Walking.png", Texture.class, textureParameter);
+        assetManager.load("animations/OrcMageHero_Standing.png", Texture.class, textureParameter);
+        assetManager.load("animations/OrcMageHero_Walking.png", Texture.class, textureParameter);
 
         //GUI
 
