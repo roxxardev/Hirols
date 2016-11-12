@@ -33,6 +33,7 @@ import pl.pollub.hirols.components.map.TownComponent;
 import pl.pollub.hirols.components.map.TownDataComponent;
 import pl.pollub.hirols.components.map.maps.GameMapComponent;
 import pl.pollub.hirols.components.physics.PositionComponent;
+import pl.pollub.hirols.managers.enums.Race;
 import pl.pollub.hirols.managers.enums.Resource;
 import pl.pollub.hirols.pathfinding.DiagonalHeuristic;
 import pl.pollub.hirols.pathfinding.GraphGenerator;
@@ -169,7 +170,7 @@ public class Map implements Disposable {
                             enterEntityMap.put(objectName, town);
                             town
                                     .add(game.engine.createComponent(TownComponent.class).init(town))
-                                    .add(game.engine.createComponent(TownDataComponent.class).init(objectName));
+                                    .add(game.engine.createComponent(TownDataComponent.class).init(objectName, Race.ORC)); //TODO town race from map
                             game.engine.addEntity(town);
                         } else {
                             if(!townMap.containsKey(objectName)) {

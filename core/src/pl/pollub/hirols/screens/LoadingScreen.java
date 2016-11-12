@@ -100,6 +100,8 @@ public class LoadingScreen implements Screen {
         textureParameter.genMipMaps = true;
         textureParameter.magFilter = Texture.TextureFilter.Linear;
         textureParameter.minFilter = Texture.TextureFilter.MipMap;
+
+
         assetManager.load("arrows/arrow_E.png", Texture.class, textureParameter);
         assetManager.load("arrows/arrow_N.png", Texture.class, textureParameter);
         assetManager.load("arrows/arrow_NE.png", Texture.class, textureParameter);
@@ -110,16 +112,17 @@ public class LoadingScreen implements Screen {
         assetManager.load("arrows/arrow_W.png", Texture.class, textureParameter);
         assetManager.load("arrows/cross.png", Texture.class, textureParameter);
         assetManager.load("arrows/sword.png", Texture.class, textureParameter);
-        assetManager.load("animations/standing_mech.png", Texture.class, textureParameter);
+
         FreetypeFontLoader.FreeTypeFontLoaderParameter fontLoaderParameter = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         fontLoaderParameter.fontFileName = "fonts/test.TTF";
         fontLoaderParameter.fontParameters.size = 32;
-        fontLoaderParameter.fontParameters.color = Color.BLACK;
+        fontLoaderParameter.fontParameters.color = Color.WHITE;
         assetManager.load("testFontSize32.ttf", BitmapFont.class, fontLoaderParameter);
         FreetypeFontLoader.FreeTypeFontLoaderParameter fontLoaderParameter2 = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         fontLoaderParameter2.fontFileName = "fonts/test.TTF";
-        fontLoaderParameter2.fontParameters.color = Color.BLACK;
+        fontLoaderParameter2.fontParameters.color = Color.WHITE;
         fontLoaderParameter2.fontParameters.size = 12;
+
         assetManager.load("testFontSize12.ttf", BitmapFont.class, fontLoaderParameter2);
         assetManager.load("test.mp3", Music.class);
         assetManager.load("gold.png", Texture.class, textureParameter);

@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import pl.pollub.hirols.managers.HudManager;
 import pl.pollub.hirols.managers.SoundManager;
 import pl.pollub.hirols.managers.GameManager;
+import pl.pollub.hirols.managers.UnitsManager;
 import pl.pollub.hirols.screens.LoadingScreen;
 
 public class Hirols extends Game {
@@ -19,6 +20,7 @@ public class Hirols extends Game {
 	public AssetManager assetManager;
 	public SoundManager soundManager;
     public HudManager hudManager;
+	public UnitsManager unitsManager;
 
 	public GameManager gameManager;
 	public InputMultiplexer multiplexer = new InputMultiplexer();
@@ -30,6 +32,7 @@ public class Hirols extends Game {
 		assetManager = new AssetManager();
 		soundManager = new SoundManager(assetManager);
 		gameManager = new GameManager(this,4);
+		unitsManager = new UnitsManager();
 
 		Gdx.input.setInputProcessor(multiplexer);
 

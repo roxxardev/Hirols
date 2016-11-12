@@ -130,17 +130,6 @@ public class SpawnGenerator {
         orcMageHeroAnimationMap.put(AnimationType.stand, AnimationManager.createAnimation(heroAnimationDirections,
                 game.assetManager.get("animations/OrcMageHero_Standing.png", Texture.class), 16, 8, 0.08f));
 
-        Vector2 firstHeroPos = Pools.obtain(Vector2.class);
-        engine.addEntity(engine.createEntity()
-                .add(engine.createComponent(PositionComponent.class).init(1728, 1728))
-                .add(engine.createComponent(map.getGameMapComponentClazz()))
-                .add(engine.createComponent(AnimationComponent.class).init(new AnimationSet(AnimationType.stand, Direction.getRandomDirection(), orcHeroAnimationMap), true,0f))
-                .add(engine.createComponent(TextureComponent.class).setSize(128, 128).setAdditionalOffset(-40, -40))
-                .add(engine.createComponent(RenderableComponent.class))
-                .add(engine.createComponent(HeroDataComponent.class).init(++playerId, "Sebek", 10.f,new Sprite(orcHeroAnimationMap.get(AnimationType.stand).get(Direction.S).getKeyFrame(0))))
-                .add(engine.createComponent(VelocityComponent.class))
-                .add(engine.createComponent(playerClass)));
-        Pools.free(firstHeroPos);
         for (int i = 0; i < 10; i++) {
             Map<AnimationType, Map<Direction, Animation>> animationMap = orcHeroAnimationMap;
             if(i%2 == 0){

@@ -171,7 +171,7 @@ public class MapInteractionSystem extends GameMapEntitySystem {
             return;
         }
 
-        if (isLastNodePathClicked(selectedHeroData, mapIndexX, mapIndexY)) {
+        if (!selectedHeroData.pathEntities.isEmpty() && isLastNodePathClicked(selectedHeroData, mapIndexX, mapIndexY)) {
             selectedHeroData.heroPath.followPath();
             return;
         }
@@ -183,14 +183,21 @@ public class MapInteractionSystem extends GameMapEntitySystem {
         GameMapDataComponent gameMapData = gameMapDataMapper.get(gameMapDataArray.first());
         Map gameMap = gameMapData.map;
         HeroDataComponent heroData = heroDataMap.get(hero);
-        int mapIndexX = (int)Math.floor(heroData.heroPath.getTargetPosition().x / gameMap.getTileWidth());
-        int mapIndexY = (int)Math.floor(heroData.heroPath.getTargetPosition().y / gameMap.getTileHeight());
+        if(heroData.heroPath.hasWalkNodes() || !heroData.heroPath.hasStandNodes()) return false;
+
+        PositionComponent targetPositionComponent = posMap.get(heroData.pathEntities.get(heroData.pathEntities.size() - 1));
+        Vector2 targetPosition = Pools.obtain(Vector2.class).set(targetPositionComponent.x, targetPositionComponent.y);
+
+        int mapIndexX = (int)Math.floor(targetPosition.x / gameMap.getTileWidth());
+        int mapIndexY = (int)Math.floor(targetPosition.y / gameMap.getTileHeight());
         if(mapIndexX == 0f && mapIndexY == 0f) return false;
-        searchNewPathInsideMap(hero,mapIndexX,mapIndexY,heroData.heroPath.getTargetPosition());
+        searchNewPathInsideMap(hero,mapIndexX,mapIndexY,targetPosition);
+
+        Pools.free(targetPosition);
         return true;
     }
 
-    public void searchNewPathInsideMap(Entity selectedHero, int mapIndexX, int mapIndexY, Vector2 mousePosition) {
+    private void searchNewPathInsideMap(Entity selectedHero, int mapIndexX, int mapIndexY, Vector2 mousePosition) {
         GameMapDataComponent gameMapData = gameMapDataMapper.get(gameMapDataArray.first());
         Map gameMap = gameMapData.map;
         Entity mapEntity = gameMap.getEntity(mapIndexX,mapIndexY);
@@ -202,10 +209,10 @@ public class MapInteractionSystem extends GameMapEntitySystem {
         }
     }
 
-    public boolean isLastNodePathClicked(HeroDataComponent heroData, int mapIndexX, int mapIndexY) {
+    private boolean isLastNodePathClicked(HeroDataComponent heroData, int mapIndexX, int mapIndexY) {
         GameMapDataComponent gameMapData = gameMapDataMapper.get(gameMapDataArray.first());
         Map gameMap = gameMapData.map;
-        Vector2 endNodePosition = heroData.heroPath.getTargetPosition();
+        PositionComponent endNodePosition = posMap.get(heroData.pathEntities.get(heroData.pathEntities.size() - 1));
         return ((int)Math.floor(endNodePosition.x / gameMap.getTileWidth()) == mapIndexX && (int)Math.floor(endNodePosition.y / gameMap.getTileHeight()) == mapIndexY);
     }
 
@@ -481,7 +488,6 @@ public class MapInteractionSystem extends GameMapEntitySystem {
 
                 if (i == (heroData.heroPath.getPathSize() - 1)) {
                     tempSprite.setTexture(lastPathTexture);
-                    heroData.heroPath.getTargetPosition().set(position);
                 }
 
                 Pools.free(position);

@@ -118,7 +118,7 @@ public class HeroPath {
             array.add(vector3);
         }
 
-        public void addElement(Vector3 element) {
+        private void addElement(Vector3 element) {
             addElement(element.x,element.y,element.z);
         }
 

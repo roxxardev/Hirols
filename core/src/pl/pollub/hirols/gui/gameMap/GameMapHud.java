@@ -3,6 +3,7 @@ package pl.pollub.hirols.gui.gameMap;
 import com.badlogic.gdx.graphics.Texture;
 
 import pl.pollub.hirols.Hirols;
+import pl.pollub.hirols.gui.HeroWindow;
 import pl.pollub.hirols.gui.TopBar;
 import pl.pollub.hirols.managers.AnimationManager;
 import pl.pollub.hirols.gui.Hud;
@@ -20,6 +21,7 @@ public class GameMapHud extends Hud {
 
     private pl.pollub.hirols.gui.AnimatedImage longPressImage;
     private LongPressMenu longPressMenu;
+    private HeroWindow heroWindow;
 
     private GameMapScreen gameMapScreen;
 
@@ -31,7 +33,7 @@ public class GameMapHud extends Hud {
 
     private void createActors(){
         topBar = new TopBar(game,stage);
-        rightBar = new RightBar(game, stage,gameMapScreen.getGameMapComponentClass());
+        rightBar = new RightBar(game, this,gameMapScreen.getGameMapComponentClass());
         leftBar = new LeftBar(game,stage,gameMapScreen);
 
         longPressImage = new pl.pollub.hirols.gui.AnimatedImage(AnimationManager.createAnimation(game.assetManager.get("animations/loadingLongPress.png", Texture.class), 32, 1, 0.034375f), false);
@@ -82,5 +84,13 @@ public class GameMapHud extends Hud {
 
     public pl.pollub.hirols.gui.AnimatedImage getLongPressImage() {
         return longPressImage;
+    }
+
+    public void addHeroWindow() {
+        if(stage.getActors().contains(heroWindow,true)) return;
+
+        heroWindow = new HeroWindow("test", false);
+        heroWindow.setSize(400,400);
+        stage.addActor(heroWindow);
     }
 }

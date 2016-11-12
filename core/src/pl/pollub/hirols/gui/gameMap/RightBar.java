@@ -41,7 +41,7 @@ import pl.pollub.hirols.systems.gameMapSystems.MapInteractionSystem;
 /**
  * Created by erykp_000 on 2016-08-14.
  */
-public class RightBar extends Table {
+class RightBar extends Table {
     private final Hirols game;
     private final Stage stage;
 
@@ -55,15 +55,15 @@ public class RightBar extends Table {
     private Image rightBarDragImage;
     private VisWindow miniMapWindow;
 
-    public RightBar(Hirols game, final Stage stage, Class<? extends GameMapComponent> gameMapComponent) {
+    RightBar(Hirols game, GameMapHud gameMapHud, Class<? extends GameMapComponent> gameMapComponent) {
         this.game = game;
-        this.stage = stage;
+        this.stage = gameMapHud.getStage();
 
         setTouchable(Touchable.enabled);
         setBackground(game.hudManager.getTransparentBackground());
         setDebug(game.hudManager.debug);
 
-        createActors(gameMapComponent);
+        createActors(gameMapComponent,gameMapHud);
 
         //TODO zmienic z Marcinowego na jakies czytelne
         addListener(new ActorGestureListener() {
@@ -93,7 +93,7 @@ public class RightBar extends Table {
         });
     }
 
-    private void createActors(Class<? extends GameMapComponent> gameMapComponent) {
+    private void createActors(Class<? extends GameMapComponent> gameMapComponent, GameMapHud gameMapHud) {
         moveButton = new VisImageButton(new VisImageButton.VisImageButtonStyle(game.hudManager.skin.get("image-button", VisImageButton.VisImageButtonStyle.class)));
         moveButton.getStyle().imageUp = new SpriteDrawable(new Sprite(new TextureRegion(game.assetManager.get("ui/button-images.png", Texture.class), 0, 2, 128, 176)));
         turnButton = new VisImageButton(new VisImageButton.VisImageButtonStyle(game.hudManager.skin.get("image-button", VisImageButton.VisImageButtonStyle.class)));
@@ -123,7 +123,7 @@ public class RightBar extends Table {
         ImmutableArray<Entity> heroes = game.engine.getEntitiesFor(Family.all(HeroDataComponent.class, gameMapComponent).get());
 
         for(int i = 0; i < heroes.size(); i++) {
-            gridGroupHeroes.addHero(heroes.get(i));
+            gridGroupHeroes.addHero(heroes.get(i), gameMapHud);
         }
 
         gridGroupTowns = new GridGroup();
@@ -222,7 +222,7 @@ public class RightBar extends Table {
     private class GridGroupHeroes extends GridGroup {
         Map<Integer, HeroTable> heroButtonMap = new HashMap<Integer, HeroTable>();
 
-        public void addHero(final Entity heroEntity) {
+        public void addHero(final Entity heroEntity, final GameMapHud gameMapHud) {
             HeroDataComponent heroData = ComponentMapper.getFor(HeroDataComponent.class).get(heroEntity);
 
             if(heroButtonMap.get(heroData.id) != null) {
@@ -235,6 +235,13 @@ public class RightBar extends Table {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     game.engine.getSystem(MapInteractionSystem.class).changeSelectedHero(heroEntity);
+                }
+            });
+            image.addListener(new ActorGestureListener(20, 0.4f, 0.6f, 0.15f) {
+                @Override
+                public boolean longPress(Actor actor, float x, float y) {
+                    gameMapHud.addHeroWindow();
+                    return super.longPress(actor, x, y);
                 }
             });
 

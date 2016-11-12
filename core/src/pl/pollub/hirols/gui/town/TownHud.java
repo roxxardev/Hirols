@@ -1,5 +1,6 @@
 package pl.pollub.hirols.gui.town;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -17,6 +18,8 @@ import com.kotcrab.vis.ui.widget.VisImageTextButton;
 import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.gui.Hud;
 import pl.pollub.hirols.gui.TopBar;
+import pl.pollub.hirols.gui.UnitsGrid;
+import pl.pollub.hirols.managers.HudManager;
 
 /**
  * Created by erykp_000 on 2016-10-30.
@@ -52,7 +55,7 @@ public class TownHud extends Hud {
 
         exitButton = new VisImageTextButton("Exit", game.hudManager.skin.get("image-text-button", VisImageTextButton.VisImageTextButtonStyle.class));
         exitButton.getStyle().imageUp = new SpriteDrawable(new Sprite(new TextureRegion(game.assetManager.get("ui/button-images.png", Texture.class),338, 208, 112, 112)));
-        moveTextLabelBelowImage(exitButton, Scaling.fill);
+        HudManager.moveTextLabelBelowImage(exitButton, Scaling.fit);
         exitButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -65,13 +68,6 @@ public class TownHud extends Hud {
         stage.addActor(inTown);
         stage.addActor(outTown);
         stage.addActor(exitButton);
-    }
-
-    private void moveTextLabelBelowImage(VisImageTextButton button, Scaling scaling) {
-        button.getImage().setScaling(scaling);
-        button.clearChildren();
-        button.add(button.getImage()).expand().fill().row();
-        button.add(button.getLabel());
     }
 
     @Override
@@ -96,7 +92,7 @@ public class TownHud extends Hud {
     }
 
     private class Garrison extends Table {
-        private GridGroup units = new GridGroup();
+        private UnitsGrid units;
         private VisImageTextButton heroButton;
         private ButtonGroup buttonGroup;
         private boolean heroOnLeft;
@@ -105,17 +101,10 @@ public class TownHud extends Hud {
             this.buttonGroup = buttonGroup;
             this.heroOnLeft = heroOnLeft;
 
-            units.setSpacing(2);
-
-            for(int i = 0; i < 5; i++) {
-                VisImageTextButton in = new VisImageTextButton("Dupa", game.hudManager.skin.get("units-style", VisImageTextButton.VisImageTextButtonStyle.class));
-                units.addActor(in);
-                buttonGroup.add(in);
-                moveTextLabelBelowImage(in, Scaling.stretch);
-            }
+            units = new UnitsGrid(game, buttonGroup);
 
             heroButton = new VisImageTextButton("Hero", game.hudManager.skin.get("units-style", VisImageTextButton.VisImageTextButtonStyle.class));
-            moveTextLabelBelowImage(heroButton, Scaling.stretch);
+            HudManager.moveTextLabelBelowImage(heroButton, Scaling.stretch);
             buttonGroup.add(heroButton);
 
             addActor(units);

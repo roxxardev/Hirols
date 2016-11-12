@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Pool;
 import java.util.ArrayList;
 
 import pl.pollub.hirols.gameMap.HeroPath;
+import pl.pollub.hirols.managers.UnitsManager;
 import pl.pollub.hirols.pathfinding.NodePath;
 
 /**
@@ -18,11 +19,16 @@ import pl.pollub.hirols.pathfinding.NodePath;
  */
 public class HeroDataComponent implements Component, Pool.Poolable{
     public int id = -1;
-    public float movementPoints;
-    public String name;
     public Sprite avatar;
     public final HeroPath heroPath = new HeroPath();
     public final ArrayList<Entity> pathEntities = new ArrayList<Entity>();
+    public final Army army = new Army();
+
+    public float movementPoints;
+    public int magicPoints;
+    public String name;
+    public int attack;
+    public int defense;
 
     public HeroDataComponent init(int id, String name, float movementPoints, Sprite avatar) {
         this.id = id;
@@ -39,5 +45,61 @@ public class HeroDataComponent implements Component, Pool.Poolable{
         avatar = null;
         name = null;
         heroPath.reset(true);
+        pathEntities.clear();
+        magicPoints = 0;
+        attack = 0;
+        defense = 0;
+        army.clear();
+    }
+
+    public class Army {
+        int capacity = 5;
+        Squad[] squads = new Squad[capacity];
+
+        public boolean addUnit(UnitsManager.Unit unitToInsert, int quantity) {
+            for(int i = 0; i < capacity; i++) {
+                if(squads[i].unit.equals(unitToInsert)) {
+                    squads[i].quantity += quantity;
+                    return true;
+                }
+            }
+
+            for(int i = 0; i < capacity; i++) {
+                if(squads[i] == null) {
+                    squads[i] = new Squad(unitToInsert, quantity);
+                }
+            }
+
+            return false;
+        }
+
+        public void clear() {
+            for(Squad squad : squads) {
+                squad = null;
+            }
+            capacity = 0;
+        }
+
+        public Squad[] getSquads() {
+            return squads;
+        }
+
+        public class Squad {
+            UnitsManager.Unit unit;
+            int quantity;
+
+            Squad(UnitsManager.Unit unit, int quantity) {
+                this.unit = unit;
+                this.quantity = quantity;
+            }
+
+            public int getQuantity() {
+                return quantity;
+            }
+
+            public UnitsManager.Unit getUnit() {
+                return unit;
+            }
+        }
     }
 }

@@ -14,12 +14,10 @@ public class BitmapFontComponent implements Component, Pool.Poolable {
     public BitmapFont bitmapFont;
     public CharSequence sequence;
     public float scale;
-    public Color color;
 
     public BitmapFontComponent init(BitmapFont bitmapFont, CharSequence sequence) {
         this.bitmapFont = bitmapFont;
         this.sequence = sequence;
-        color = bitmapFont.getColor();
         scale = 1;
         return this;
     }
@@ -29,6 +27,5 @@ public class BitmapFontComponent implements Component, Pool.Poolable {
         bitmapFont = null;
         sequence = null;
         scale = 0f;
-        color.set(Color.CLEAR);
     }
 }

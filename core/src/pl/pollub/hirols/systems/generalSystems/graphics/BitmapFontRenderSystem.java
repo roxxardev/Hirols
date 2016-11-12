@@ -32,8 +32,6 @@ public class BitmapFontRenderSystem extends GeneralIteratingSystem {
         BitmapFontComponent bitmapFontData = bitmapMap.get(entity);
         PositionComponent position = posMap.get(entity);
         bitmapFontData.bitmapFont.getData().setScale(bitmapFontData.scale);
-        bitmapFontData.bitmapFont.setColor(bitmapFontData.color);
         bitmapFontData.bitmapFont.draw(batch, bitmapFontData.sequence, position.x, position.y);
-        //Gdx.app.log("BitmapFontRenderSystem", priority + "");
     }
 }

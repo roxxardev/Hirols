@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 
 import pl.pollub.hirols.Hirols;
+import pl.pollub.hirols.components.map.TownDataComponent;
 import pl.pollub.hirols.gui.town.TownHud;
 
 /**
@@ -14,7 +15,7 @@ public class TownScreen extends GameScreen {
 
     private TownHud townHud;
 
-    public TownScreen(Hirols game) {
+    public TownScreen(Hirols game, TownDataComponent townDataComponent) {
         super(game);
 
         townHud = new TownHud(game);

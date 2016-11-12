@@ -38,7 +38,6 @@ public class RenderSystem extends GeneralSortedIteratingSystem {
     }
 
     protected void processEntity(Entity entity, float deltaTime) {
-        //Gdx.app.log("RenderSystem", priority + " Rendering "+ affiliationClass.toString());
         PositionComponent posCom = posMap.get(entity);
         Sprite sprite = textureMap.get(entity).sprite;
         Vector2 offset = textureMap.get(entity).additionalOffset;

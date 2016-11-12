@@ -6,10 +6,12 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.components.LifePeriodComponent;
+import pl.pollub.hirols.components.map.TownDataComponent;
 import pl.pollub.hirols.components.player.PlayerComponent;
 import pl.pollub.hirols.components.player.PlayerDataComponent;
 import pl.pollub.hirols.components.graphics.BitmapFontComponent;
@@ -76,7 +78,7 @@ public class EndNodeInteractionSystem extends GameMapEntitySystem {
             if (townMap.has(targetEntity)) {
                 TownComponent townComponent = townMap.get(targetEntity);
                 Gdx.app.log("EndNodeInteractionSystem", "Interaction with town: ");
-                game.setScreen(new TownScreen(game));
+                game.setScreen(new TownScreen(game,ComponentMapper.getFor(TownDataComponent.class).get(townComponent.enterEntity)));
             } else if (mineMap.has(targetEntity)) {
                 Gdx.app.log("EndNodeInteractionSystem", "Interaction with mine");
                 Class<? extends PlayerComponent> mineOwner = game.gameManager.attachedToPlayer(targetEntity);
@@ -103,16 +105,17 @@ public class EndNodeInteractionSystem extends GameMapEntitySystem {
             PositionComponent resourcePosition = posMap.get(targetEntity);
             gameMapData.map.updateGraphConnectionsToNode(resourcePosition.x, resourcePosition.y, true);
             BitmapFont bitmapFont = game.assetManager.get("testFontSize32.ttf", BitmapFont.class);
+            BitmapFontComponent bitmapFontComponent = game.engine.createComponent(BitmapFontComponent.class).init(new BitmapFont(bitmapFont.getData(), bitmapFont.getRegion(), bitmapFont.usesIntegerPositions()), resourceText);
+            bitmapFontComponent.bitmapFont.setColor(new Color(0,0,0,1));
             getEngine().addEntity(game.engine.createEntity()
                     .add(game.engine.createComponent(LifePeriodComponent.class).init(3000))
-                    .add(game.engine.createComponent(BitmapFontComponent.class).init(new BitmapFont(bitmapFont.getData(), bitmapFont.getRegion(), bitmapFont.usesIntegerPositions()), resourceText))
+                    .add(bitmapFontComponent)
                     .add(game.engine.createComponent(TransparencyComponent.class).init(1))
                     .add(game.engine.createComponent(RenderableComponent.class))
                     .add(game.engine.createComponent(PositionComponent.class).init(resourcePosition.x, resourcePosition.y))
                     .add(game.engine.createComponent(VelocityComponent.class))
                     .add(game.engine.createComponent(gameMapData.map.getGameMapComponentClazz())));
             getEngine().removeEntity(pathEntity);
-            selectedHeroData.heroPath.resetTargetPosition();
             Gdx.app.log("EndNodeInteractionSystem", "Interaction with resource: " + resourceText);
         } else if (chestMap.has(targetEntity)) {
             ChestComponent chestComponent = chestMap.get(targetEntity);

@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Scaling;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisImageButton;
 import com.kotcrab.vis.ui.widget.VisImageTextButton;
@@ -27,23 +28,17 @@ public class HudManager {
 
     private Texture whiteTexture;
     private SpriteDrawable transparentBackground;
-    public BitmapFont bitmapFont;
+    private BitmapFont bitmapFont;
     public boolean debug;
 
     public Button.ButtonStyle buttonStyleRoundedOver;
     public Button.ButtonStyle buttonStyleRoundedChecked;
-
-    public VisImageButton.VisImageButtonStyle imageButtonStyle;
-    public VisTextButton.VisTextButtonStyle textButtonStyle;
-    public VisImageTextButton.VisImageTextButtonStyle imageTextButtonStyle;
-
 
     public HudManager(Hirols game){
         this.game = game;
         skin = new Skin();
 
         bitmapFont = game.assetManager.get("testFontSize12.ttf", BitmapFont.class);
-        bitmapFont.getData().setScale(1);
 
         int width = 1, height= 1, radius = 10;
         Pixmap pixmapWhite = new Pixmap(width, height, Pixmap.Format.RGBA8888);
@@ -87,27 +82,25 @@ public class HudManager {
         Label.LabelStyle labelStyleWhite = new Label.LabelStyle(bitmapFont, Color.WHITE);
         skin.add("label-white", labelStyleWhite, Label.LabelStyle.class);
 
-        imageButtonStyle = new VisImageButton.VisImageButtonStyle();
+        VisImageButton.VisImageButtonStyle imageButtonStyle = new VisImageButton.VisImageButtonStyle();
         imageButtonStyle.up = drawableUp;
         imageButtonStyle.down = drawableDown;
         imageButtonStyle.over = drawableOver;
-
         skin.add("image-button", imageButtonStyle, VisImageButton.VisImageButtonStyle.class);
 
-        textButtonStyle = new VisTextButton.VisTextButtonStyle();
+        VisTextButton.VisTextButtonStyle textButtonStyle = new VisTextButton.VisTextButtonStyle();
         textButtonStyle.up = drawableUp;
         textButtonStyle.down = drawableDown;
         textButtonStyle.over = drawableOver;
         textButtonStyle.font = bitmapFont;
-
         skin.add("text-button", textButtonStyle, VisTextButton.VisTextButtonStyle.class);
 
-        imageTextButtonStyle = new VisImageTextButton.VisImageTextButtonStyle();
-        imageTextButtonStyle.imageUp = drawableUp;
-        imageTextButtonStyle.imageDown = drawableDown;
-        imageTextButtonStyle.imageOver = drawableOver;
+        VisImageTextButton.VisImageTextButtonStyle imageTextButtonStyle = new VisImageTextButton.VisImageTextButtonStyle();
+        imageTextButtonStyle.up = drawableUp;
+        imageTextButtonStyle.down = drawableDown;
+        imageTextButtonStyle.over = drawableOver;
         imageTextButtonStyle.font = bitmapFont;
-
+        imageTextButtonStyle.fontColor = Color.GOLD;
         skin.add("image-text-button", imageTextButtonStyle, VisImageTextButton.VisImageTextButtonStyle.class);
 
 
@@ -116,7 +109,6 @@ public class HudManager {
         unitsStyle.imageChecked = new TextureRegionDrawable(new TextureRegion(game.assetManager.get("ui/button-images.png", Texture.class),338, 208, 112, 112));
         unitsStyle.font = game.assetManager.get("testFontSize12.ttf", BitmapFont.class);
         unitsStyle.over = new SpriteDrawable(new Sprite(whiteTexture)).tint(new Color(0,0,0,0.8f));
-
         skin.add("units-style", unitsStyle, VisImageTextButton.VisImageTextButtonStyle.class);
 
     }
@@ -127,5 +119,12 @@ public class HudManager {
 
     public Texture getWhiteTexture() {
         return whiteTexture;
+    }
+
+    public static void moveTextLabelBelowImage(VisImageTextButton button, Scaling scaling) {
+        button.getImage().setScaling(scaling);
+        button.clearChildren();
+        button.add(button.getImage()).expand().fill().row();
+        button.add(button.getLabel());
     }
 }
