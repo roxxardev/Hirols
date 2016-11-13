@@ -1,9 +1,7 @@
 package pl.pollub.hirols.gui;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.utils.Scaling;
-import com.badlogic.gdx.utils.SnapshotArray;
 import com.kotcrab.vis.ui.layout.GridGroup;
 import com.kotcrab.vis.ui.widget.VisImageTextButton;
 
@@ -34,6 +32,15 @@ public class UnitsGrid extends GridGroup {
     }
 
     public void update(HeroDataComponent heroDataComponent) {
+        if(heroDataComponent == null) {
+            for(int i = 0; i < 5; i++) {
+                VisImageTextButton button = unitButtons[i];
+                button.getLabel().setText("Empty");
+                button.getStyle().imageUp = null;
+            }
+            return;
+        }
+
         HeroDataComponent.Army.Squad[] squads = heroDataComponent.army.getSquads();
         for(int i = 0; i < 5; i++) {
             VisImageTextButton button = unitButtons[i];

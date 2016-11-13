@@ -16,6 +16,7 @@ import com.kotcrab.vis.ui.widget.VisImageButton;
 import com.kotcrab.vis.ui.widget.VisImageTextButton;
 
 import pl.pollub.hirols.Hirols;
+import pl.pollub.hirols.components.map.HeroDataComponent;
 import pl.pollub.hirols.gui.Hud;
 import pl.pollub.hirols.gui.TopBar;
 import pl.pollub.hirols.gui.UnitsGrid;
@@ -129,6 +130,10 @@ public class TownHud extends Hud {
                 heroButton.setSize(buttonSize*2,buttonSize*2);
                 heroButton.setPosition(-heroButton.getWidth() - spacing, 0 + spacing);
             }
+        }
+
+        public void update(HeroDataComponent heroDataComponent) {
+            units.update(heroDataComponent);
         }
 
     }
