@@ -37,7 +37,7 @@ import pl.pollub.hirols.managers.enums.Race;
 import pl.pollub.hirols.managers.enums.Resource;
 import pl.pollub.hirols.pathfinding.DiagonalHeuristic;
 import pl.pollub.hirols.pathfinding.GraphGenerator;
-import pl.pollub.hirols.pathfinding.MapGraph;
+import pl.pollub.hirols.pathfinding.DiagonalMapGraph;
 import pl.pollub.hirols.pathfinding.Node;
 import pl.pollub.hirols.pathfinding.NodePath;
 
@@ -52,7 +52,7 @@ public class Map implements Disposable {
     private final int tileMapWidth, tileMapHeight;
     private final int tileWidth, tileHeight;
     private final Rectangle mapRect;
-    private final MapGraph graph;
+    private final DiagonalMapGraph graph;
     private final IndexedAStarPathFinder<Node> pathFinder;
     private final DiagonalHeuristic diagonalHeuristic = new DiagonalHeuristic();
 
@@ -74,7 +74,7 @@ public class Map implements Disposable {
 
         entityMap = new Entity[tileMapWidth][tileMapHeight];
         createEntities();
-        graph = GraphGenerator.generateGraph(this,tileWidth,tileHeight,tileMapWidth,tileMapHeight);
+        graph = GraphGenerator.generateDiagonalGraph(this,tileWidth,tileHeight,tileMapWidth,tileMapHeight);
         pathFinder = new IndexedAStarPathFinder<Node>(graph);
         loadObjects();
     }

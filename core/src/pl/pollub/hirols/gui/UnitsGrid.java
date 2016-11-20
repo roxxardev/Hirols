@@ -23,11 +23,12 @@ public class UnitsGrid extends GridGroup {
         this.game = game;
         setSpacing(2);
         for(int i = 0; i < 5; i++) {
-            VisImageTextButton in = new VisImageTextButton("Empty", game.hudManager.skin.get("units-style", VisImageTextButton.VisImageTextButtonStyle.class));
+            VisImageTextButton in = new VisImageTextButton("Empty", new VisImageTextButton.VisImageTextButtonStyle(game.hudManager.skin.get("units-style", VisImageTextButton.VisImageTextButtonStyle.class)));
             addActor(in);
             unitButtons[i] = in;
             buttonGroup.add(in);
             HudManager.moveTextLabelBelowImage(in, Scaling.stretch);
+            in.getImageCell().expand();
         }
     }
 

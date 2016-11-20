@@ -1,6 +1,7 @@
 package pl.pollub.hirols.gui.town;
 
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -11,12 +12,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Scaling;
-import com.kotcrab.vis.ui.layout.GridGroup;
-import com.kotcrab.vis.ui.widget.VisImageButton;
 import com.kotcrab.vis.ui.widget.VisImageTextButton;
 
 import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.components.map.HeroDataComponent;
+import pl.pollub.hirols.components.map.TownDataComponent;
 import pl.pollub.hirols.gui.Hud;
 import pl.pollub.hirols.gui.TopBar;
 import pl.pollub.hirols.gui.UnitsGrid;
@@ -32,10 +32,17 @@ public class TownHud extends Hud {
     private Garrison inTown, outTown;
 
     private VisImageTextButton exitButton;
+    private VisImageTextButton barracksButton;
+
     private boolean exitRequest;
 
-    public TownHud(Hirols game) {
+    Entity inTownHero, gateHero;
+
+    public TownHud(Hirols game, TownDataComponent townDataComponent, Entity heroAtGate) {
         super(game);
+
+        this.inTownHero = townDataComponent.heroInTown;
+        this.gateHero = heroAtGate;
 
         createActors();
     }
@@ -54,7 +61,7 @@ public class TownHud extends Hud {
         inTown = new Garrison(buttonGroup,false);
         outTown = new Garrison(buttonGroup, true);
 
-        exitButton = new VisImageTextButton("Exit", game.hudManager.skin.get("image-text-button", VisImageTextButton.VisImageTextButtonStyle.class));
+        exitButton = new VisImageTextButton("Exit", new VisImageTextButton.VisImageTextButtonStyle(game.hudManager.skin.get("image-text-button", VisImageTextButton.VisImageTextButtonStyle.class)));
         exitButton.getStyle().imageUp = new SpriteDrawable(new Sprite(new TextureRegion(game.assetManager.get("ui/button-images.png", Texture.class),338, 208, 112, 112)));
         HudManager.moveTextLabelBelowImage(exitButton, Scaling.fit);
         exitButton.addListener(new ChangeListener() {
@@ -63,6 +70,12 @@ public class TownHud extends Hud {
                 exitRequest = true;
             }
         });
+
+        ComponentMapper<HeroDataComponent> heroMap = ComponentMapper.getFor(HeroDataComponent.class);
+        if(inTownHero == null) inTown.update(null);
+        else inTown.update(heroMap.get(inTownHero));
+        if(gateHero == null) outTown.update(null);
+        else outTown.update(heroMap.get(gateHero));
 
         stage.addActor(townBackground);
         stage.addActor(topBar);
@@ -104,8 +117,8 @@ public class TownHud extends Hud {
 
             units = new UnitsGrid(game, buttonGroup);
 
-            heroButton = new VisImageTextButton("Hero", game.hudManager.skin.get("units-style", VisImageTextButton.VisImageTextButtonStyle.class));
-            HudManager.moveTextLabelBelowImage(heroButton, Scaling.stretch);
+            heroButton = new VisImageTextButton("Hero", new VisImageTextButton.VisImageTextButtonStyle(game.hudManager.skin.get("units-style", VisImageTextButton.VisImageTextButtonStyle.class)));
+            HudManager.moveTextLabelBelowImage(heroButton, Scaling.fit);
             buttonGroup.add(heroButton);
 
             addActor(units);
@@ -134,8 +147,12 @@ public class TownHud extends Hud {
 
         public void update(HeroDataComponent heroDataComponent) {
             units.update(heroDataComponent);
+            if(heroDataComponent == null) return;
+            heroButton.setText(heroDataComponent.name);
+            heroButton.getStyle().up = new SpriteDrawable(heroDataComponent.avatar);
         }
 
     }
+
 }
 

@@ -95,10 +95,6 @@ public class BattleScreen extends GameScreen {
             public void clear() {
                 console.clear();
             }
-
-            public void dupa(String s) {
-                Gdx.app.log("TEST", s);
-            }
         };
         console = new GraphicalConsole(commandsContainer,
                 game.assetManager.get("default_skin/uiskin.json", Skin.class),

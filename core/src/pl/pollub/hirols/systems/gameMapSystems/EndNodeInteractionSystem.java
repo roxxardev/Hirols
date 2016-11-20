@@ -78,7 +78,7 @@ public class EndNodeInteractionSystem extends GameMapEntitySystem {
             if (townMap.has(targetEntity)) {
                 TownComponent townComponent = townMap.get(targetEntity);
                 Gdx.app.log("EndNodeInteractionSystem", "Interaction with town: ");
-                game.setScreen(new TownScreen(game,ComponentMapper.getFor(TownDataComponent.class).get(townComponent.enterEntity)));
+                game.setScreen(new TownScreen(game,townComponent.enterEntity));
             } else if (mineMap.has(targetEntity)) {
                 Gdx.app.log("EndNodeInteractionSystem", "Interaction with mine");
                 Class<? extends PlayerComponent> mineOwner = game.gameManager.attachedToPlayer(targetEntity);

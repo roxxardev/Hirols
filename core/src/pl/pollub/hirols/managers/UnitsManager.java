@@ -25,6 +25,7 @@ public class UnitsManager {
     }
 
     public class Unit {
+
         public final Race race;
         public final UnitType unitType;
         public final String name;
