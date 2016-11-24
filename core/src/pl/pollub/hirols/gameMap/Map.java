@@ -201,7 +201,7 @@ public class Map implements Disposable {
                         if(Boolean.valueOf(object.getProperties().get("isEnter", String.class))) {
                             enterEntityMap.put(objectName, mine);
                             mine
-                                    .add(game.engine.createComponent(MineDataComponent.class).init(Resource.Wood, 2))
+                                    .add(game.engine.createComponent(MineDataComponent.class).init(Resource.WOOD, 2))
                                     .add(game.engine.createComponent(MineComponent.class).init(mine));
                             game.engine.addEntity(mine);
                         } else {

@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.utils.Pools;
 
 import java.util.HashMap;
@@ -45,18 +44,9 @@ public class SpawnGenerator {
         ComponentMapper<MapComponent> mapMapper = ComponentMapper.getFor(MapComponent.class);
         Random rand = new Random();
 
-        Map<AnimationType, Map<Direction, Animation>> wyvernAnimationMap = new HashMap<AnimationType, Map<Direction, Animation>>();
-        Direction[] snakeAnimationDirections = new Direction[] {Direction.E, Direction.N, Direction.NE, Direction.NW, Direction.S, Direction.SE, Direction.SW, Direction.W};
-        wyvernAnimationMap.put(AnimationType.stand, AnimationManager.createAnimation(snakeAnimationDirections,
-                game.assetManager.get("animations/OrcWyvern_Standing.png", Texture.class), 16, 8, 0.06f));
+        Map<AnimationType, Map<Direction, Animation>> wyvernAnimationMap = AnimationManager.createUnitAnimationMaps(game.unitsManager.wyvern, game);
 
-
-        Map<AnimationType, Map<Direction, Animation>> wyvern2AnimationMap = new HashMap<AnimationType, Map<Direction, Animation>>();
-        wyvern2AnimationMap.put(AnimationType.stand, AnimationManager.createAnimation(snakeAnimationDirections,
-                game.assetManager.get("animations/OrcWyvern_Standing.png", Texture.class), 16, 8, 0.06f));
-        wyvern2AnimationMap.put(AnimationType.run, AnimationManager.createAnimation(snakeAnimationDirections,
-                game.assetManager.get("animations/OrcWyvern_Walking.png", Texture.class), 16, 8, 0.06f));
-
+        Map<AnimationType, Map<Direction, Animation>> wyvern2AnimationMap = AnimationManager.createUnitAnimationMaps(game.unitsManager.wyvern, game);
 
         for (int i = 0; i < 5; i++) {
             Vector2 position = Pools.obtain(Vector2.class);
@@ -101,6 +91,8 @@ public class SpawnGenerator {
                 .add(game.engine.createComponent(LifePeriodComponent.class).init(1000));
         game.engine.addEntity(testText);
 
+
+
         spawnPlayerAndHeroes(game, wyvern2AnimationMap, map, game.gameManager.getPlayerClasses().get(0));
     }
 
@@ -142,7 +134,7 @@ public class SpawnGenerator {
                     .add(engine.createComponent(AnimationComponent.class).init(new AnimationSet(AnimationType.stand, Direction.getRandomDirection(), animationMap), true, 0f))
                     .add(engine.createComponent(PositionComponent.class).init(generateRandomPositionOnMap(heroPosition,map)))
                     .add(engine.createComponent(RenderableComponent.class))
-                    .add(engine.createComponent(TextureComponent.class).setSize(128, 128).setAdditionalOffset(-16, 0))
+                    .add(engine.createComponent(TextureComponent.class).setSize(128, 128).setAdditionalOffset(-16, -14))
                     .add(engine.createComponent(HeroDataComponent.class).init(++playerId,"nołnejm", 100000f, new Sprite(game.assetManager.get("temp/portrait.png", Texture.class))))
                     .add(engine.createComponent(VelocityComponent.class))
                     .add(engine.createComponent(playerClass));

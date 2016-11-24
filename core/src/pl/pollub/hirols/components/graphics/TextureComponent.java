@@ -19,8 +19,18 @@ public class TextureComponent implements Component, Pool.Poolable {
         return this;
     }
 
+    public TextureComponent setSize(Vector2 size) {
+        sprite.setSize(size.x,size.y);
+        return this;
+    }
+
     public TextureComponent setAdditionalOffset(float additionalOffsetX, float additionalOffsetY) {
         additionalOffset.set(additionalOffsetX,additionalOffsetY);
+        return this;
+    }
+
+    public TextureComponent setAdditionalOffset(Vector2 additionalOffset) {
+        this.additionalOffset.set(additionalOffset);
         return this;
     }
 

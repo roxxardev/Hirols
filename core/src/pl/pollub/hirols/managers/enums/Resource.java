@@ -4,15 +4,15 @@ package pl.pollub.hirols.managers.enums;
  * Created by kamil on 15.03.2016.
  */
 public enum Resource {
-    Stone, Wood, Steel, GOLD;
+    STONE, WOOD, STEEL, GOLD;
 
     public static Resource fromString(String resource) {
         if (resource.equals("stone"))
-            return Resource.Stone;
+            return Resource.STONE;
         else if (resource.equals("steel"))
-            return Resource.Steel;
+            return Resource.STEEL;
         else if (resource.equals("wood"))
-            return Resource.Wood;
+            return Resource.WOOD;
         else if (resource.equals("gold"))
             return Resource.GOLD;
 

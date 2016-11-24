@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import java.util.HashMap;
 import java.util.Map;
 
+import pl.pollub.hirols.Hirols;
+import pl.pollub.hirols.managers.enums.AnimationType;
 import pl.pollub.hirols.managers.enums.Direction;
 
 /**
@@ -38,5 +40,18 @@ public class AnimationManager {
                 frames[index++]  = tmp[i][j];
 
         return new Animation(frameDuration, frames);
+    }
+
+    public static Map<AnimationType, Map<Direction, Animation>> createUnitAnimationMaps(UnitsManager.Unit unit, Hirols game) {
+        Map<AnimationType, Map<Direction, Animation>> animationMap = new HashMap<AnimationType, Map<Direction, Animation>>();
+
+        for(Map.Entry<AnimationType, UnitsManager.AnimationProperties> entry: unit.animationInformation.animationPropertiesMap.entrySet()) {
+            AnimationType animationType = entry.getKey();
+            UnitsManager.AnimationProperties animationProperties = entry.getValue();
+
+            animationMap.put(animationType, createAnimation(animationProperties.getDirections(), game.assetManager.get(animationProperties.getPath(), Texture.class), animationProperties.getCols(), animationProperties.getRows(), animationProperties.getTime()));
+        }
+
+        return animationMap;
     }
 }
