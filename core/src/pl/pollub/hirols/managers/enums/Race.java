@@ -5,5 +5,5 @@ package pl.pollub.hirols.managers.enums;
  */
 
 public enum Race {
-    HUMAN, ORC, NONE;
+    HUMAN, ORC, NONE
 }

@@ -38,11 +38,11 @@ public class HeroAnimationChangerSystem extends GameMapEntitySystem {
 
         if(heroData.heroPath.hasWalkNodes()) {
             animationMap.get(hero).animationSet.setDirection(pathMap.get(heroData.pathEntities.get(0)).direction);
-            animationMap.get(hero).animationSet.changeAnimationType(AnimationType.run);
+            animationMap.get(hero).animationSet.changeAnimationType(AnimationType.RUN);
         } else {
             if(heroData.heroPath.hasStandNodes())
                 animationMap.get(hero).animationSet.setDirection(pathMap.get(heroData.pathEntities.get(0)).direction);
-            animationMap.get(hero).animationSet.changeAnimationType(AnimationType.stand);
+            animationMap.get(hero).animationSet.changeAnimationType(AnimationType.STAND);
         }
     }
 }

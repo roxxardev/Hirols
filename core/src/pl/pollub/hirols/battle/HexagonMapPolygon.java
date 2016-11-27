@@ -30,7 +30,7 @@ public class HexagonMapPolygon {
     private final TextureRegion regionFromPixMap;
     private final EarClippingTriangulator earClippingTriangulator = new EarClippingTriangulator();
 
-    public HexagonMapPolygon(int mapWidth, int mapHeight) {
+    public HexagonMapPolygon(int mapWidth, int mapHeight, float hexagonSideLength, Vector2 margin) {
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
         hexagons = new HexagonTilePolygon[mapWidth][mapHeight];
@@ -39,14 +39,12 @@ public class HexagonMapPolygon {
         pixmap.fill();
         regionFromPixMap = new TextureRegion(new Texture(pixmap));
         pixmap.dispose();
-    }
 
-    public HexagonMapPolygon(int mapWidth, int mapHeight, float hexagonSideLength, Vector2 margin) {
-        this(mapWidth, mapHeight);
         init(hexagonSideLength, margin);
     }
 
-    private void init(Vector2 margin) {
+    private void init(float hexagonSideLength, Vector2 margin) {
+        this.hexagonSideLength = hexagonSideLength;
         this.margin = margin;
         recalculate();
         for (int x = 0; x < mapWidth; x++) {
@@ -55,11 +53,6 @@ public class HexagonMapPolygon {
                 hexagons[x][y].init(this, x, y);
             }
         }
-    }
-
-    public void init(float hexagonSideLength, Vector2 margin) {
-        this.hexagonSideLength = hexagonSideLength;
-        init(margin);
     }
 
     private void recalculate() {

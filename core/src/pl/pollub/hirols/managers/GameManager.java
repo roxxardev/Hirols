@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.components.SelectedComponent;
@@ -44,8 +46,6 @@ public class GameManager {
     private final ArrayList<EntitySystem> sharedSystems = new ArrayList<EntitySystem>();
 
     private final ArrayList<Class<? extends GameMapComponent>> availableGameMapComponents = new ArrayList<Class<? extends GameMapComponent>>();
-    private final ArrayList<Class<? extends PlayerComponent>> availablePlayerComponents = new ArrayList<Class<? extends PlayerComponent>>();
-
     private final ArrayList<Class<? extends PlayerComponent>> players = new ArrayList<Class<? extends PlayerComponent>>();
 
     private final TmxMapLoader tmxMapLoader = new TmxMapLoader();
@@ -70,14 +70,31 @@ public class GameManager {
         availableGameMapComponents.add(GameMap2.class);
         availableGameMapComponents.add(GameMap3.class);
 
+        final ArrayList<Class<? extends PlayerComponent>> availablePlayerComponents = new ArrayList<Class<? extends PlayerComponent>>();
+
         availablePlayerComponents.add(Player1.class);
         availablePlayerComponents.add(Player2.class);
         availablePlayerComponents.add(Player3.class);
         availablePlayerComponents.add(Player4.class);
 
+        Random random = new Random();
+
         if(playersNumber > availablePlayerComponents.size()) throw new IndexOutOfBoundsException();
         for(int i = 0; i < playersNumber; i++) {
             players.add(availablePlayerComponents.get(i));
+
+            float r = random.nextFloat();
+            float g = random.nextFloat();
+            float b = random.nextFloat();
+            Color color = new Color(r,g,b,1f);
+
+            Entity player = game.engine.createEntity();
+            player
+                    .add(game.engine.createComponent(players.get(i)))
+                    .add(game.engine.createComponent(PlayerDataComponent.class).init(color, "Gracz "+(i+1)));
+            if(i == 1)
+                    player.add(game.engine.createComponent(SelectedComponent.class));
+            game.engine.addEntity(player);
         }
     }
 

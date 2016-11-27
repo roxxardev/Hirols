@@ -27,6 +27,7 @@ import pl.pollub.hirols.managers.input.InputManager;
 import pl.pollub.hirols.managers.input.MyGestureListener;
 import pl.pollub.hirols.managers.input.MyInputProcessor;
 import pl.pollub.hirols.systems.battleSystems.BattleCamUpdateSystem;
+import pl.pollub.hirols.systems.battleSystems.BattleInteractionSystem;
 import pl.pollub.hirols.systems.battleSystems.HexMapRenderSystem;
 import pl.pollub.hirols.systems.generalSystems.FontsDeathSystem;
 import pl.pollub.hirols.systems.generalSystems.InputManagerUpdateSystem;
@@ -126,6 +127,7 @@ public class BattleScreen extends GameScreen {
     protected void createSystems() {
         Class<? extends BattleComponent> battleClass = battleComponent.getClass();
 
+        systems.add(new BattleInteractionSystem(6,battleClass));
         systems.add(new MovementSystem(8,battleClass));
         systems.add(new FontsDeathSystem(9,battleClass));
         systems.add(new AnimationSystem(10,battleClass));
