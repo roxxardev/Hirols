@@ -92,7 +92,6 @@ public class GameMapScreen extends GameScreen {
 
     @Override
     protected void createSystems() {
-        //TODO systems
         Class<? extends GameMapComponent> gameMapClass = map.getGameMapComponentClazz();
 
         systems.add(new MapCamMovementSystem(3,gameMapClass, game));

@@ -103,11 +103,13 @@ public class SpawnGenerator {
             Entity hero = engine.createEntity();
             hero
                     .add(engine.createComponent(map.getGameMapComponentClazz()))
-                    .add(engine.createComponent(AnimationComponent.class).init(new AnimationSet(AnimationType.STAND, Direction.getRandomDirection(), animationMap), true, 0f))
+                    .add(engine.createComponent(AnimationComponent.class)
+                            .init(new AnimationSet(AnimationType.STAND, Direction.getRandomDirection(), animationMap), true, 0f))
                     .add(engine.createComponent(PositionComponent.class).init(generateRandomPositionOnMap(heroPosition,map)))
                     .add(engine.createComponent(RenderableComponent.class))
                     .add(engine.createComponent(TextureComponent.class).setSize(128, 128).setAdditionalOffset(-16, -14))
-                    .add(engine.createComponent(HeroDataComponent.class).init(++playerId,"nołnejm", 100000f, new Sprite(game.assetManager.get("temp/portrait.png", Texture.class))))
+                    .add(engine.createComponent(HeroDataComponent.class)
+                            .init(++playerId,"nołnejm", 100000f, new Sprite(game.assetManager.get("temp/orki.png", Texture.class))))
                     .add(engine.createComponent(VelocityComponent.class))
                     .add(engine.createComponent(playerClass));
             engine.addEntity(hero);
