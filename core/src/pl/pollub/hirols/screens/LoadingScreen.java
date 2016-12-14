@@ -102,16 +102,26 @@ public class LoadingScreen implements Screen {
         textureParameter.minFilter = Texture.TextureFilter.MipMap;
 
 
-        assetManager.load("arrows/arrow_E.png", Texture.class, textureParameter);
-        assetManager.load("arrows/arrow_N.png", Texture.class, textureParameter);
-        assetManager.load("arrows/arrow_NE.png", Texture.class, textureParameter);
-        assetManager.load("arrows/arrow_NW.png", Texture.class, textureParameter);
-        assetManager.load("arrows/arrow_S.png", Texture.class, textureParameter);
-        assetManager.load("arrows/arrow_SE.png", Texture.class, textureParameter);
-        assetManager.load("arrows/arrow_SW.png", Texture.class, textureParameter);
-        assetManager.load("arrows/arrow_W.png", Texture.class, textureParameter);
-        assetManager.load("arrows/cross.png", Texture.class, textureParameter);
-        assetManager.load("arrows/sword.png", Texture.class, textureParameter);
+        assetManager.load("arrows/arrowG_E.png", Texture.class, textureParameter);
+        assetManager.load("arrows/arrowG_N.png", Texture.class, textureParameter);
+        assetManager.load("arrows/arrowG_NE.png", Texture.class, textureParameter);
+        assetManager.load("arrows/arrowG_NW.png", Texture.class, textureParameter);
+        assetManager.load("arrows/arrowG_S.png", Texture.class, textureParameter);
+        assetManager.load("arrows/arrowG_SE.png", Texture.class, textureParameter);
+        assetManager.load("arrows/arrowG_SW.png", Texture.class, textureParameter);
+        assetManager.load("arrows/arrowG_W.png", Texture.class, textureParameter);
+        assetManager.load("arrows/crossG.png", Texture.class, textureParameter);
+        assetManager.load("arrows/swordG.png", Texture.class, textureParameter);
+        assetManager.load("arrows/arrowR_E.png", Texture.class, textureParameter);
+        assetManager.load("arrows/arrowR_N.png", Texture.class, textureParameter);
+        assetManager.load("arrows/arrowR_NE.png", Texture.class, textureParameter);
+        assetManager.load("arrows/arrowR_NW.png", Texture.class, textureParameter);
+        assetManager.load("arrows/arrowR_S.png", Texture.class, textureParameter);
+        assetManager.load("arrows/arrowR_SE.png", Texture.class, textureParameter);
+        assetManager.load("arrows/arrowR_SW.png", Texture.class, textureParameter);
+        assetManager.load("arrows/arrowR_W.png", Texture.class, textureParameter);
+        assetManager.load("arrows/crossR.png", Texture.class, textureParameter);
+        assetManager.load("arrows/swordR.png", Texture.class, textureParameter);
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter fontLoaderParameter = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         fontLoaderParameter.fontFileName = "fonts/test.TTF";
