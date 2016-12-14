@@ -50,7 +50,7 @@ import pl.pollub.hirols.systems.generalSystems.physics.MovementSystem;
 public class GameMapScreen extends GameScreen {
 
     private final OrthographicCamera gameMapCam;
-    private final Viewport gameMapPort;
+    private final Viewport gameMapViewport;
 
     private final Map map;
     private final Entity gameMapEntity;
@@ -61,10 +61,10 @@ public class GameMapScreen extends GameScreen {
     private final GestureDetector gestureDetector;
     private final MyInputProcessor myInputProcessor;
 
-    public GameMapScreen(final Hirols game, final Map map, OrthographicCamera gameMapCam, Viewport gameMapPort) {
+    public GameMapScreen(final Hirols game, final Map map, OrthographicCamera gameMapCam, Viewport gameMapViewport) {
         super(game);
         this.gameMapCam = gameMapCam;
-        this.gameMapPort = gameMapPort;
+        this.gameMapViewport = gameMapViewport;
         this.map = map;
 
         inputManager = new InputManager();
@@ -75,8 +75,8 @@ public class GameMapScreen extends GameScreen {
 
         hud = new GameMapHud(game, this);
 
-        console = new GraphicalConsole(new GameMapCommands(),
-                game.assetManager.get("default_skin/uiskin.json", Skin.class),game);
+        console = new GraphicalConsole(new pl.pollub.hirols.gameMap.GameMapCommands(game,map),
+                game.assetManager.get("default_skin/uiskin.json", Skin.class),game, gameMapViewport);
 
 
         createSystems();
@@ -124,7 +124,7 @@ public class GameMapScreen extends GameScreen {
     public void resize(int width, int height) {
         super.resize(width,height);
         hud.resize(width,height);
-        gameMapPort.update(width, height);
+        gameMapViewport.update(width, height);
         //gameMapCam.zoom = 1;
         console.resize(width,height);
     }

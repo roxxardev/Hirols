@@ -1,4 +1,4 @@
-package pl.pollub.hirols.ui.battleScreenUI;
+package pl.pollub.hirols.ui.battleScreenUi;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.kotcrab.vis.ui.layout.GridGroup;
 import com.kotcrab.vis.ui.widget.VisImageTextButton;
@@ -39,7 +38,7 @@ public class BattleScreenHud implements Disposable {
     private GridGroup gridGroup;
     private Label label;
 
-    public BattleScreenHud(Hirols game) {
+    public BattleScreenHud(Hirols game, Viewport viewport) {
         this.game = game;
         this.skin = game.hudManager.skin;
 
@@ -48,9 +47,7 @@ public class BattleScreenHud implements Disposable {
         gameCam = new OrthographicCamera();
         gameCam.setToOrtho(false);
 
-        Viewport guiPort = new ScreenViewport(gameCam);
-
-        stage = new Stage(guiPort, game.batch);
+        stage = new Stage(viewport, game.batch);
 
         labelStyle = skin.get("label-white", Label.LabelStyle.class);
 

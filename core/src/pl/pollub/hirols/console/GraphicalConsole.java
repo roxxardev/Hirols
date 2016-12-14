@@ -39,8 +39,6 @@ public class GraphicalConsole extends DefaultConsole {
     private final InputListener stageInputListener;
     private final Skin skin;
 
-    private final Viewport viewport;
-
     private TextFieldHistory textFieldHistory = new TextFieldHistory();
     private final InputMultiplexer multiplexer;
 
@@ -48,14 +46,13 @@ public class GraphicalConsole extends DefaultConsole {
     private int key;
 
     public GraphicalConsole(CommandsContainer commandsContainer, Skin skin,
-                            Hirols game) {
+                            Hirols game, Viewport viewport) {
         super(commandsContainer);
         this.multiplexer = game.multiplexer;
         this.skin = skin;
 
         OrthographicCamera camera = new OrthographicCamera();
         camera.setToOrtho(false);
-        viewport = new ScreenViewport(camera);
         stage = new Stage(viewport,game.batch);
 
         consoleTable = new Table(skin);
@@ -186,8 +183,8 @@ public class GraphicalConsole extends DefaultConsole {
     }
 
     public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true);
-        stage.getViewport().setScreenSize(width,height);
+        //stage.getViewport().update(width, height, true);
+        //stage.getViewport().setScreenSize(width,height);
     }
 
     public void setVisible(boolean visible) {

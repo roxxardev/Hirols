@@ -17,7 +17,7 @@ public class HexagonTilePolygon {
         this.x = x;
         this.y = y;
         sprite = new PolygonSprite(new PolygonRegion(hexagonMap.getRegionFromPixMap(),vertices, new short[] {}));
-        sprite.setColor(0,0,0,0.2f);
+        sprite.setColor(0,0,0,0.15f);
         update(hexagonMap);
     }
 

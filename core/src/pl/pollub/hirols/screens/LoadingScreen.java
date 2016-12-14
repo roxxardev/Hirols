@@ -182,6 +182,7 @@ public class LoadingScreen implements Screen {
                 game.gameManager.createMap("maps/defaultMap/Map1 tiles 48x48.tmx");
                 game.gameManager.setCurrentMapScreen("maps/defaultMap/Map1 tiles 48x48.tmx");
                 //game.setScreen(new TownScreen(game));
+                game.setScreen(new BattleScreen(game));
             }
         } else {
             Gdx.app.log("Loading progress", String.valueOf(assetManager.getProgress()*100));

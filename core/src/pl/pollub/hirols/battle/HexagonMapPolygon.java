@@ -21,7 +21,7 @@ public class HexagonMapPolygon {
     private Vector2 margin;
     private Sprite backgroundSprite;
 
-    private HexagonTilePolygon[][] hexagons;
+    private final HexagonTilePolygon[][] hexagons;
 
     private final Vector2 p1 = new Vector2();
     private final Vector2 p2 = new Vector2();
