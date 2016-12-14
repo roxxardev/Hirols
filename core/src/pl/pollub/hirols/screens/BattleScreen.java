@@ -35,7 +35,7 @@ import pl.pollub.hirols.systems.generalSystems.graphics.AnimationSystem;
 import pl.pollub.hirols.systems.generalSystems.graphics.BitmapFontRenderSystem;
 import pl.pollub.hirols.systems.generalSystems.graphics.RenderSystem;
 import pl.pollub.hirols.systems.generalSystems.physics.MovementSystem;
-import pl.pollub.hirols.ui.battleScreenUi.BattleScreenHud;
+import pl.pollub.hirols.ui.battleScreenGUI.BattleScreenHud;
 
 /**
  * Created by Eryk on 2016-04-03.

@@ -1,4 +1,4 @@
-package pl.pollub.hirols.ui.townScreenUI;
+package pl.pollub.hirols.ui.townScreenGUI;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;

@@ -1,4 +1,4 @@
-package pl.pollub.hirols.ui.battleScreenUi;
+package pl.pollub.hirols.ui.battleScreenGUI;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
