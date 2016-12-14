@@ -2,6 +2,8 @@ package pl.pollub.hirols.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.tools.texturepacker.TexturePacker;
+
 import pl.pollub.hirols.Hirols;
 
 public class DesktopLauncher {
@@ -15,6 +17,12 @@ public class DesktopLauncher {
 
 		config.vSyncEnabled = true;
 		config.samples = 4;
-		new LwjglApplication(new Hirols(), config);
+
+        TexturePacker.Settings settings = new TexturePacker.Settings();
+        settings.maxWidth = 4096;
+        settings.maxHeight = 4096;
+        TexturePacker.process(settings, "./arrows", "./arrows", "arrows");
+
+        new LwjglApplication(new Hirols(), config);
 	}
 }
