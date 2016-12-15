@@ -9,6 +9,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Pools;
@@ -59,16 +60,15 @@ public class MapInteractionSystem extends GameMapEntitySystem {
 
     private final Hirols game;
 
-    private final Texture swordPathTexture;
-    private final Texture crossPathTexture;
-
     private final Vector2 pathStartPosition = new Vector2();
+
+    private final Arrows arrows;
 
     public MapInteractionSystem(int priority, Hirols game, Class<? extends GameMapComponent> gameMapClass) {
         super(priority, gameMapClass);
         this.game = game;
-        crossPathTexture = game.assetManager.get("arrows/cross.png", Texture.class);
-        swordPathTexture = game.assetManager.get("arrows/sword.png", Texture.class);
+
+        arrows = new Arrows();
     }
 
     @Override
@@ -241,13 +241,13 @@ public class MapInteractionSystem extends GameMapEntitySystem {
             EnemyComponent enemyComponent = enemyMap.get(mapEntity);
             if (enemyComponent.trueEntity) {
                 Gdx.app.log("MapInteractionSystem", "Tap on enemy");
-                if(findPathToEnemy(pathStartPosition.set(selectedHeroPosition.x,selectedHeroPosition.y), mousePosition, gameMap, selectedHeroData, mapEntity, swordPathTexture, enemyComponent)) {
+                if(findPathToEnemy(pathStartPosition.set(selectedHeroPosition.x,selectedHeroPosition.y), mousePosition, gameMap, selectedHeroData, mapEntity, LastPathTexture.SWORD, enemyComponent)) {
                     Gdx.app.log("MapInteractionSystem", "Path created for hero id: "
                             + selectedHeroData.id + " Length: " + selectedHeroData.heroPath.getPathSize() + " to enemy");
                 }
             } else {
                 Gdx.app.log("MapInteractionSystem", "Tap nearby enemy");
-                if(findPathNonWalkable(pathStartPosition.set(selectedHeroPosition.x, selectedHeroPosition.y), mousePosition, gameMap, selectedHeroData, mapEntity, swordPathTexture, false)) {
+                if(findPathNonWalkable(pathStartPosition.set(selectedHeroPosition.x, selectedHeroPosition.y), mousePosition, gameMap, selectedHeroData, mapEntity, LastPathTexture.SWORD, false)) {
                     Gdx.app.log("MapInteractionSystem", "Path created for hero id: "
                             + selectedHeroData.id + " Length: " + selectedHeroData.heroPath.getPathSize() + " nearby enemy");
                 }
@@ -257,7 +257,7 @@ public class MapInteractionSystem extends GameMapEntitySystem {
             TownComponent townComponent = townMap.get(mapEntity);
             PositionComponent townEnterPosition = posMap.get(townComponent.enterEntity);
             Vector2 townPos = Pools.obtain(Vector2.class).set(townEnterPosition.x,townEnterPosition.y);
-            if(findPathNonWalkable(pathStartPosition.set(selectedHeroPosition.x, selectedHeroPosition.y), townPos, gameMap, selectedHeroData, mapEntity, crossPathTexture, true)) {
+            if(findPathNonWalkable(pathStartPosition.set(selectedHeroPosition.x, selectedHeroPosition.y), townPos, gameMap, selectedHeroData, mapEntity, LastPathTexture.CROSS, true)) {
                 Gdx.app.log("MapInteractionSystem", "Path created for hero id: "
                         + selectedHeroData.id + " Length: " + selectedHeroData.heroPath.getPathSize() + " to town");
             }
@@ -266,7 +266,7 @@ public class MapInteractionSystem extends GameMapEntitySystem {
             Entity mineEnterEntity = mineMap.get(mapEntity).enterEntity;
             PositionComponent mineEnterPosition = posMap.get(mineEnterEntity);
             Vector2 minePos = Pools.obtain(Vector2.class).set(mineEnterPosition.x, mineEnterPosition.y);
-            if(findPathNonWalkable(pathStartPosition.set(selectedHeroPosition.x, selectedHeroPosition.y), minePos, gameMap, selectedHeroData, mineEnterEntity, crossPathTexture, true)) {
+            if(findPathNonWalkable(pathStartPosition.set(selectedHeroPosition.x, selectedHeroPosition.y), minePos, gameMap, selectedHeroData, mineEnterEntity, LastPathTexture.CROSS, true)) {
                 Gdx.app.log("MapInteractionSystem", "Path created for hero id: "
                         + selectedHeroData.id + " Length: " + selectedHeroData.heroPath.getPathSize() + " to mine");
             }
@@ -274,13 +274,13 @@ public class MapInteractionSystem extends GameMapEntitySystem {
 
         } else if (resourceMap.has(mapEntity)) {
             Gdx.app.log("MapInteractionSystem", "Tap on resource");
-            if (findPathNonWalkable(pathStartPosition.set(selectedHeroPosition.x, selectedHeroPosition.y), mousePosition, gameMap, selectedHeroData, mapEntity, crossPathTexture, false)) {
+            if (findPathNonWalkable(pathStartPosition.set(selectedHeroPosition.x, selectedHeroPosition.y), mousePosition, gameMap, selectedHeroData, mapEntity, LastPathTexture.CROSS, false)) {
                 Gdx.app.log("MapInteractionSystem", "Path created for hero id: "
                         + selectedHeroData.id + " Length: " + selectedHeroData.heroPath.getPathSize() + " to resource");
             }
         } else if (chestMap.has(mapEntity)) {
             Gdx.app.log("MapInteractionSystem", "Tap on chest");
-            if(findPathNonWalkable(pathStartPosition.set(selectedHeroPosition.x,selectedHeroPosition.y), mousePosition, gameMap, selectedHeroData, mapEntity, crossPathTexture, false)) {
+            if(findPathNonWalkable(pathStartPosition.set(selectedHeroPosition.x,selectedHeroPosition.y), mousePosition, gameMap, selectedHeroData, mapEntity, LastPathTexture.CROSS, false)) {
                 Gdx.app.log("MapInteractionSystem", "Path created for hero id: "
                         + selectedHeroData.id + " Length: " + selectedHeroData.heroPath.getPathSize() + " to chest");
             }
@@ -311,7 +311,7 @@ public class MapInteractionSystem extends GameMapEntitySystem {
             }
         }
 
-        if (findPath(pathStartPosition.set(selectedHeroPosition.x, selectedHeroPosition.y), mousePosition, gameMap, selectedHeroData, crossPathTexture))
+        if (findPath(pathStartPosition.set(selectedHeroPosition.x, selectedHeroPosition.y), mousePosition, gameMap, selectedHeroData, LastPathTexture.CROSS))
             Gdx.app.log("MapInteractionSystem", "Path created for hero id: "
                     + selectedHeroData.id + " Length: " + selectedHeroData.heroPath.getPathSize());
 
@@ -371,7 +371,7 @@ public class MapInteractionSystem extends GameMapEntitySystem {
         Gdx.app.log("MapInteractionSystem", "Tap outside map of " + mousePosition.toString());
     }
 
-    public boolean findPathToEnemy(Vector2 startNodePos, Vector2 endNodePos, Map gameMap, HeroDataComponent heroData, Entity mapEntity, Texture lastPathTexture, EnemyComponent enemyComponent) {
+    public boolean findPathToEnemy(Vector2 startNodePos, Vector2 endNodePos, Map gameMap, HeroDataComponent heroData, Entity mapEntity, LastPathTexture lastPathTexture, EnemyComponent enemyComponent) {
         boolean success = false;
         updateGraphConnectionsForEnemy(gameMap,mapEntity,enemyComponent,true);
         if (findPath(startNodePos, endNodePos, gameMap,heroData, lastPathTexture)) {
@@ -383,7 +383,7 @@ public class MapInteractionSystem extends GameMapEntitySystem {
         return success;
     }
 
-    public boolean findPathNonWalkable(Vector2 startNodePos, Vector2 endNodePos, Map gameMap, HeroDataComponent heroData, Entity mapEntity, Texture lastPathTexture, boolean targetEnter) {
+    public boolean findPathNonWalkable(Vector2 startNodePos, Vector2 endNodePos, Map gameMap, HeroDataComponent heroData, Entity mapEntity, LastPathTexture lastPathTexture, boolean targetEnter) {
         boolean success = false;
         gameMap.updateGraphConnectionsToNode(endNodePos.x, endNodePos.y, true);
         if (findPath(startNodePos, endNodePos, gameMap, heroData, lastPathTexture)) {
@@ -403,7 +403,7 @@ public class MapInteractionSystem extends GameMapEntitySystem {
         heroData.pathEntities.clear();
     }
 
-    public boolean findPath(Vector2 startNodePos, Vector2 endNodePos, Map gameMap, HeroDataComponent heroData, Texture lastPathTexture) {
+    public boolean findPath(Vector2 startNodePos, Vector2 endNodePos, Map gameMap, HeroDataComponent heroData, LastPathTexture pathTexture) {
         if(heroData.heroPath.hasWalkNodes()) throw new IllegalArgumentException("Hero must stand to find new Path!");
 
         gameMap.findPath(startNodePos,endNodePos,heroData.heroPath.getPath());
@@ -417,66 +417,69 @@ public class MapInteractionSystem extends GameMapEntitySystem {
             int nodeX = node.getXIndex();
             int nodeY = node.getYIndex();
 
-            Sprite tempSprite = new Sprite(lastPathTexture);
-            tempSprite.setSize(gameMap.getTileWidth(), gameMap.getTileHeight());
-            tempSprite.setColor(Color.GREEN);
-
             Node previousNode = heroData.heroPath.getPath().get(i-1);
             int previousNodeX = previousNode.getXIndex();
             int previousNodeY = previousNode.getYIndex();
 
-            float movementCost = 0;
-
+            float movementCost;
             Direction direction = null;
+            Sprite tempSprite = new Sprite();
+
+            if (previousNodeX == nodeX || previousNodeY == nodeY) {
+                movementCost = 1f;
+            } else movementCost = 1.41421356f;
+
+            heroMovementPoints -= movementCost;
+            Arrows.ArrowSprites arrowSprites = (heroMovementPoints < 0) ? arrows.red : arrows.green;
 
             if (previousNodeX == nodeX) {
-                movementCost = 1f;
                 if (previousNodeY < nodeY) {
-                    tempSprite.setTexture(game.assetManager.get("arrows/arrow_N.png", Texture.class)); //góra
+                    tempSprite.set(arrowSprites.arrowN); //góra
                     direction = Direction.N;
                 } else if (previousNodeY > nodeY) {
-                    tempSprite.setTexture(game.assetManager.get("arrows/arrow_S.png", Texture.class)); //dół
+                    tempSprite.set(arrowSprites.arrowS); //dół
                     direction = Direction.S;
                 }
             } else if (previousNodeY == nodeY) {
-                movementCost = 1f;
                 if (previousNodeX > nodeX) {
-                    tempSprite.setTexture(game.assetManager.get("arrows/arrow_W.png", Texture.class)); //lewo
+                    tempSprite.set(arrowSprites.arrowW); //lewo
                     direction = Direction.W;
                 }
                 else if (previousNodeX < nodeX) {
-                    tempSprite.setTexture(game.assetManager.get("arrows/arrow_E.png", Texture.class)); //prawo
+                    tempSprite.set(arrowSprites.arrowE); //prawo
                     direction = Direction.E;
                 }
             } else if (previousNodeY < nodeY) {
-                movementCost = 1.41421356f;
                 if (previousNodeX < nodeX) {
-                    tempSprite.setTexture(game.assetManager.get("arrows/arrow_NE.png", Texture.class)); //góraprawo
+                    tempSprite.set(arrowSprites.arrowNE); //góraprawo
                     direction = Direction.NE;
                 }
                 else if (previousNodeX > nodeX) {
-                    tempSprite.setTexture(game.assetManager.get("arrows/arrow_NW.png", Texture.class)); //góralewo
+                    tempSprite.set(arrowSprites.arrowNW); //góralewo
                     direction = Direction.NW;
                 }
             } else if (previousNodeY > nodeY) {
-                movementCost = 1.41421356f;
                 if (previousNodeX < nodeX) {
-                    tempSprite.setTexture(game.assetManager.get("arrows/arrow_SE.png", Texture.class)); //dółprawo
+                    tempSprite.set(arrowSprites.arrowSE); //dółprawo
                     direction = Direction.SE;
                 }
                 else if (previousNodeX > nodeX) {
-                    tempSprite.setTexture(game.assetManager.get("arrows/arrow_SW.png", Texture.class)); //dółlewo
+                    tempSprite.set(arrowSprites.arrowSW); //dółlewo
                     direction = Direction.SW;
                 }
             }
-            heroMovementPoints -= movementCost;
-            if (heroMovementPoints < 0) {
-                tempSprite.setColor(Color.RED);
-            }
+
 
             Vector2 position = Pools.obtain(Vector2.class).set(nodeX * gameMap.getTileWidth(), nodeY * gameMap.getTileHeight());
             heroData.heroPath.getStand().addElement(position.x,position.y, movementCost);
             Entity pathEntity = game.engine.createEntity();
+
+
+            if (i == (heroData.heroPath.getPathSize() - 1)) {
+                tempSprite.set(pathTexture == LastPathTexture.CROSS ? arrowSprites.cross : arrowSprites.sword);
+            }
+
+            tempSprite.setSize(gameMap.getTileWidth(), gameMap.getTileHeight());
 
             pathEntity
                     .add(game.engine.createComponent(PositionComponent.class).init(position))
@@ -484,10 +487,6 @@ public class MapInteractionSystem extends GameMapEntitySystem {
                     .add(game.engine.createComponent(TextureComponent.class).setSprite(tempSprite))
                     .add(game.engine.createComponent(gameMap.getGameMapComponentClazz()))
                     .add(game.engine.createComponent(PathComponent.class).init(heroData.id,direction));
-
-            if (i == (heroData.heroPath.getPathSize() - 1)) {
-                tempSprite.setTexture(lastPathTexture);
-            }
 
             Pools.free(position);
             getEngine().addEntity(pathEntity);
@@ -499,5 +498,57 @@ public class MapInteractionSystem extends GameMapEntitySystem {
 
     public ImmutableArray<Entity> getSelectedHeroes() {
         return selectedHeroes;
+    }
+
+    private enum LastPathTexture {
+        SWORD, CROSS
+    }
+
+    private class Arrows {
+        final ArrowSprites green, red;
+
+        Arrows() {
+            TextureAtlas textureAtlas = game.assetManager.get("arrows/arrows.atlas", TextureAtlas.class);
+            green = new ArrowSprites(
+                    textureAtlas.createSprite("arrowG_N"), textureAtlas.createSprite("arrowG_S"),
+                    textureAtlas.createSprite("arrowG_W"), textureAtlas.createSprite("arrowG_E"),
+                    textureAtlas.createSprite("arrowG_NE"), textureAtlas.createSprite("arrowG_NW"),
+                    textureAtlas.createSprite("arrowG_SE"), textureAtlas.createSprite("arrowG_SW"),
+                    textureAtlas.createSprite("swordG"), textureAtlas.createSprite("crossG"));
+            red = new ArrowSprites(
+                    textureAtlas.createSprite("arrowR_N"), textureAtlas.createSprite("arrowR_S"),
+                    textureAtlas.createSprite("arrowR_W"), textureAtlas.createSprite("arrowR_E"),
+                    textureAtlas.createSprite("arrowR_NE"), textureAtlas.createSprite("arrowR_NW"),
+                    textureAtlas.createSprite("arrowR_SE"), textureAtlas.createSprite("arrowR_SW"),
+                    textureAtlas.createSprite("swordR"), textureAtlas.createSprite("crossR"));
+        }
+
+        class ArrowSprites {
+            final Sprite arrowN;
+            final Sprite arrowS;
+            final Sprite arrowW;
+            final Sprite arrowE;
+            final Sprite arrowNE;
+            final Sprite arrowNW;
+            final Sprite arrowSE;
+            final Sprite arrowSW;
+            final Sprite sword;
+            final Sprite cross;
+
+            ArrowSprites(Sprite arrowN, Sprite arrowS, Sprite arrowW,
+                                Sprite arrowE, Sprite arrowNE, Sprite arrowNW,
+                                Sprite arrowSE, Sprite arrowSW, Sprite sword, Sprite cross) {
+                this.arrowN = arrowN;
+                this.arrowS = arrowS;
+                this.arrowW = arrowW;
+                this.arrowE = arrowE;
+                this.arrowNE = arrowNE;
+                this.arrowNW = arrowNW;
+                this.arrowSE = arrowSE;
+                this.arrowSW = arrowSW;
+                this.sword = sword;
+                this.cross = cross;
+            }
+        }
     }
 }

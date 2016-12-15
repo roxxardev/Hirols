@@ -125,7 +125,6 @@ public class GameMapScreen extends GameScreen {
         super.resize(width,height);
         hud.resize(width,height);
         gameMapViewport.update(width, height);
-        //gameMapCam.zoom = 1;
         console.resize(width,height);
     }
 

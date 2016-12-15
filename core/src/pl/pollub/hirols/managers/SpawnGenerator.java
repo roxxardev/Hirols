@@ -109,7 +109,7 @@ public class SpawnGenerator {
                     .add(engine.createComponent(RenderableComponent.class))
                     .add(engine.createComponent(TextureComponent.class).setSize(128, 128).setAdditionalOffset(-16, -14))
                     .add(engine.createComponent(HeroDataComponent.class)
-                            .init(++playerId,"nołnejm", 100000f, new Sprite(game.assetManager.get("temp/orki.png", Texture.class))))
+                            .init(++playerId,"nołnejm", 10f, new Sprite(game.assetManager.get("temp/orki.png", Texture.class))))
                     .add(engine.createComponent(VelocityComponent.class))
                     .add(engine.createComponent(playerClass));
             engine.addEntity(hero);

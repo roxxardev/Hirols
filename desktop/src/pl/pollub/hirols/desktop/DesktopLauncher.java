@@ -18,10 +18,10 @@ public class DesktopLauncher {
 		config.vSyncEnabled = true;
 		config.samples = 4;
 
-        TexturePacker.Settings settings = new TexturePacker.Settings();
-        settings.maxWidth = 4096;
-        settings.maxHeight = 4096;
-        TexturePacker.process(settings, "./arrows", "./arrows", "arrows");
+//        TexturePacker.Settings settings = new TexturePacker.Settings();
+//        settings.maxWidth = 4096;
+//        settings.maxHeight = 4096;
+//        TexturePacker.process(settings, "./arrows", "./arrows", "arrows");
 
         new LwjglApplication(new Hirols(), config);
 	}
