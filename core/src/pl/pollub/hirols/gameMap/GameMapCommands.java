@@ -14,6 +14,7 @@ import pl.pollub.hirols.components.map.MineDataComponent;
 import pl.pollub.hirols.components.map.TownComponent;
 import pl.pollub.hirols.components.map.TownDataComponent;
 import pl.pollub.hirols.console.CommandsContainer;
+import pl.pollub.hirols.screens.GameMapScreen;
 import pl.pollub.hirols.systems.gameMapSystems.MapInteractionSystem;
 
 /**
@@ -22,11 +23,13 @@ import pl.pollub.hirols.systems.gameMapSystems.MapInteractionSystem;
 
 public class GameMapCommands extends CommandsContainer {
     private Hirols game;
+    private GameMapScreen gameMapScreen;
     private Map gameMap;
 
-    public GameMapCommands(Hirols game, Map gameMap) {
+    public GameMapCommands(Hirols game, GameMapScreen gameMapScreen) {
         this.game = game;
-        this.gameMap = gameMap;
+        this.gameMapScreen = gameMapScreen;
+        this.gameMap = gameMapScreen.getMap();
     }
 
     @Override
@@ -92,5 +95,10 @@ public class GameMapCommands extends CommandsContainer {
             }
         }
         console.log(stringBuilder.toString());
+    }
+
+    public void setTopBarHeightDivider(int heightDivider) {
+        gameMapScreen.getHud().getTopBar().setHeightDivider(heightDivider);
+        console.log("TopBar heightdivider set to " + heightDivider+".");
     }
 }

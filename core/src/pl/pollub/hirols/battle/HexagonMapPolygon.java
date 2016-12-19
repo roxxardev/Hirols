@@ -1,5 +1,6 @@
 package pl.pollub.hirols.battle;
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
@@ -10,10 +11,18 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.EarClippingTriangulator;
 import com.badlogic.gdx.math.Vector2;
 
+import pl.pollub.hirols.Hirols;
+import pl.pollub.hirols.components.battle.BattleComponent;
+import pl.pollub.hirols.components.battle.HexagonComponent;
+import pl.pollub.hirols.components.physics.PositionComponent;
+
 /**
  * Created by Eryk on 2016-04-17.
  */
 public class HexagonMapPolygon {
+
+    private final Hirols game;
+
     private int mapWidth;
     private int mapHeight;
     private float h,r,b,a;
@@ -21,6 +30,7 @@ public class HexagonMapPolygon {
     private Vector2 margin;
     private Sprite backgroundSprite;
 
+    private final Entity[][] entityMap;
     private final HexagonTilePolygon[][] hexagons;
 
     private final Vector2 p1 = new Vector2();
@@ -30,10 +40,13 @@ public class HexagonMapPolygon {
     private final TextureRegion regionFromPixMap;
     private final EarClippingTriangulator earClippingTriangulator = new EarClippingTriangulator();
 
-    public HexagonMapPolygon(int mapWidth, int mapHeight, float hexagonSideLength, Vector2 margin) {
+    public HexagonMapPolygon(Hirols game, int mapWidth, int mapHeight, float hexagonSideLength, Vector2 margin) {
+        this.game = game;
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
         hexagons = new HexagonTilePolygon[mapWidth][mapHeight];
+        entityMap = new Entity[mapWidth][mapHeight];
+
         Pixmap pixmap = new Pixmap(1,1, Pixmap.Format.RGBA8888);
         pixmap.setColor(1f,1f,1f,1f);
         pixmap.fill();
@@ -49,8 +62,15 @@ public class HexagonMapPolygon {
         recalculate();
         for (int x = 0; x < mapWidth; x++) {
             for (int y = 0; y < mapHeight; y++) {
-                hexagons[x][y] = new HexagonTilePolygon();
-                hexagons[x][y].init(this, x, y);
+                HexagonTilePolygon hexagonTilePolygon = new HexagonTilePolygon();
+                hexagonTilePolygon.init(this, x, y);
+                hexagons[x][y] = hexagonTilePolygon;
+                Entity entity = game.engine.createEntity();
+                entity
+                        .add(game.engine.createComponent(HexagonComponent.class).init(hexagonTilePolygon))
+                        .add(game.engine.createComponent(BattleComponent.class))
+                        .add(game.engine.createComponent(PositionComponent.class).init(hexagonTilePolygon.getPositionX(),hexagonTilePolygon.getPositionY()));
+                entityMap[x][y] = entity;
             }
         }
     }
@@ -101,6 +121,14 @@ public class HexagonMapPolygon {
         return null;
     }
 
+    public Entity getEntity(int indexX, int indexY) {
+        return (indexX >= 0 && indexX < mapWidth && indexY >= 0 && indexY < mapHeight) ? entityMap[indexX][indexY] : null;
+    }
+
+    public Entity getEntityFromPoint(Vector2 point) {
+        HexagonTilePolygon hexagonTilePolygon = getHexagonTileFromPoint(point);
+        return entityMap[hexagonTilePolygon.getX()][hexagonTilePolygon.getY()];
+    }
 
     public HexagonTilePolygon getHexagonTileFromPoint(Vector2 point) {
         float rectangleA =2*r;

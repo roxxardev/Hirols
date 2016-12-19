@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Scaling;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.kotcrab.vis.ui.widget.VisImageTextButton;
 
 import pl.pollub.hirols.Hirols;
@@ -39,7 +40,7 @@ public class TownHud extends Hud {
     Entity inTownHero, gateHero;
 
     public TownHud(Hirols game, TownDataComponent townDataComponent, Entity heroAtGate) {
-        super(game);
+        super(game, new ScreenViewport());
 
         this.inTownHero = townDataComponent.heroInTown;
         this.gateHero = heroAtGate;
@@ -55,7 +56,7 @@ public class TownHud extends Hud {
         buttonGroup.setMinCheckCount(0);
         buttonGroup.setUncheckLast(false);
 
-        Image townBackground = new Image(game.assetManager.get("towns/snow-town.png", Texture.class));
+        Image townBackground = new Image(game.assetManager.get("towns/townBackground.PNG", Texture.class));
         townBackground.setFillParent(true);
 
         inTown = new Garrison(buttonGroup,false);
@@ -149,7 +150,7 @@ public class TownHud extends Hud {
             units.update(heroDataComponent);
             if(heroDataComponent == null) return;
             heroButton.setText(heroDataComponent.name);
-            heroButton.getStyle().up = new SpriteDrawable(heroDataComponent.avatar);
+            heroButton.getStyle().up = new SpriteDrawable(new Sprite(game.assetManager.get(heroDataComponent.hero.avatarPath, Texture.class)));
         }
 
     }

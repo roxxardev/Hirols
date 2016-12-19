@@ -34,7 +34,7 @@ import pl.pollub.hirols.components.map.TownDataComponent;
 import pl.pollub.hirols.components.map.maps.GameMapComponent;
 import pl.pollub.hirols.components.physics.PositionComponent;
 import pl.pollub.hirols.managers.enums.Race;
-import pl.pollub.hirols.managers.enums.Resource;
+import pl.pollub.hirols.managers.enums.ResourceType;
 import pl.pollub.hirols.pathfinding.DiagonalHeuristic;
 import pl.pollub.hirols.pathfinding.GraphGenerator;
 import pl.pollub.hirols.pathfinding.DiagonalMapGraph;
@@ -183,12 +183,28 @@ public class Map implements Disposable {
                     } else {
                         Gdx.app.log("Castle Object", objectName + " " +position.toString() + " has no enter");
                     }
-                } else if(type.equals("resource")) {
+                } else if(type.equals("resourceType")) {
                     Gdx.app.log("Resource Object", objectName + " " + position.toString());
                     Entity resource = entityMap[x][y];
+                    ResourceType resourceType = ResourceType.fromString(objectName);
+                    String resourceTexturePath = "resources/GoldPile.png";
+                    switch (resourceType) {
+                        case GOLD:
+                            resourceTexturePath = "resources/GoldPile.png";
+                            break;
+                        case WOOD:
+                            resourceTexturePath = "resources/LogPile.png";
+                            break;
+                        case METAL:
+                            resourceTexturePath = "resources/CoalPile.png";
+                            break;
+                        case STONE:
+                            resourceTexturePath = "resources/StonePile.png";
+                            break;
+                    }
                     resource
-                            .add(game.engine.createComponent(ResourceComponent.class).init(pl.pollub.hirols.managers.enums.Resource.fromString(objectName), random.nextInt(7) + 1))
-                            .add(game.engine.createComponent(TextureComponent.class).setSprite(new Sprite(game.assetManager.get("gold.png", Texture.class))))
+                            .add(game.engine.createComponent(ResourceComponent.class).init(resourceType, random.nextInt(7) + 1))
+                            .add(game.engine.createComponent(TextureComponent.class).setSprite(new Sprite(game.assetManager.get(resourceTexturePath, Texture.class))))
                             .add(game.engine.createComponent(RenderableComponent.class));
                     mapComponentMapper.get(resource).walkable = false;
 
@@ -201,7 +217,7 @@ public class Map implements Disposable {
                         if(Boolean.valueOf(object.getProperties().get("isEnter", String.class))) {
                             enterEntityMap.put(objectName, mine);
                             mine
-                                    .add(game.engine.createComponent(MineDataComponent.class).init(Resource.WOOD, 2))
+                                    .add(game.engine.createComponent(MineDataComponent.class).init(ResourceType.WOOD, 2))
                                     .add(game.engine.createComponent(MineComponent.class).init(mine));
                             game.engine.addEntity(mine);
                         } else {

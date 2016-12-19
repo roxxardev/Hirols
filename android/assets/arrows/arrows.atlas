@@ -2,7 +2,7 @@
 arrows.png
 size: 2048,128
 format: RGBA8888
-filter: Nearest,Nearest
+filter: MipMap,Linear
 repeat: none
 arrowG_E
   rotate: false

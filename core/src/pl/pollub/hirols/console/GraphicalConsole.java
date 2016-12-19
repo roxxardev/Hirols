@@ -53,6 +53,7 @@ public class GraphicalConsole extends DefaultConsole {
 
         OrthographicCamera camera = new OrthographicCamera();
         camera.setToOrtho(false);
+        viewport.setCamera(camera);
         stage = new Stage(viewport,game.batch);
 
         consoleTable = new Table(skin);
@@ -183,8 +184,7 @@ public class GraphicalConsole extends DefaultConsole {
     }
 
     public void resize(int width, int height) {
-        //stage.getViewport().update(width, height, true);
-        //stage.getViewport().setScreenSize(width,height);
+        stage.getViewport().update(width, height, true);
     }
 
     public void setVisible(boolean visible) {

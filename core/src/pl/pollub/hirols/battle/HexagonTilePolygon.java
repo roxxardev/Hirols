@@ -45,4 +45,12 @@ public class HexagonTilePolygon {
     public float getPositionY() {
         return positionY;
     }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
 }

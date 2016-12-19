@@ -230,7 +230,7 @@ class RightBar extends Table {
                 return;
             }
 
-            Image image = new Image(heroData.avatar);
+            Image image = new Image(game.assetManager.get(heroData.hero.avatarPath, Texture.class));
             image.addListener(new ClickListener(){
                 @Override
                 public void clicked(InputEvent event, float x, float y) {

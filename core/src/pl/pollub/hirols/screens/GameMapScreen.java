@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.StringBuilder;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import pl.pollub.hirols.Hirols;
@@ -75,12 +76,10 @@ public class GameMapScreen extends GameScreen {
 
         hud = new GameMapHud(game, this);
 
-        console = new GraphicalConsole(new pl.pollub.hirols.gameMap.GameMapCommands(game,map),
-                game.assetManager.get("default_skin/uiskin.json", Skin.class),game, gameMapViewport);
-
+        console = new GraphicalConsole(new pl.pollub.hirols.gameMap.GameMapCommands(game,this),
+                game.assetManager.get("default_skin/uiskin.json", Skin.class),game, new ScreenViewport());
 
         createSystems();
-
 
         gameMapEntity = game.engine.createEntity()
                         .add(game.engine.createComponent(map.getGameMapComponentClazz()))
@@ -159,77 +158,11 @@ public class GameMapScreen extends GameScreen {
         return console;
     }
 
-    private class GameMapCommands extends CommandsContainer {
-        private Hirols hirols;
-        private Map gameMap;
-        {
-            this.hirols = game;
-            this.gameMap = map;
-        }
+    public Map getMap() {
+        return map;
+    }
 
-        @Override
-        public void exit() {
-            Gdx.app.exit();
-        }
-
-        @Override
-        public void showCommands() {
-            console.showCommands();
-        }
-
-        @Override
-        public void clear() {
-            console.clear();
-        }
-
-        public void quit() { Gdx.app.exit();}
-
-        public void setMovementPoints(float value) {
-            Entity selectedHero = game.engine.getSystem(MapInteractionSystem.class).getSelectedHeroes().first();
-            HeroDataComponent selectedHeroData = ComponentMapper.getFor(HeroDataComponent.class).get(selectedHero);
-            selectedHeroData.movementPoints = value;
-            game.engine.getSystem(MapInteractionSystem.class).resetHeroPath(selectedHeroData, true);
-
-            console.log("SelectedComponent Hero id: "+ selectedHeroData.id +" movement points set to " + value + ".");
-        }
-
-        public void recalculatePath() {
-            Entity selectedHero = game.engine.getSystem(MapInteractionSystem.class).getSelectedHeroes().first();
-            HeroDataComponent selectedHeroData = ComponentMapper.getFor(HeroDataComponent.class).get(selectedHero);
-            if(game.engine.getSystem(MapInteractionSystem.class).recalculatePathForHero(selectedHero)) {
-                console.log("Path recalculated for selected hero id: "+ selectedHeroData.id + ".");
-                return;
-            }
-            console.log("Hero id: "+ selectedHeroData.id + " has no path to recalculate.");
-        }
-
-        public void showPlayersMines() {
-            StringBuilder stringBuilder = new StringBuilder();
-            for(Class player : game.gameManager.getPlayerClasses()) {
-                stringBuilder.append("\n");
-                ImmutableArray<Entity> mines = game.engine.getEntitiesFor(Family.all(player, MineComponent.class, MineDataComponent.class, getGameMapComponentClass()).get());
-
-
-                stringBuilder.append(player.getSimpleName()).append(" mines:");
-                for(Entity mine : mines) {
-                    stringBuilder.append(ComponentMapper.getFor(MineDataComponent.class).get(mine).type.toString()).append(", ");
-                }
-            }
-            console.log(stringBuilder.toString());
-        }
-
-        public void showPlayersTowns() {
-            StringBuilder stringBuilder = new StringBuilder();
-            for(Class player : game.gameManager.getPlayerClasses()) {
-                stringBuilder.append("\n");
-                ImmutableArray<Entity> towns = game.engine.getEntitiesFor(Family.all(player, TownComponent.class, TownDataComponent.class, getGameMapComponentClass()).get());
-
-                stringBuilder.append(player.getSimpleName()).append(" towns:");
-                for(Entity mine : towns) {
-                    stringBuilder.append(ComponentMapper.getFor(MineDataComponent.class).get(mine).type.toString()).append(", ");
-                }
-            }
-            console.log(stringBuilder.toString());
-        }
+    public GameMapHud getHud() {
+        return hud;
     }
 }

@@ -18,8 +18,9 @@ import pl.pollub.hirols.pathfinding.NodePath;
  * Created by Eryk on 2015-12-02.
  */
 public class HeroDataComponent implements Component, Pool.Poolable{
+
+    public UnitsManager.Hero hero;
     public int id = -1;
-    public Sprite avatar;
     public final HeroPath heroPath = new HeroPath();
     public final ArrayList<Entity> pathEntities = new ArrayList<Entity>();
     public final Army army = new Army();
@@ -30,11 +31,14 @@ public class HeroDataComponent implements Component, Pool.Poolable{
     public int attack;
     public int defense;
 
-    public HeroDataComponent init(int id, String name, float movementPoints, Sprite avatar) {
+    public HeroDataComponent init(int id, String name, float movementPoints, UnitsManager.Hero hero) {
         this.id = id;
         this.movementPoints = movementPoints;
-        this.avatar = avatar;
         this.name = name;
+        this.hero = hero;
+        magicPoints = hero.magicPoints;
+        attack = hero.attack;
+        defense = hero.defense;
         return this;
     }
 
@@ -42,7 +46,6 @@ public class HeroDataComponent implements Component, Pool.Poolable{
     public void reset() {
         id = -1;
         movementPoints = 0;
-        avatar = null;
         name = null;
         heroPath.reset(true);
         pathEntities.clear();
@@ -53,12 +56,12 @@ public class HeroDataComponent implements Component, Pool.Poolable{
     }
 
     public class Army {
-        int capacity = 5;
-        Squad[] squads = new Squad[capacity];
+        final int capacity = 5;
+        final Squad[] squads = new Squad[capacity];
 
         public boolean addUnit(UnitsManager.Unit unitToInsert, int quantity) {
             for(int i = 0; i < capacity; i++) {
-                if(squads[i].unit.equals(unitToInsert)) {
+                if(squads[i] != null && squads[i].unit.equals(unitToInsert)) {
                     squads[i].quantity += quantity;
                     return true;
                 }
@@ -67,17 +70,16 @@ public class HeroDataComponent implements Component, Pool.Poolable{
             for(int i = 0; i < capacity; i++) {
                 if(squads[i] == null) {
                     squads[i] = new Squad(unitToInsert, quantity);
+                    return true;
                 }
             }
-
             return false;
         }
 
         public void clear() {
-            for(Squad squad : squads) {
-                squad = null;
+            for(int i = 0; i < capacity; i++) {
+                squads[i] = null;
             }
-            capacity = 0;
         }
 
         public Squad[] getSquads() {

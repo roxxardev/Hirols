@@ -18,10 +18,10 @@ public abstract class Hud implements Disposable{
     protected Stage stage;
     protected Viewport viewport;
 
-    public Hud(Hirols game) {
+    public Hud(Hirols game, Viewport viewport) {
         this.game = game;
-
-        viewport = new ScreenViewport(new OrthographicCamera());
+        viewport.setCamera(new OrthographicCamera());
+        this.viewport = viewport;
         stage = new Stage(viewport,game.batch);
     }
 
@@ -35,7 +35,6 @@ public abstract class Hud implements Disposable{
     }
 
     public void resize(float width, float height) {
-        //stage.getViewport().setScreenSize((int)width,(int)height);
         stage.getViewport().update((int)width,(int)height, true);
     }
 

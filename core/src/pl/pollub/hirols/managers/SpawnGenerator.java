@@ -65,7 +65,7 @@ public class SpawnGenerator {
                     .add(game.engine.createComponent(map.getGameMapComponentClazz()))
                     .add(game.engine.createComponent(TextureComponent.class).setSize(enemyAnimationInformation.size).setAdditionalOffset(enemyAnimationInformation.offset))
                     .add(game.engine.createComponent(RenderableComponent.class))
-                    .add(game.engine.createComponent(EnemyDataComponent.class).init(unit))
+                    .add(game.engine.createComponent(EnemyDataComponent.class).init(unit, rand.nextInt(50) + 1))
                     .add(game.engine.createComponent(EnemyComponent.class).init(position,true));
             game.engine.addEntity(mapEntity);
 
@@ -96,12 +96,15 @@ public class SpawnGenerator {
 
         for (int i = 0; i < 10; i++) {
             Map<AnimationType, Map<Direction, Animation>> animationMap = orcHeroAnimationMap;
+            UnitsManager.Hero hero = game.unitsManager.heroOrcWarrior;
+
             if(i%2 == 0){
                 animationMap = orcMageHeroAnimationMap;
+                hero = game.unitsManager.heroOrcMage;
             }
             Vector2 heroPosition = Pools.obtain(Vector2.class);
-            Entity hero = engine.createEntity();
-            hero
+            Entity heroEntity = engine.createEntity();
+            heroEntity
                     .add(engine.createComponent(map.getGameMapComponentClazz()))
                     .add(engine.createComponent(AnimationComponent.class)
                             .init(new AnimationSet(AnimationType.STAND, Direction.getRandomDirection(), animationMap), true, 0f))
@@ -109,10 +112,10 @@ public class SpawnGenerator {
                     .add(engine.createComponent(RenderableComponent.class))
                     .add(engine.createComponent(TextureComponent.class).setSize(128, 128).setAdditionalOffset(-16, -14))
                     .add(engine.createComponent(HeroDataComponent.class)
-                            .init(++playerId,"nołnejm", 10f, new Sprite(game.assetManager.get("temp/orki.png", Texture.class))))
+                            .init(++playerId,"nołnejm", 10f, hero))
                     .add(engine.createComponent(VelocityComponent.class))
                     .add(engine.createComponent(playerClass));
-            engine.addEntity(hero);
+            engine.addEntity(heroEntity);
             Pools.free(heroPosition);
         }
 
@@ -126,7 +129,7 @@ public class SpawnGenerator {
                     .add(engine.createComponent(PositionComponent.class).init(generateRandomPositionOnMap(heroPosition,map)))
                     .add(engine.createComponent(RenderableComponent.class))
                     .add(engine.createComponent(TextureComponent.class).setSize(256, 256).setAdditionalOffset(-80, -70))
-                    .add(engine.createComponent(HeroDataComponent.class).init(++playerId,"nołnejm", 100000f, new Sprite(game.assetManager.get("temp/portrait.png", Texture.class))))
+                    .add(engine.createComponent(HeroDataComponent.class).init(++playerId,"nołnejm", 100000f, game.unitsManager.heroOrcMage))
                     .add(engine.createComponent(VelocityComponent.class))
                     .add(engine.createComponent(playerClass));
             engine.addEntity(hero);

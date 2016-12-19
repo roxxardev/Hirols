@@ -96,8 +96,9 @@ public class EndNodeInteractionSystem extends GameMapEntitySystem {
         if (resourceMap.has(targetEntity)) {
             ResourceComponent resourceComponent = resourceMap.get(targetEntity);
 
-            playerData.resources.put(resourceComponent.resourceType, resourceComponent.amount);
+            playerData.resources.put(resourceComponent.resourceType, playerData.resources.get(resourceComponent.resourceType) + resourceComponent.amount);
             String resourceText = "Picked up " + resourceComponent.amount + " " + resourceComponent.resourceType + " !";
+            gameMapData.hud.getTopBar().updateResources();
             targetEntity.remove(ResourceComponent.class);
             targetEntity.remove(RenderableComponent.class);
             targetEntity.remove(TextureComponent.class);

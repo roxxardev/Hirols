@@ -103,43 +103,32 @@ public class LoadingScreen implements Screen {
 
         assetManager.load("arrows/arrows.atlas", TextureAtlas.class);
 
-//        assetManager.load("arrows/arrowG_E.png", Texture.class, textureParameter);
-//        assetManager.load("arrows/arrowG_N.png", Texture.class, textureParameter);
-//        assetManager.load("arrows/arrowG_NE.png", Texture.class, textureParameter);
-//        assetManager.load("arrows/arrowG_NW.png", Texture.class, textureParameter);
-//        assetManager.load("arrows/arrowG_S.png", Texture.class, textureParameter);
-//        assetManager.load("arrows/arrowG_SE.png", Texture.class, textureParameter);
-//        assetManager.load("arrows/arrowG_SW.png", Texture.class, textureParameter);
-//        assetManager.load("arrows/arrowG_W.png", Texture.class, textureParameter);
-//        assetManager.load("arrows/crossG.png", Texture.class, textureParameter);
-//        assetManager.load("arrows/swordG.png", Texture.class, textureParameter);
-//        assetManager.load("arrows/arrowR_E.png", Texture.class, textureParameter);
-//        assetManager.load("arrows/arrowR_N.png", Texture.class, textureParameter);
-//        assetManager.load("arrows/arrowR_NE.png", Texture.class, textureParameter);
-//        assetManager.load("arrows/arrowR_NW.png", Texture.class, textureParameter);
-//        assetManager.load("arrows/arrowR_S.png", Texture.class, textureParameter);
-//        assetManager.load("arrows/arrowR_SE.png", Texture.class, textureParameter);
-//        assetManager.load("arrows/arrowR_SW.png", Texture.class, textureParameter);
-//        assetManager.load("arrows/arrowR_W.png", Texture.class, textureParameter);
-//        assetManager.load("arrows/crossR.png", Texture.class, textureParameter);
-//        assetManager.load("arrows/swordR.png", Texture.class, textureParameter);
-
         FreetypeFontLoader.FreeTypeFontLoaderParameter fontLoaderParameter = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        fontLoaderParameter.fontFileName = "fonts/test.TTF";
+        fontLoaderParameter.fontFileName = "fonts/VIDEOPHREAK.ttf";
         fontLoaderParameter.fontParameters.size = 32;
         fontLoaderParameter.fontParameters.color = Color.WHITE;
         assetManager.load("testFontSize32.ttf", BitmapFont.class, fontLoaderParameter);
         FreetypeFontLoader.FreeTypeFontLoaderParameter fontLoaderParameter2 = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        fontLoaderParameter2.fontFileName = "fonts/test.TTF";
+        fontLoaderParameter2.fontFileName = "fonts/VIDEOPHREAK.ttf";
         fontLoaderParameter2.fontParameters.color = Color.WHITE;
         fontLoaderParameter2.fontParameters.size = 12;
-
         assetManager.load("testFontSize12.ttf", BitmapFont.class, fontLoaderParameter2);
+        FreetypeFontLoader.FreeTypeFontLoaderParameter fontLoaderParameter3 = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        fontLoaderParameter3.fontFileName = fontLoaderParameter.fontFileName;
+        fontLoaderParameter3.fontParameters.color = Color.WHITE;
+        fontLoaderParameter3.fontParameters.size = 18;
+        assetManager.load("testFontSize18.ttf", BitmapFont.class, fontLoaderParameter3);
+
         assetManager.load("test.mp3", Music.class);
-        assetManager.load("gold.png", Texture.class, textureParameter);
         assetManager.load("animations/loadingLongPress.png", Texture.class, textureParameter);
         assetManager.load("battleBackground.png", Texture.class, textureParameter);
-        assetManager.load("towns/snow-town.png", Texture.class, textureParameter);
+        assetManager.load("towns/townBackground.PNG", Texture.class, textureParameter);
+
+        assetManager.load("resources/CoalPile.png", Texture.class, textureParameter);
+        assetManager.load("resources/GoldPile.png", Texture.class, textureParameter);
+        assetManager.load("resources/LogPile.png", Texture.class, textureParameter);
+        assetManager.load("resources/StonePile.png", Texture.class, textureParameter);
+
 
         assetManager.load("animations/OrcWyvern_Standing.png", Texture.class, textureParameter);
         assetManager.load("animations/OrcWyvern_Walking.png", Texture.class, textureParameter);
@@ -151,15 +140,6 @@ public class LoadingScreen implements Screen {
         //GUI
 
         assetManager.load("fonts/test2.fnt", BitmapFont.class);
-
-        assetManager.load("resources/energy.png", Texture.class, textureParameter);
-        assetManager.load("resources/fuel.png", Texture.class, textureParameter);
-        assetManager.load("resources/grafen2.png", Texture.class, textureParameter);
-        assetManager.load("resources/metal.png", Texture.class, textureParameter);
-        assetManager.load("resources/alienrsc.png", Texture.class, textureParameter);
-        assetManager.load("resources/coinsresource.png", Texture.class, textureParameter);
-
-
 
         assetManager.load("ui/atlas.pack", TextureAtlas.class);
 
@@ -193,7 +173,7 @@ public class LoadingScreen implements Screen {
                 game.gameManager.createMap("maps/defaultMap/Map1 tiles 48x48.tmx");
                 game.gameManager.setCurrentMapScreen("maps/defaultMap/Map1 tiles 48x48.tmx");
                 //game.setScreen(new TownScreen(game));
-                //game.setScreen(new BattleScreen(game));
+                game.setScreen(new BattleScreen(game));
             }
         } else {
             Gdx.app.log("Loading progress", String.valueOf(assetManager.getProgress()*100));

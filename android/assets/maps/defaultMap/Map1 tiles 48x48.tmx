@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="128" height="128" tilewidth="48" tileheight="48" nextobjectid="4371">
- <tileset firstgid="1" name="water" tilewidth="48" tileheight="48" tilecount="32" columns="8">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="128" height="128" tilewidth="48" tileheight="48" nextobjectid="4373">
+ <tileset firstgid="1" name="water" tilewidth="48" tileheight="48" tilecount="32">
   <image source="Textures/ani water 0000.bmp" width="384" height="192"/>
   <tile id="0">
    <properties>
-    <property name="tile" type="int" value="1"/>
+    <property name="tile" value="1"/>
    </properties>
    <animation>
     <frame tileid="0" duration="100"/>
@@ -19,7 +19,7 @@
   </tile>
   <tile id="1">
    <properties>
-    <property name="tile" type="int" value="2"/>
+    <property name="tile" value="2"/>
    </properties>
    <animation>
     <frame tileid="1" duration="100"/>
@@ -34,7 +34,7 @@
   </tile>
   <tile id="8">
    <properties>
-    <property name="tile" type="int" value="3"/>
+    <property name="tile" value="3"/>
    </properties>
    <animation>
     <frame tileid="8" duration="100"/>
@@ -49,7 +49,7 @@
   </tile>
   <tile id="9">
    <properties>
-    <property name="tile" type="int" value="4"/>
+    <property name="tile" value="4"/>
    </properties>
    <animation>
     <frame tileid="9" duration="100"/>
@@ -63,7 +63,7 @@
    </animation>
   </tile>
  </tileset>
- <tileset firstgid="33" name="ZestawSnieg" tilewidth="48" tileheight="48" tilecount="144" columns="12">
+ <tileset firstgid="33" name="ZestawSnieg" tilewidth="48" tileheight="48" tilecount="144">
   <image source="Textures/ZestawSnieg.png" width="576" height="576"/>
   <tile id="0">
    <properties>
@@ -786,7 +786,7 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="177" name="SummerTrees" tilewidth="96" tileheight="96" tilecount="18" columns="6">
+ <tileset firstgid="177" name="SummerTrees" tilewidth="96" tileheight="96" tilecount="18">
   <image source="Textures/SummerTrees.png" width="576" height="288"/>
   <tile id="0">
    <properties>
@@ -849,10 +849,10 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="195" name="SummerTreesShadows" tilewidth="96" tileheight="96" tilecount="18" columns="6">
+ <tileset firstgid="195" name="SummerTreesShadows" tilewidth="96" tileheight="96" tilecount="18">
   <image source="Textures/SummerTreesShadows.png" width="576" height="288"/>
  </tileset>
- <tileset firstgid="213" name="WinterTrees" tilewidth="96" tileheight="96" tilecount="18" columns="6">
+ <tileset firstgid="213" name="WinterTrees" tilewidth="96" tileheight="96" tilecount="18">
   <image source="Textures/WinterTrees.png" width="576" height="288"/>
   <tile id="0">
    <properties>
@@ -915,10 +915,10 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="231" name="WinterTreesShadows" tilewidth="96" tileheight="96" tilecount="18" columns="6">
+ <tileset firstgid="231" name="WinterTreesShadows" tilewidth="96" tileheight="96" tilecount="18">
   <image source="Textures/WinterTreesShadows.png" width="576" height="288"/>
  </tileset>
- <tileset firstgid="249" name="OrcTown" tilewidth="48" tileheight="48" tilecount="36" columns="6">
+ <tileset firstgid="249" name="OrcTown" tilewidth="48" tileheight="48" tilecount="36">
   <image source="Textures/OrcTown.png" width="288" height="288"/>
   <tile id="0">
    <properties>
@@ -1101,7 +1101,7 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="285" name="Mine" tilewidth="48" tileheight="48" tilecount="8" columns="4">
+ <tileset firstgid="285" name="Mine" tilewidth="48" tileheight="48" tilecount="8">
   <image source="Textures/Mine.png" width="192" height="96"/>
   <tile id="0">
    <properties>
@@ -1144,7 +1144,7 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="293" name="GroundObstacles" tilewidth="48" tileheight="48" tilecount="100" columns="10">
+ <tileset firstgid="293" name="GroundObstacles" tilewidth="48" tileheight="48" tilecount="100">
   <image source="Textures/GroundObstacles.png" width="512" height="512"/>
   <tile id="0">
    <properties>
@@ -1418,73 +1418,73 @@
   </data>
  </layer>
  <objectgroup name="objects">
-  <object id="4313" name="stone" type="resource" x="4032" y="3072" width="96" height="96"/>
-  <object id="4314" name="stone" type="resource" x="3072" y="3936" width="96" height="96"/>
-  <object id="4315" name="stone" type="resource" x="1248" y="3360" width="96" height="96"/>
-  <object id="4316" name="stone" type="resource" x="1536" y="1536" width="96" height="96"/>
-  <object id="4317" name="wood" type="resource" x="3552" y="4128" width="96" height="96"/>
-  <object id="4318" name="wood" type="resource" x="4320" y="3648" width="96" height="96"/>
-  <object id="4319" name="wood" type="resource" x="1920" y="3072" width="96" height="96"/>
-  <object id="4320" name="wood" type="resource" x="2112" y="1536" width="96" height="96"/>
-  <object id="4321" name="wood" type="resource" x="1824" y="1920" width="96" height="96"/>
-  <object id="4322" name="wood" type="resource" x="2208" y="4320" width="96" height="96"/>
-  <object id="4323" name="steel" type="resource" x="1728" y="3648" width="96" height="96"/>
-  <object id="4324" name="steel" type="resource" x="2880" y="2880" width="96" height="96"/>
-  <object id="4325" name="steel" type="resource" x="3744" y="3552" width="96" height="96"/>
-  <object id="4326" name="steel" type="resource" x="1152" y="2112" width="96" height="96"/>
-  <object id="4327" name="steel" type="resource" x="2880" y="1536" width="96" height="96"/>
+  <object id="4313" name="stone" type="resourceType" x="4032" y="3072" width="96" height="96"/>
+  <object id="4314" name="stone" type="resourceType" x="3072" y="3936" width="96" height="96"/>
+  <object id="4315" name="stone" type="resourceType" x="1248" y="3360" width="96" height="96"/>
+  <object id="4316" name="stone" type="resourceType" x="1536" y="1536" width="96" height="96"/>
+  <object id="4317" name="wood" type="resourceType" x="3552" y="4128" width="96" height="96"/>
+  <object id="4318" name="wood" type="resourceType" x="4320" y="3648" width="96" height="96"/>
+  <object id="4319" name="wood" type="resourceType" x="1920" y="3072" width="96" height="96"/>
+  <object id="4320" name="wood" type="resourceType" x="2112" y="1536" width="96" height="96"/>
+  <object id="4321" name="wood" type="resourceType" x="1824" y="1920" width="96" height="96"/>
+  <object id="4322" name="wood" type="resourceType" x="2208" y="4320" width="96" height="96"/>
+  <object id="4323" name="steel" type="resourceType" x="1728" y="3648" width="96" height="96"/>
+  <object id="4324" name="steel" type="resourceType" x="2880" y="2880" width="96" height="96"/>
+  <object id="4325" name="steel" type="resourceType" x="3744" y="3552" width="96" height="96"/>
+  <object id="4326" name="steel" type="resourceType" x="1152" y="2112" width="96" height="96"/>
+  <object id="4327" name="steel" type="resourceType" x="2880" y="1536" width="96" height="96"/>
   <object id="4328" name="OrcCastle1" type="castle" x="1440" y="1248" width="96" height="96">
    <properties>
-    <property name="EnterX" type="float" value="1632"/>
+    <property name="EnterX" value="1632"/>
     <property name="EnterY" value="1248,00"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
   <object id="4329" name="OrcCastle1" type="castle" x="1536" y="1248" width="96" height="96">
    <properties>
-    <property name="EnterX" type="float" value="1632"/>
+    <property name="EnterX" value="1632"/>
     <property name="EnterY" value="1248,00"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
   <object id="4330" name="OrcCastle1" type="castle" x="1440" y="1152" width="96" height="96">
    <properties>
-    <property name="EnterX" type="float" value="1632"/>
+    <property name="EnterX" value="1632"/>
     <property name="EnterY" value="1248,00"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
   <object id="4331" name="OrcCastle1" type="castle" x="1440" y="1056" width="96" height="96">
    <properties>
-    <property name="EnterX" type="float" value="1632"/>
+    <property name="EnterX" value="1632"/>
     <property name="EnterY" value="1248,00"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
   <object id="4332" name="OrcCastle1" type="castle" x="1536" y="1152" width="96" height="96">
    <properties>
-    <property name="EnterX" type="float" value="1632"/>
+    <property name="EnterX" value="1632"/>
     <property name="EnterY" value="1248,00"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
   <object id="4333" name="OrcCastle1" type="castle" x="1536" y="1056" width="96" height="96">
    <properties>
-    <property name="EnterX" type="float" value="1632"/>
+    <property name="EnterX" value="1632"/>
     <property name="EnterY" value="1248,00"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
   <object id="4334" name="OrcCastle1" type="castle" x="1632" y="1056" width="96" height="96">
    <properties>
-    <property name="EnterX" type="float" value="1632"/>
+    <property name="EnterX" value="1632"/>
     <property name="EnterY" value="1248,00"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
   <object id="4335" name="OrcCastle1" type="castle" x="1632" y="1152" width="96" height="96">
    <properties>
-    <property name="EnterX" type="float" value="1632"/>
+    <property name="EnterX" value="1632"/>
     <property name="EnterY" value="1248,00"/>
     <property name="isEnter" value="false"/>
    </properties>
@@ -1497,56 +1497,56 @@
   <object id="4337" name="OrcCastle2" type="castle" x="3936" y="2688" width="96" height="96">
    <properties>
     <property name="EnterX" value="4128,00"/>
-    <property name="EnterY" type="float" value="2688"/>
+    <property name="EnterY" value="2688"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
   <object id="4338" name="OrcCastle2" type="castle" x="4032" y="2688" width="96" height="96">
    <properties>
     <property name="EnterX" value="4128,00"/>
-    <property name="EnterY" type="float" value="2688"/>
+    <property name="EnterY" value="2688"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
   <object id="4339" name="OrcCastle2" type="castle" x="3936" y="2592" width="96" height="96">
    <properties>
     <property name="EnterX" value="4128,00"/>
-    <property name="EnterY" type="float" value="2688"/>
+    <property name="EnterY" value="2688"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
   <object id="4340" name="OrcCastle2" type="castle" x="3936" y="2496" width="96" height="96">
    <properties>
     <property name="EnterX" value="4128,00"/>
-    <property name="EnterY" type="float" value="2688"/>
+    <property name="EnterY" value="2688"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
   <object id="4341" name="OrcCastle2" type="castle" x="4032" y="2592" width="96" height="96">
    <properties>
     <property name="EnterX" value="4128,00"/>
-    <property name="EnterY" type="float" value="2688"/>
+    <property name="EnterY" value="2688"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
   <object id="4342" name="OrcCastle2" type="castle" x="4032" y="2496" width="96" height="96">
    <properties>
     <property name="EnterX" value="4128,00"/>
-    <property name="EnterY" type="float" value="2688"/>
+    <property name="EnterY" value="2688"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
   <object id="4343" name="OrcCastle2" type="castle" x="4128" y="2496" width="96" height="96">
    <properties>
     <property name="EnterX" value="4128,00"/>
-    <property name="EnterY" type="float" value="2688"/>
+    <property name="EnterY" value="2688"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
   <object id="4344" name="OrcCastle2" type="castle" x="4128" y="2592" width="96" height="96">
    <properties>
     <property name="EnterX" value="4128,00"/>
-    <property name="EnterY" type="float" value="2688"/>
+    <property name="EnterY" value="2688"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
@@ -1618,8 +1618,8 @@
   </object>
   <object id="4355" name="Mine1" type="mine" x="2304" y="1152" width="96" height="96">
    <properties>
-    <property name="EnterX" type="float" value="2400"/>
-    <property name="EnterY" type="float" value="1152"/>
+    <property name="EnterX" value="2400"/>
+    <property name="EnterY" value="1152"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
@@ -1630,8 +1630,8 @@
   </object>
   <object id="4357" name="Mine2" type="mine" x="1248" y="1728" width="96" height="96">
    <properties>
-    <property name="EnterX" type="float" value="1344"/>
-    <property name="EnterY" type="float" value="1728"/>
+    <property name="EnterX" value="1344"/>
+    <property name="EnterY" value="1728"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
@@ -1642,8 +1642,8 @@
   </object>
   <object id="4359" name="Mine3" type="mine" x="2592" y="2304" width="96" height="96">
    <properties>
-    <property name="EnterX" type="float" value="2688"/>
-    <property name="EnterY" type="float" value="2304"/>
+    <property name="EnterX" value="2688"/>
+    <property name="EnterY" value="2304"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
@@ -1654,8 +1654,8 @@
   </object>
   <object id="4361" name="Mine8" type="mine" x="1056" y="3072" width="96" height="96">
    <properties>
-    <property name="EnterX" type="float" value="1152"/>
-    <property name="EnterY" type="float" value="3072"/>
+    <property name="EnterX" value="1152"/>
+    <property name="EnterY" value="3072"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
@@ -1666,8 +1666,8 @@
   </object>
   <object id="4363" name="Mine4" type="mine" x="3744" y="3072" width="96" height="96">
    <properties>
-    <property name="EnterX" type="float" value="3840"/>
-    <property name="EnterY" type="float" value="3072"/>
+    <property name="EnterX" value="3840"/>
+    <property name="EnterY" value="3072"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
@@ -1678,8 +1678,8 @@
   </object>
   <object id="4365" name="Mine5" type="mine" x="2880" y="3744" width="96" height="96">
    <properties>
-    <property name="EnterX" type="float" value="2976"/>
-    <property name="EnterY" type="float" value="3744"/>
+    <property name="EnterX" value="2976"/>
+    <property name="EnterY" value="3744"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
@@ -1690,8 +1690,8 @@
   </object>
   <object id="4367" name="Mine6" type="mine" x="4224" y="4032" width="96" height="96">
    <properties>
-    <property name="EnterX" type="float" value="4320"/>
-    <property name="EnterY" type="float" value="4032"/>
+    <property name="EnterX" value="4320"/>
+    <property name="EnterY" value="4032"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
@@ -1702,8 +1702,8 @@
   </object>
   <object id="4369" name="Mine7" type="mine" x="3456" y="4416" width="96" height="96">
    <properties>
-    <property name="EnterX" type="float" value="3552"/>
-    <property name="EnterY" type="float" value="4416"/>
+    <property name="EnterX" value="3552"/>
+    <property name="EnterY" value="4416"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
@@ -1712,5 +1712,6 @@
     <property name="isEnter" value="true"/>
    </properties>
   </object>
+  <object id="4372" name="gold" type="resourceType" x="1680" y="3072" width="96" height="96"/>
  </objectgroup>
 </map>

@@ -1,6 +1,5 @@
 package pl.pollub.hirols.systems.battleSystems;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -27,11 +26,9 @@ public class BattleInteractionSystem extends BattleEntitySystem{
 
         if(battleData.inputManager.getUnreadTap()) {
             Vector3 mouseTemp = Pools.obtain(Vector3.class).set(battleData.inputManager.getMouseCoords().x,battleData.inputManager.getMouseCoords().y,0);
-            Gdx.app.log("mouse pos", mouseTemp.toString());
             battleData.battleViewport.unproject(mouseTemp);
             Vector2 mouseWorldPosition = Pools.obtain(Vector2.class);
             mouseWorldPosition.set(mouseTemp.x, mouseTemp.y);
-            Gdx.app.log("mouse world pos", mouseWorldPosition.toString());
             Pools.free(mouseTemp);
 
 

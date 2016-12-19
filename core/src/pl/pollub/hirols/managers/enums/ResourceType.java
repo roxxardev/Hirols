@@ -1,24 +1,21 @@
 package pl.pollub.hirols.managers.enums;
 
-/**
- * Created by kamil on 15.03.2016.
- */
-public enum Resource {
+public enum ResourceType {
     STONE, WOOD, METAL, GOLD;
 
-    public static Resource fromString(String resource) {
+    public static ResourceType fromString(String resource) {
         if (resource.equals("stone"))
-            return Resource.STONE;
+            return ResourceType.STONE;
         else if (resource.equals("steel"))
-            return Resource.METAL;
+            return ResourceType.METAL;
         else if (resource.equals("wood"))
-            return Resource.WOOD;
+            return ResourceType.WOOD;
         else if (resource.equals("gold"))
-            return Resource.GOLD;
+            return ResourceType.GOLD;
 
         throw new IllegalArgumentException("Wrong resource type!");
     }
-    public static Resource getRandomResource() {
+    public static ResourceType getRandomResource() {
         return values()[(int) (Math.random() * values().length)];
     }
 }

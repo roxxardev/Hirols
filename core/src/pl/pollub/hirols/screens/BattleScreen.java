@@ -22,6 +22,7 @@ import pl.pollub.hirols.battle.HexagonMapPolygon;
 import pl.pollub.hirols.components.battle.BattleComponent;
 import pl.pollub.hirols.components.battle.BattleDataComponent;
 import pl.pollub.hirols.console.GraphicalConsole;
+import pl.pollub.hirols.gui.battle.BattleHud;
 import pl.pollub.hirols.managers.EngineTools;
 import pl.pollub.hirols.managers.input.InputManager;
 import pl.pollub.hirols.managers.input.MyGestureListener;
@@ -35,7 +36,6 @@ import pl.pollub.hirols.systems.generalSystems.graphics.AnimationSystem;
 import pl.pollub.hirols.systems.generalSystems.graphics.BitmapFontRenderSystem;
 import pl.pollub.hirols.systems.generalSystems.graphics.RenderSystem;
 import pl.pollub.hirols.systems.generalSystems.physics.MovementSystem;
-import pl.pollub.hirols.ui.battleScreenGUI.BattleScreenHud;
 
 /**
  * Created by Eryk on 2016-04-03.
@@ -56,7 +56,7 @@ public class BattleScreen extends GameScreen {
 
     private GraphicalConsole console;
 
-    private BattleScreenHud hud;
+    private BattleHud hud;
 
     public BattleScreen(Hirols game) {
         super(game);
@@ -65,17 +65,16 @@ public class BattleScreen extends GameScreen {
         int height = 720;
 
         battleCam = new OrthographicCamera();
-        //battleCam.setToOrtho(false, width, height); //TODO check if needed
         battleViewport = new FitViewport(width,height,battleCam);
 
         inputManager = new InputManager();
         gestureDetector = new GestureDetector(new MyGestureListener(inputManager));
         myInputProcessor = new MyInputProcessor(inputManager);
 
-        battleComponent = new BattleComponent() {};
+        battleComponent = new BattleComponent();
 
         int mapWidth = 12, mapHeight = 7;
-        hexagonMapPolygon = new HexagonMapPolygon(mapWidth,mapHeight,width/30,new Vector2(200f,100f));
+        hexagonMapPolygon = new HexagonMapPolygon(game,mapWidth,mapHeight,width/30,new Vector2(200f,100f));
 
         Sprite backgroundSprite = new Sprite(game.assetManager.get("battleBackground.png", Texture.class));
         backgroundSprite.setBounds(0,0 ,width,height);
@@ -84,23 +83,22 @@ public class BattleScreen extends GameScreen {
 
         battleEntity = game.engine.createEntity()
                 .add(battleComponent)
-                .add(new BattleDataComponent(battleCam,inputManager,hexagonMapPolygon,battleViewport));
+                .add(game.engine.createComponent(BattleDataComponent.class).init(battleCam,inputManager,hexagonMapPolygon,battleViewport));
         game.engine.addEntity(battleEntity);
-
 
         createSystems();
 
         console = new GraphicalConsole(new BattleCommands(),
                 game.assetManager.get("default_skin/uiskin.json", Skin.class),
-                game, battleViewport);
+                game, new FitViewport(width,height));
 
-        hud = new BattleScreenHud(game, battleViewport);
+        hud = new BattleHud(game, new FitViewport(width,height));
     }
 
     @Override
     public void show() {
         super.show();
-        game.multiplexer.addProcessor(hud.stage);
+        game.multiplexer.addProcessor(hud.getStage());
         game.multiplexer.addProcessor(gestureDetector);
         game.multiplexer.addProcessor(myInputProcessor);
         console.addInputProcessorToMultiplexer();
@@ -109,7 +107,7 @@ public class BattleScreen extends GameScreen {
     @Override
     public void hide() {
         super.hide();
-        game.multiplexer.removeProcessor(hud.stage);
+        game.multiplexer.removeProcessor(hud.getStage());
         game.multiplexer.removeProcessor(gestureDetector);
         game.multiplexer.removeProcessor(myInputProcessor);
         console.removeInputProcessorFromMultiplexer();
@@ -142,8 +140,8 @@ public class BattleScreen extends GameScreen {
 
         game.engine.update(delta);
 
-        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
-        hud.stage.draw();
+        game.batch.setProjectionMatrix(hud.getStage().getCamera().combined);
+        hud.getStage().draw();
         console.draw();
     }
 
@@ -152,6 +150,7 @@ public class BattleScreen extends GameScreen {
         super.resize(width,height);
         battleViewport.update(width, height, true);
         console.resize(width,height);
+        hud.resize(width,height);
     }
 
     @Override

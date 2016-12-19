@@ -20,11 +20,12 @@ public class BattleDataComponent implements Component, Pool.Poolable{
     public InputManager inputManager;
     public HexagonMapPolygon hexagonMapPolygon;
 
-    public BattleDataComponent(OrthographicCamera battleCam, InputManager inputManager, HexagonMapPolygon hexagonMapPolygon, Viewport battleViewport) {
+    public BattleDataComponent init(OrthographicCamera battleCam, InputManager inputManager, HexagonMapPolygon hexagonMapPolygon, Viewport battleViewport) {
         this.battleCam = battleCam;
         this.inputManager = inputManager;
         this.hexagonMapPolygon = hexagonMapPolygon;
         this.battleViewport = battleViewport;
+        return this;
     }
 
     @Override
@@ -32,5 +33,6 @@ public class BattleDataComponent implements Component, Pool.Poolable{
         battleCam = null;
         inputManager = null;
         hexagonMapPolygon = null;
+        battleViewport = null;
     }
 }
