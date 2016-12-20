@@ -62,8 +62,7 @@ public class HexagonMapPolygon {
         recalculate();
         for (int x = 0; x < mapWidth; x++) {
             for (int y = 0; y < mapHeight; y++) {
-                HexagonTilePolygon hexagonTilePolygon = new HexagonTilePolygon();
-                hexagonTilePolygon.init(this, x, y);
+                HexagonTilePolygon hexagonTilePolygon = new HexagonTilePolygon(this, x, y);
                 hexagons[x][y] = hexagonTilePolygon;
                 Entity entity = game.engine.createEntity();
                 entity

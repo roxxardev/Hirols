@@ -1,5 +1,6 @@
 package pl.pollub.hirols.screens;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.loaders.SkinLoader;
@@ -34,19 +35,14 @@ public class LoadingScreen implements Screen {
     private Hirols game;
     private AssetManager assetManager;
 
-    private Viewport loadPort;
     private Stage stage;
-
     private ProgressBar bar;
     private Skin skin;
 
     public LoadingScreen(Hirols game) {
         this.game = game;
         this.assetManager = game.assetManager;
-        this.skin = new Skin();
-
-        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("ui/uiskin.pack"));
-        skin.addRegions(atlas);
+        this.skin = new Skin(Gdx.files.internal("ui/default_skin/uiskin.json"));
 
         ProgressBar.ProgressBarStyle progressBarStyle;
         progressBarStyle = new ProgressBar.ProgressBarStyle();
@@ -59,7 +55,9 @@ public class LoadingScreen implements Screen {
         assetManager.setLoader(FreeTypeFontGenerator.class,new FreeTypeFontGeneratorLoader(resolver));
         assetManager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
 
-        switch(Gdx.app.getType()) {
+        Application.ApplicationType applicationType = Gdx.app.getType();
+
+        switch(applicationType) {
             case Android:
                 int androidVersion = Gdx.app.getVersion();
                 Gdx.app.log("Device", "Android device, sdk version: "+androidVersion);
@@ -75,13 +73,9 @@ public class LoadingScreen implements Screen {
     @Override
     public void show() {
         
-        OrthographicCamera loadCam;
-
-        loadCam = new OrthographicCamera();
+        OrthographicCamera loadCam = new OrthographicCamera();
         loadCam.setToOrtho(false);
-
-        loadPort = new ScreenViewport(loadCam);
-
+        Viewport loadPort = new ScreenViewport(loadCam);
         stage = new Stage(loadPort, game.batch);
 
         bar = new ProgressBar(0, 100, 1, false, skin.get("progress-bar",ProgressBar.ProgressBarStyle.class));
@@ -89,7 +83,6 @@ public class LoadingScreen implements Screen {
         bar.setWidth(stage.getWidth() - 200);
         stage.addActor(bar);
 
-        //tutaj wszystko do załadowania:
         loadAssets();
 
         Texture.setAssetManager(assetManager);
@@ -101,15 +94,13 @@ public class LoadingScreen implements Screen {
         textureParameter.magFilter = Texture.TextureFilter.Linear;
         textureParameter.minFilter = Texture.TextureFilter.MipMap;
 
-        assetManager.load("arrows/arrows.atlas", TextureAtlas.class);
-
         FreetypeFontLoader.FreeTypeFontLoaderParameter fontLoaderParameter = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        fontLoaderParameter.fontFileName = "fonts/VIDEOPHREAK.ttf";
+        fontLoaderParameter.fontFileName = "ui/fonts/VIDEOPHREAK.ttf";
         fontLoaderParameter.fontParameters.size = 32;
         fontLoaderParameter.fontParameters.color = Color.WHITE;
         assetManager.load("testFontSize32.ttf", BitmapFont.class, fontLoaderParameter);
         FreetypeFontLoader.FreeTypeFontLoaderParameter fontLoaderParameter2 = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        fontLoaderParameter2.fontFileName = "fonts/VIDEOPHREAK.ttf";
+        fontLoaderParameter2.fontFileName = "ui/fonts/VIDEOPHREAK.ttf";
         fontLoaderParameter2.fontParameters.color = Color.WHITE;
         fontLoaderParameter2.fontParameters.size = 12;
         assetManager.load("testFontSize12.ttf", BitmapFont.class, fontLoaderParameter2);
@@ -121,14 +112,13 @@ public class LoadingScreen implements Screen {
 
         assetManager.load("test.mp3", Music.class);
         assetManager.load("animations/loadingLongPress.png", Texture.class, textureParameter);
-        assetManager.load("battleBackground.png", Texture.class, textureParameter);
+        assetManager.load("battle/battleBackground.png", Texture.class, textureParameter);
         assetManager.load("towns/townBackground.PNG", Texture.class, textureParameter);
-
+        assetManager.load("arrows/arrows.atlas", TextureAtlas.class);
         assetManager.load("resources/CoalPile.png", Texture.class, textureParameter);
         assetManager.load("resources/GoldPile.png", Texture.class, textureParameter);
         assetManager.load("resources/LogPile.png", Texture.class, textureParameter);
         assetManager.load("resources/StonePile.png", Texture.class, textureParameter);
-
 
         assetManager.load("animations/OrcWyvern_Standing.png", Texture.class, textureParameter);
         assetManager.load("animations/OrcWyvern_Walking.png", Texture.class, textureParameter);
@@ -138,13 +128,7 @@ public class LoadingScreen implements Screen {
         assetManager.load("animations/OrcMageHero_Walking.png", Texture.class, textureParameter);
 
         //GUI
-
-        assetManager.load("fonts/test2.fnt", BitmapFont.class);
-
-        assetManager.load("ui/atlas.pack", TextureAtlas.class);
-
-        assetManager.load("default_skin/uiskin.atlas", TextureAtlas.class);
-        assetManager.load("default_skin/uiskin.json", Skin.class, new SkinLoader.SkinParameter("default_skin/uiskin.atlas"));
+        assetManager.load("ui/default_skin/uiskin.json", Skin.class, new SkinLoader.SkinParameter("ui/default_skin/uiskin.atlas"));
 
         assetManager.load("ui/button-images.png", Texture.class, textureParameter);
         assetManager.load("ui/menuDrag.png", Texture.class, textureParameter);
@@ -153,12 +137,10 @@ public class LoadingScreen implements Screen {
         assetManager.load("temp/portrait.png", Texture.class, textureParameter);
         assetManager.load("temp/orki.png", Texture.class, textureParameter);
         assetManager.load("temp/town.gif", Texture.class, textureParameter);
-
     }
 
     @Override
     public void render(float delta) {
-
         update(delta);
         
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -168,7 +150,6 @@ public class LoadingScreen implements Screen {
         
         if(assetManager.update()) {
             if(Gdx.input.isTouched()) {
-                //jeśli wczytano assety i naciśnieto
                 game.hudManager = new HudManager(game);
                 game.gameManager.createMap("maps/defaultMap/Map1 tiles 48x48.tmx");
                 game.gameManager.setCurrentMapScreen("maps/defaultMap/Map1 tiles 48x48.tmx");

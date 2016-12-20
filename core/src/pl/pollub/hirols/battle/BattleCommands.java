@@ -2,6 +2,7 @@ package pl.pollub.hirols.battle;
 
 import com.badlogic.gdx.Gdx;
 
+import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.console.CommandsContainer;
 
 /**
@@ -9,6 +10,13 @@ import pl.pollub.hirols.console.CommandsContainer;
  */
 
 public class BattleCommands extends CommandsContainer {
+
+    private Hirols game;
+
+    public BattleCommands(Hirols game) {
+        this.game = game;
+    }
+
     @Override
     public void exit() {
         Gdx.app.exit();

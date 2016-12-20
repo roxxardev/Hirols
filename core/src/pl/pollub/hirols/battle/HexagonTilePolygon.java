@@ -13,7 +13,7 @@ public class HexagonTilePolygon {
     public PolygonSprite sprite;
     public float[] vertices = new float[] {};
 
-    public void init(HexagonMapPolygon hexagonMap, int x, int y) {
+    public HexagonTilePolygon(HexagonMapPolygon hexagonMap, int x, int y) {
         this.x = x;
         this.y = y;
         sprite = new PolygonSprite(new PolygonRegion(hexagonMap.getRegionFromPixMap(),vertices, new short[] {}));

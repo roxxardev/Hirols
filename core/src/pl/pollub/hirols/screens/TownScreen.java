@@ -67,13 +67,11 @@ public class TownScreen extends GameScreen {
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE) || townHud.isExitRequest()){
             game.setScreen(game.gameManager.getCurrentMapScreen());
             dispose();
-            return;
         }
 
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        game.batch.setProjectionMatrix(townHud.getStage().getCamera().combined);
         townHud.getStage().draw();
     }
 

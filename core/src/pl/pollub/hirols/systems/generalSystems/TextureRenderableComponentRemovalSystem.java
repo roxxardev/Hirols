@@ -4,24 +4,25 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
+import com.badlogic.gdx.graphics.Color;
 
 import pl.pollub.hirols.components.LifePeriodComponent;
-import pl.pollub.hirols.components.graphics.BitmapFontComponent;
+import pl.pollub.hirols.components.graphics.RenderableComponent;
+import pl.pollub.hirols.components.graphics.TextureComponent;
 import pl.pollub.hirols.components.graphics.TransparencyComponent;
-import pl.pollub.hirols.components.physics.VelocityComponent;
 
 /**
- * Created by erykp_000 on 2016-03-08.
+ * Created by erykp_000 on 2016-12-20.
  */
-public class FontsDeathSystem extends GeneralIteratingSystem {
+
+public class TextureRenderableComponentRemovalSystem extends GeneralIteratingSystem {
 
     private ComponentMapper<LifePeriodComponent> lifePeriodMap = ComponentMapper.getFor(LifePeriodComponent.class);
     private ComponentMapper<TransparencyComponent> transparencyMap = ComponentMapper.getFor(TransparencyComponent.class);
-    private ComponentMapper<BitmapFontComponent> fontMap = ComponentMapper.getFor(BitmapFontComponent.class);
-    private ComponentMapper<VelocityComponent> velMap = ComponentMapper.getFor(VelocityComponent.class);
+    private ComponentMapper<TextureComponent> textureMap = ComponentMapper.getFor(TextureComponent.class);
 
-    public FontsDeathSystem(int priority, Class<? extends Component> affiliationClass) {
-        super(Family.all(LifePeriodComponent.class, BitmapFontComponent.class, TransparencyComponent.class, affiliationClass).get(), priority, affiliationClass);
+    public TextureRenderableComponentRemovalSystem(int priority, Class<? extends Component> affiliationClass) {
+        super(Family.all(LifePeriodComponent.class, TransparencyComponent.class, TextureComponent.class, RenderableComponent.class, affiliationClass).get(), priority, affiliationClass);
     }
 
     @Override
@@ -30,16 +31,15 @@ public class FontsDeathSystem extends GeneralIteratingSystem {
 
         float transparency = transparencyMap.get(entity).transparency =
                 1.0f - (float)Math.pow((System.currentTimeMillis() - lifePeriodComponent.createTime)/(double)lifePeriodComponent.duration,2.0d);
-        fontMap.get(entity).bitmapFont.getColor().a = transparency;
-
-        if(velMap.has(entity)) {
-            VelocityComponent velocityComponent = velMap.get(entity);
-            velocityComponent.velocity.y = 50.0f*transparency;
-        }
+        Color color = textureMap.get(entity).sprite.getColor();
+        color.a = transparency;
+        textureMap.get(entity).sprite.setColor(color);
 
         if(lifePeriodComponent.deathTime<=System.currentTimeMillis()) {
-            getEngine().removeEntity(entity);
+            entity.remove(TextureComponent.class);
+            entity.remove(RenderableComponent.class);
+            entity.remove(LifePeriodComponent.class);
+            entity.remove(TransparencyComponent.class);
         }
     }
-
 }

@@ -100,8 +100,9 @@ public class EndNodeInteractionSystem extends GameMapEntitySystem {
             String resourceText = "Picked up " + resourceComponent.amount + " " + resourceComponent.resourceType + " !";
             gameMapData.hud.getTopBar().updateResources();
             targetEntity.remove(ResourceComponent.class);
-            targetEntity.remove(RenderableComponent.class);
-            targetEntity.remove(TextureComponent.class);
+            targetEntity
+                    .add(game.engine.createComponent(LifePeriodComponent.class).init(1000))
+                    .add(game.engine.createComponent(TransparencyComponent.class));
             mapMapper.get(targetEntity).walkable = true;
             PositionComponent resourcePosition = posMap.get(targetEntity);
             gameMapData.map.updateGraphConnectionsToNode(resourcePosition.x, resourcePosition.y, true);
@@ -113,7 +114,7 @@ public class EndNodeInteractionSystem extends GameMapEntitySystem {
                     .add(bitmapFontComponent)
                     .add(game.engine.createComponent(TransparencyComponent.class).init(1))
                     .add(game.engine.createComponent(RenderableComponent.class))
-                    .add(game.engine.createComponent(PositionComponent.class).init(resourcePosition.x, resourcePosition.y))
+                    .add(game.engine.createComponent(PositionComponent.class).init(resourcePosition.x - gameMapData.map.getTileWidth(), resourcePosition.y + gameMapData.map.getTileHeight()))
                     .add(game.engine.createComponent(VelocityComponent.class))
                     .add(game.engine.createComponent(gameMapData.map.getGameMapComponentClazz())));
             getEngine().removeEntity(pathEntity);

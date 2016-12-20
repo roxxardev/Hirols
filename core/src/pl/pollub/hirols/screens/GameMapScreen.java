@@ -1,26 +1,15 @@
 package pl.pollub.hirols.screens;
 
-import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.Family;
-import com.badlogic.ashley.utils.ImmutableArray;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.StringBuilder;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import pl.pollub.hirols.Hirols;
-import pl.pollub.hirols.components.map.MineComponent;
-import pl.pollub.hirols.components.map.MineDataComponent;
-import pl.pollub.hirols.components.map.TownComponent;
-import pl.pollub.hirols.components.map.TownDataComponent;
 import pl.pollub.hirols.components.map.maps.GameMapComponent;
 import pl.pollub.hirols.components.map.GameMapDataComponent;
-import pl.pollub.hirols.components.map.HeroDataComponent;
-import pl.pollub.hirols.console.CommandsContainer;
 import pl.pollub.hirols.console.GraphicalConsole;
 import pl.pollub.hirols.gui.gameMap.GameMapHud;
 import pl.pollub.hirols.managers.SpawnGenerator;
@@ -37,6 +26,8 @@ import pl.pollub.hirols.systems.gameMapSystems.MapInteractionSystem;
 import pl.pollub.hirols.systems.gameMapSystems.PathEntityRemovalSystem;
 import pl.pollub.hirols.systems.generalSystems.FontsDeathSystem;
 import pl.pollub.hirols.systems.generalSystems.InputManagerUpdateSystem;
+import pl.pollub.hirols.systems.generalSystems.TextureRenderableComponentRemovalSystem;
+import pl.pollub.hirols.systems.generalSystems.TextureTransparentDeathSystem;
 import pl.pollub.hirols.systems.generalSystems.graphics.AnimationSystem;
 import pl.pollub.hirols.systems.generalSystems.graphics.BitmapFontRenderSystem;
 import pl.pollub.hirols.systems.generalSystems.graphics.ConsoleRenderSystem;
@@ -77,7 +68,7 @@ public class GameMapScreen extends GameScreen {
         hud = new GameMapHud(game, this);
 
         console = new GraphicalConsole(new pl.pollub.hirols.gameMap.GameMapCommands(game,this),
-                game.assetManager.get("default_skin/uiskin.json", Skin.class),game, new ScreenViewport());
+                game.assetManager.get("ui/default_skin/uiskin.json", Skin.class),game, new ScreenViewport());
 
         createSystems();
 
@@ -100,6 +91,8 @@ public class GameMapScreen extends GameScreen {
         systems.add(new HeroMovementSystem(7,gameMapClass,game));
         systems.add(new MovementSystem(8,gameMapClass));
         systems.add(new FontsDeathSystem(9,gameMapClass));
+        systems.add(new TextureRenderableComponentRemovalSystem(9,gameMapClass));
+        systems.add(new TextureTransparentDeathSystem(9,gameMapClass));
         systems.add(new HeroAnimationChangerSystem(9,gameMapClass,game));
         systems.add(new AnimationSystem(10,gameMapClass));
         systems.add(new MapCamUpdateSystem(13,gameMapClass));

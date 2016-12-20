@@ -1388,6 +1388,7 @@
   </tile>
  </tileset>
  <tileset firstgid="393" name="fog" tilewidth="134" tileheight="134" tilecount="1" columns="1">
+  <tileoffset x="-19" y="19"/>
   <image source="Textures/fog.png" width="134" height="134"/>
  </tileset>
  <layer name="water" width="128" height="128">
@@ -1717,7 +1718,7 @@
   </object>
   <object id="4372" name="gold" type="resourceType" x="1680" y="3072" width="96" height="96"/>
  </objectgroup>
- <layer name="fogofwar" width="128" height="128" offsetx="-19" offsety="19">
+ <layer name="fogofwar" width="128" height="128" visible="0">
   <data encoding="base64" compression="zlib">
    eJzt0jEBACAAwzCQj2tk9Fj6xEDP0XLvclltV//HVm1X/8dWbVf/x1ZtV//HVm1X/8dWbVf/x1ZtV//HVm1X/8dWbVf/x1ZtV//HVm1X/8dWbVf/x1ZtV//HVm1X/8dWbVf/x1ZtV//HVm1X/8dWbVf/x1ZtV//HVm1X/8dWbVf/x1ZtV//HVm1X/8dWbVf/x1ZtV//HVm1X/8dWbVf/x1ZtV//HVm1X/8dWbVf/x1ZtV//HVm1X/8dWbVf/x1ZtV//HVm1X/8dWbVf/x1ZtV//HVm1X/8dWbVf/x1ZtV//HVm1X/8dWbVf/x1ZtV//HVm1X/8dWbVf/x1ZtV//HVm1X/8dWbVf/x1ZtV//HVm1X/8dWbVf/x1ZtV//HVm1X/8dWbVf/x1ZtV//HVm1X/8dWbVf/x1ZtV//HVm1X/8dWbVf/x1ZtV//HVm1X/8dWbVf/x9YPpG2geQ==
   </data>
