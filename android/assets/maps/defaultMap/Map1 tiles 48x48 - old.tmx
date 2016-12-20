@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="128" height="128" tilewidth="48" tileheight="48" nextobjectid="4371">
- <tileset firstgid="1" name="water" tilewidth="48" tileheight="48" tilecount="32" columns="8">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="128" height="128" tilewidth="48" tileheight="48" nextobjectid="4373">
+ <tileset firstgid="1" name="water" tilewidth="48" tileheight="48" tilecount="32">
   <image source="Textures/ani water 0000.bmp" width="384" height="192"/>
   <tile id="0">
    <properties>
-    <property name="tile" type="int" value="1"/>
+    <property name="tile" value="1"/>
    </properties>
    <animation>
     <frame tileid="0" duration="100"/>
@@ -19,7 +19,7 @@
   </tile>
   <tile id="1">
    <properties>
-    <property name="tile" type="int" value="2"/>
+    <property name="tile" value="2"/>
    </properties>
    <animation>
     <frame tileid="1" duration="100"/>
@@ -34,7 +34,7 @@
   </tile>
   <tile id="8">
    <properties>
-    <property name="tile" type="int" value="3"/>
+    <property name="tile" value="3"/>
    </properties>
    <animation>
     <frame tileid="8" duration="100"/>
@@ -49,7 +49,7 @@
   </tile>
   <tile id="9">
    <properties>
-    <property name="tile" type="int" value="4"/>
+    <property name="tile" value="4"/>
    </properties>
    <animation>
     <frame tileid="9" duration="100"/>
@@ -63,7 +63,7 @@
    </animation>
   </tile>
  </tileset>
- <tileset firstgid="33" name="ZestawSnieg" tilewidth="48" tileheight="48" tilecount="144" columns="12">
+ <tileset firstgid="33" name="ZestawSnieg" tilewidth="48" tileheight="48" tilecount="144">
   <image source="Textures/ZestawSnieg.png" width="576" height="576"/>
   <tile id="0">
    <properties>
@@ -786,7 +786,7 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="177" name="SummerTrees2" tilewidth="96" tileheight="96" tilecount="18" columns="6">
+ <tileset firstgid="177" name="SummerTrees" tilewidth="96" tileheight="96" tilecount="18">
   <image source="Textures/SummerTrees.png" width="576" height="288"/>
   <tile id="0">
    <properties>
@@ -849,10 +849,10 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="195" name="SummerTreesShadows" tilewidth="96" tileheight="96" tilecount="18" columns="6">
+ <tileset firstgid="195" name="SummerTreesShadows" tilewidth="96" tileheight="96" tilecount="18">
   <image source="Textures/SummerTreesShadows.png" width="576" height="288"/>
  </tileset>
- <tileset firstgid="213" name="WinterTrees" tilewidth="96" tileheight="96" tilecount="18" columns="6">
+ <tileset firstgid="213" name="WinterTrees" tilewidth="96" tileheight="96" tilecount="18">
   <image source="Textures/WinterTrees.png" width="576" height="288"/>
   <tile id="0">
    <properties>
@@ -915,10 +915,10 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="231" name="WinterTreesShadows" tilewidth="96" tileheight="96" tilecount="18" columns="6">
+ <tileset firstgid="231" name="WinterTreesShadows" tilewidth="96" tileheight="96" tilecount="18">
   <image source="Textures/WinterTreesShadows.png" width="576" height="288"/>
  </tileset>
- <tileset firstgid="249" name="OrcTown" tilewidth="48" tileheight="48" tilecount="36" columns="6">
+ <tileset firstgid="249" name="OrcTown" tilewidth="48" tileheight="48" tilecount="36">
   <image source="Textures/OrcTown.png" width="288" height="288"/>
   <tile id="0">
    <properties>
@@ -1062,12 +1062,12 @@
   </tile>
   <tile id="28">
    <properties>
-    <property name="walkable" value="true"/>
+    <property name="walkable" value="false"/>
    </properties>
   </tile>
   <tile id="29">
    <properties>
-    <property name="walkable" value="true"/>
+    <property name="walkable" value="false"/>
    </properties>
   </tile>
   <tile id="30">
@@ -1092,16 +1092,16 @@
   </tile>
   <tile id="34">
    <properties>
-    <property name="walkable" value="true"/>
+    <property name="walkable" value="false"/>
    </properties>
   </tile>
   <tile id="35">
    <properties>
-    <property name="walkable" value="true"/>
+    <property name="walkable" value="false"/>
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="285" name="Mine" tilewidth="48" tileheight="48" tilecount="8" columns="4">
+ <tileset firstgid="285" name="Mine" tilewidth="48" tileheight="48" tilecount="8">
   <image source="Textures/Mine.png" width="192" height="96"/>
   <tile id="0">
    <properties>
@@ -1115,12 +1115,12 @@
   </tile>
   <tile id="2">
    <properties>
-    <property name="walkable" value="true"/>
+    <property name="walkable" value="false"/>
    </properties>
   </tile>
   <tile id="3">
    <properties>
-    <property name="walkable" value="true"/>
+    <property name="walkable" value="false"/>
    </properties>
   </tile>
   <tile id="4">
@@ -1135,16 +1135,16 @@
   </tile>
   <tile id="6">
    <properties>
-    <property name="walkable" value="true"/>
+    <property name="walkable" value="false"/>
    </properties>
   </tile>
   <tile id="7">
    <properties>
-    <property name="walkable" value="true"/>
+    <property name="walkable" value="false"/>
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="293" name="GroundObstacles" tilewidth="48" tileheight="48" tilecount="100" columns="10">
+ <tileset firstgid="293" name="GroundObstacles" tilewidth="48" tileheight="48" tilecount="100">
   <image source="Textures/GroundObstacles.png" width="512" height="512"/>
   <tile id="0">
    <properties>
@@ -1389,12 +1389,17 @@
  </tileset>
  <layer name="water" width="128" height="128">
   <data encoding="base64" compression="zlib">
-   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
+   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
   </data>
  </layer>
  <layer name="ground" width="128" height="128">
   <data encoding="base64" compression="zlib">
    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
+  </data>
+ </layer>
+ <layer name="groundobstacles" width="128" height="128">
+  <data encoding="base64" compression="zlib">
+   eJzt2rdOBDEQBuC9hyE2xIbQEd6L0BJaQkt4TAZBAdJJ27DewfN90t9cZclne7yeYQAAAAAAAAAAAGhrZTEMq5G1yPpi7tHQ2lbM+XZkJ7Jr/ss5iDk/jBxFjpfM/0b8tul/0a2TmNvTyFnkfMk878Vv++afbxeRy8hV5HrmsdDeTeQ2che5n3ksPctalz9EHiNPkeeZx9KzrHX5S+Q18hZ5n3ksPRury+nbWF0OABn4Tlib74QAbTl3a3PuAvAX1BO1qSf4lLX/gDay9h/Qhv6D2vQfAADk4n5em/t5bdnv5/anaWW/n9ufasu+PzGt7PsTAEB2+vJq05fHf2Tfqs2+BQAAwE/6hWrTL1SbfqHa9Avl4jyuzXnct7H17Tzu29j6dh73zfquzfoGAKBn+pBr04f8m/VQm/VABd4xa/OOmdvUdYh3jtymrkO8cwAAfHEvrs29uDb34trci2lBnVGbOqM2dUZt6gwAAAAAAAAAAAAAAABgbh+VejVv
   </data>
  </layer>
  <layer name="buildings" width="128" height="128">
@@ -1413,73 +1418,73 @@
   </data>
  </layer>
  <objectgroup name="objects">
-  <object id="4313" name="stone" type="resource" x="4032" y="3072" width="96" height="96"/>
-  <object id="4314" name="stone" type="resource" x="3072" y="3936" width="96" height="96"/>
-  <object id="4315" name="stone" type="resource" x="1248" y="3360" width="96" height="96"/>
-  <object id="4316" name="stone" type="resource" x="1536" y="1536" width="96" height="96"/>
-  <object id="4317" name="wood" type="resource" x="3552" y="4128" width="96" height="96"/>
-  <object id="4318" name="wood" type="resource" x="4320" y="3648" width="96" height="96"/>
-  <object id="4319" name="wood" type="resource" x="1920" y="3072" width="96" height="96"/>
-  <object id="4320" name="wood" type="resource" x="2112" y="1536" width="96" height="96"/>
-  <object id="4321" name="wood" type="resource" x="1824" y="1920" width="96" height="96"/>
-  <object id="4322" name="wood" type="resource" x="2208" y="4320" width="96" height="96"/>
-  <object id="4323" name="steel" type="resource" x="1728" y="3648" width="96" height="96"/>
-  <object id="4324" name="steel" type="resource" x="2880" y="2880" width="96" height="96"/>
-  <object id="4325" name="steel" type="resource" x="3744" y="3552" width="96" height="96"/>
-  <object id="4326" name="steel" type="resource" x="1152" y="2112" width="96" height="96"/>
-  <object id="4327" name="steel" type="resource" x="2880" y="1536" width="96" height="96"/>
+  <object id="4313" name="stone" type="resourceType" x="4032" y="3072" width="96" height="96"/>
+  <object id="4314" name="stone" type="resourceType" x="3072" y="3936" width="96" height="96"/>
+  <object id="4315" name="stone" type="resourceType" x="1248" y="3360" width="96" height="96"/>
+  <object id="4316" name="stone" type="resourceType" x="1536" y="1536" width="96" height="96"/>
+  <object id="4317" name="wood" type="resourceType" x="3552" y="4128" width="96" height="96"/>
+  <object id="4318" name="wood" type="resourceType" x="4320" y="3648" width="96" height="96"/>
+  <object id="4319" name="wood" type="resourceType" x="1920" y="3072" width="96" height="96"/>
+  <object id="4320" name="wood" type="resourceType" x="2112" y="1536" width="96" height="96"/>
+  <object id="4321" name="wood" type="resourceType" x="1824" y="1920" width="96" height="96"/>
+  <object id="4322" name="wood" type="resourceType" x="2208" y="4320" width="96" height="96"/>
+  <object id="4323" name="steel" type="resourceType" x="1728" y="3648" width="96" height="96"/>
+  <object id="4324" name="steel" type="resourceType" x="2880" y="2880" width="96" height="96"/>
+  <object id="4325" name="steel" type="resourceType" x="3744" y="3552" width="96" height="96"/>
+  <object id="4326" name="steel" type="resourceType" x="1152" y="2112" width="96" height="96"/>
+  <object id="4327" name="steel" type="resourceType" x="2880" y="1536" width="96" height="96"/>
   <object id="4328" name="OrcCastle1" type="castle" x="1440" y="1248" width="96" height="96">
    <properties>
-    <property name="EnterX" type="float" value="1632"/>
+    <property name="EnterX" value="1632"/>
     <property name="EnterY" value="1248,00"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
   <object id="4329" name="OrcCastle1" type="castle" x="1536" y="1248" width="96" height="96">
    <properties>
-    <property name="EnterX" type="float" value="1632"/>
+    <property name="EnterX" value="1632"/>
     <property name="EnterY" value="1248,00"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
   <object id="4330" name="OrcCastle1" type="castle" x="1440" y="1152" width="96" height="96">
    <properties>
-    <property name="EnterX" type="float" value="1632"/>
+    <property name="EnterX" value="1632"/>
     <property name="EnterY" value="1248,00"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
   <object id="4331" name="OrcCastle1" type="castle" x="1440" y="1056" width="96" height="96">
    <properties>
-    <property name="EnterX" type="float" value="1632"/>
+    <property name="EnterX" value="1632"/>
     <property name="EnterY" value="1248,00"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
   <object id="4332" name="OrcCastle1" type="castle" x="1536" y="1152" width="96" height="96">
    <properties>
-    <property name="EnterX" type="float" value="1632"/>
+    <property name="EnterX" value="1632"/>
     <property name="EnterY" value="1248,00"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
   <object id="4333" name="OrcCastle1" type="castle" x="1536" y="1056" width="96" height="96">
    <properties>
-    <property name="EnterX" type="float" value="1632"/>
+    <property name="EnterX" value="1632"/>
     <property name="EnterY" value="1248,00"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
   <object id="4334" name="OrcCastle1" type="castle" x="1632" y="1056" width="96" height="96">
    <properties>
-    <property name="EnterX" type="float" value="1632"/>
+    <property name="EnterX" value="1632"/>
     <property name="EnterY" value="1248,00"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
   <object id="4335" name="OrcCastle1" type="castle" x="1632" y="1152" width="96" height="96">
    <properties>
-    <property name="EnterX" type="float" value="1632"/>
+    <property name="EnterX" value="1632"/>
     <property name="EnterY" value="1248,00"/>
     <property name="isEnter" value="false"/>
    </properties>
@@ -1492,56 +1497,56 @@
   <object id="4337" name="OrcCastle2" type="castle" x="3936" y="2688" width="96" height="96">
    <properties>
     <property name="EnterX" value="4128,00"/>
-    <property name="EnterY" type="float" value="2688"/>
+    <property name="EnterY" value="2688"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
   <object id="4338" name="OrcCastle2" type="castle" x="4032" y="2688" width="96" height="96">
    <properties>
     <property name="EnterX" value="4128,00"/>
-    <property name="EnterY" type="float" value="2688"/>
+    <property name="EnterY" value="2688"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
   <object id="4339" name="OrcCastle2" type="castle" x="3936" y="2592" width="96" height="96">
    <properties>
     <property name="EnterX" value="4128,00"/>
-    <property name="EnterY" type="float" value="2688"/>
+    <property name="EnterY" value="2688"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
   <object id="4340" name="OrcCastle2" type="castle" x="3936" y="2496" width="96" height="96">
    <properties>
     <property name="EnterX" value="4128,00"/>
-    <property name="EnterY" type="float" value="2688"/>
+    <property name="EnterY" value="2688"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
   <object id="4341" name="OrcCastle2" type="castle" x="4032" y="2592" width="96" height="96">
    <properties>
     <property name="EnterX" value="4128,00"/>
-    <property name="EnterY" type="float" value="2688"/>
+    <property name="EnterY" value="2688"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
   <object id="4342" name="OrcCastle2" type="castle" x="4032" y="2496" width="96" height="96">
    <properties>
     <property name="EnterX" value="4128,00"/>
-    <property name="EnterY" type="float" value="2688"/>
+    <property name="EnterY" value="2688"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
   <object id="4343" name="OrcCastle2" type="castle" x="4128" y="2496" width="96" height="96">
    <properties>
     <property name="EnterX" value="4128,00"/>
-    <property name="EnterY" type="float" value="2688"/>
+    <property name="EnterY" value="2688"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
   <object id="4344" name="OrcCastle2" type="castle" x="4128" y="2592" width="96" height="96">
    <properties>
     <property name="EnterX" value="4128,00"/>
-    <property name="EnterY" type="float" value="2688"/>
+    <property name="EnterY" value="2688"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
@@ -1613,8 +1618,8 @@
   </object>
   <object id="4355" name="Mine1" type="mine" x="2304" y="1152" width="96" height="96">
    <properties>
-    <property name="EnterX" type="float" value="2400"/>
-    <property name="EnterY" type="float" value="1152"/>
+    <property name="EnterX" value="2400"/>
+    <property name="EnterY" value="1152"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
@@ -1625,8 +1630,8 @@
   </object>
   <object id="4357" name="Mine2" type="mine" x="1248" y="1728" width="96" height="96">
    <properties>
-    <property name="EnterX" type="float" value="1344"/>
-    <property name="EnterY" type="float" value="1728"/>
+    <property name="EnterX" value="1344"/>
+    <property name="EnterY" value="1728"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
@@ -1637,8 +1642,8 @@
   </object>
   <object id="4359" name="Mine3" type="mine" x="2592" y="2304" width="96" height="96">
    <properties>
-    <property name="EnterX" type="float" value="2688"/>
-    <property name="EnterY" type="float" value="2304"/>
+    <property name="EnterX" value="2688"/>
+    <property name="EnterY" value="2304"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
@@ -1649,8 +1654,8 @@
   </object>
   <object id="4361" name="Mine8" type="mine" x="1056" y="3072" width="96" height="96">
    <properties>
-    <property name="EnterX" type="float" value="1152"/>
-    <property name="EnterY" type="float" value="3072"/>
+    <property name="EnterX" value="1152"/>
+    <property name="EnterY" value="3072"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
@@ -1661,8 +1666,8 @@
   </object>
   <object id="4363" name="Mine4" type="mine" x="3744" y="3072" width="96" height="96">
    <properties>
-    <property name="EnterX" type="float" value="3840"/>
-    <property name="EnterY" type="float" value="3072"/>
+    <property name="EnterX" value="3840"/>
+    <property name="EnterY" value="3072"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
@@ -1673,8 +1678,8 @@
   </object>
   <object id="4365" name="Mine5" type="mine" x="2880" y="3744" width="96" height="96">
    <properties>
-    <property name="EnterX" type="float" value="2976"/>
-    <property name="EnterY" type="float" value="3744"/>
+    <property name="EnterX" value="2976"/>
+    <property name="EnterY" value="3744"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
@@ -1685,8 +1690,8 @@
   </object>
   <object id="4367" name="Mine6" type="mine" x="4224" y="4032" width="96" height="96">
    <properties>
-    <property name="EnterX" type="float" value="4320"/>
-    <property name="EnterY" type="float" value="4032"/>
+    <property name="EnterX" value="4320"/>
+    <property name="EnterY" value="4032"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
@@ -1697,8 +1702,8 @@
   </object>
   <object id="4369" name="Mine7" type="mine" x="3456" y="4416" width="96" height="96">
    <properties>
-    <property name="EnterX" type="float" value="3552"/>
-    <property name="EnterY" type="float" value="4416"/>
+    <property name="EnterX" value="3552"/>
+    <property name="EnterY" value="4416"/>
     <property name="isEnter" value="false"/>
    </properties>
   </object>
@@ -1707,5 +1712,6 @@
     <property name="isEnter" value="true"/>
    </properties>
   </object>
+  <object id="4372" name="gold" type="resourceType" x="1680" y="3072" width="96" height="96"/>
  </objectgroup>
 </map>
