@@ -44,7 +44,6 @@ import pl.pollub.hirols.systems.generalSystems.physics.MovementSystem;
  */
 public class BattleScreen extends GameScreen {
 
-    private final OrthographicCamera battleCam;
     private final Viewport battleViewport;
 
     private final InputManager inputManager;
@@ -52,9 +51,6 @@ public class BattleScreen extends GameScreen {
     private final MyInputProcessor myInputProcessor;
 
     private final BattleComponent battleComponent;
-    private final Entity battleEntity;
-
-    private final HexagonMapPolygon hexagonMapPolygon;
 
     private GraphicalConsole console;
 
@@ -63,11 +59,10 @@ public class BattleScreen extends GameScreen {
     public BattleScreen(Hirols game) {
         super(game);
 
-        int width = 1280;
-        int height = 720;
+        int width = 1920;
+        int height = 1080;
 
-        battleCam = new OrthographicCamera();
-        battleViewport = new FitViewport(width,height,battleCam);
+        battleViewport = new FitViewport(width,height);
 
         inputManager = new InputManager();
         gestureDetector = new GestureDetector(new MyGestureListener(inputManager));
@@ -76,16 +71,16 @@ public class BattleScreen extends GameScreen {
         battleComponent = new BattleComponent();
 
         int mapWidth = 12, mapHeight = 7;
-        hexagonMapPolygon = new HexagonMapPolygon(game,mapWidth,mapHeight,width/30,new Vector2(200f,100f));
+        HexagonMapPolygon hexagonMapPolygon = new HexagonMapPolygon(game,mapWidth,mapHeight,width/29,new Vector2(300f,160f));
 
         Sprite backgroundSprite = new Sprite(game.assetManager.get("battle/battleBackground.png", Texture.class));
         backgroundSprite.setBounds(0,0 ,width,height);
 
         hexagonMapPolygon.setBackgroundSprite(backgroundSprite);
 
-        battleEntity = game.engine.createEntity()
+        Entity battleEntity = game.engine.createEntity()
                 .add(battleComponent)
-                .add(game.engine.createComponent(BattleDataComponent.class).init(battleCam,inputManager,hexagonMapPolygon,battleViewport));
+                .add(game.engine.createComponent(BattleDataComponent.class).init(inputManager,hexagonMapPolygon,battleViewport));
         game.engine.addEntity(battleEntity);
 
         console = new GraphicalConsole(new BattleCommands(game),

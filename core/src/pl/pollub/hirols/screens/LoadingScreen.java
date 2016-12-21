@@ -79,7 +79,7 @@ public class LoadingScreen implements Screen {
         stage = new Stage(loadPort, game.batch);
 
         bar = new ProgressBar(0, 100, 1, false, skin.get("progress-bar",ProgressBar.ProgressBarStyle.class));
-        bar.setPosition(100, 100);
+        bar.setPosition(100, stage.getHeight()/5);
         bar.setWidth(stage.getWidth() - 200);
         stage.addActor(bar);
 
@@ -154,7 +154,7 @@ public class LoadingScreen implements Screen {
                 game.gameManager.createMap("maps/defaultMap/Map1 tiles 48x48.tmx");
                 game.gameManager.setCurrentMapScreen("maps/defaultMap/Map1 tiles 48x48.tmx");
                 //game.setScreen(new TownScreen(game));
-                game.setScreen(new BattleScreen(game));
+                //game.setScreen(new BattleScreen(game));
             }
         } else {
             Gdx.app.log("Loading progress", String.valueOf(assetManager.getProgress()*100));

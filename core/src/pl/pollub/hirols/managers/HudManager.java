@@ -38,7 +38,7 @@ public class HudManager {
         this.game = game;
         skin = new Skin();
 
-        bitmapFont = game.assetManager.get("testFontSize12.ttf", BitmapFont.class);
+        bitmapFont = game.assetManager.get("testFontSize18.ttf", BitmapFont.class);
 
         int width = 1, height= 1, radius = 10;
         Pixmap pixmapWhite = new Pixmap(width, height, Pixmap.Format.RGBA8888);

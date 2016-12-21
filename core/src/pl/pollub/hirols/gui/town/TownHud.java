@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Scaling;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.kotcrab.vis.ui.widget.VisImageTextButton;
 
@@ -40,7 +41,7 @@ public class TownHud extends Hud {
     Entity inTownHero, gateHero;
 
     public TownHud(Hirols game, TownDataComponent townDataComponent, Entity heroAtGate) {
-        super(game, new ScreenViewport());
+        super(game, new FitViewport(1920,1080));
 
         this.inTownHero = townDataComponent.heroInTown;
         this.gateHero = heroAtGate;
@@ -78,6 +79,17 @@ public class TownHud extends Hud {
         if(gateHero == null) outTown.update(null);
         else outTown.update(heroMap.get(gateHero));
 
+
+        float width = stage.getWidth();
+        float height = stage.getHeight();
+        topBar.resize(width,height);
+        inTown.resize(width,height);
+        outTown.resize(width,height);
+        float buttonSize = width<height ? width/10 : height/10;
+        float imagePadding = buttonSize/10;
+        exitButton.setBounds(buttonSize, height - buttonSize*2, buttonSize, buttonSize);
+        exitButton.pad(imagePadding);
+
         stage.addActor(townBackground);
         stage.addActor(topBar);
         stage.addActor(inTown);
@@ -88,16 +100,6 @@ public class TownHud extends Hud {
     @Override
     public void resize(float width, float height) {
         super.resize(width, height);
-        topBar.resize(width,height);
-
-        inTown.resize(width,height);
-        outTown.resize(width,height);
-
-        float buttonSize = width<height ? width/10 : height/10;
-        float imagePadding = buttonSize/10;
-
-        exitButton.setBounds(buttonSize, height - buttonSize*2, buttonSize, buttonSize);
-        exitButton.pad(imagePadding);
     }
 
     public boolean isExitRequest() {

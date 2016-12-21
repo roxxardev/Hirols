@@ -6,13 +6,13 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Pools;
+
+import java.util.ArrayList;
 
 import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.components.graphics.RenderableComponent;
@@ -32,6 +32,7 @@ import pl.pollub.hirols.components.physics.PositionComponent;
 import pl.pollub.hirols.components.player.PlayerComponent;
 import pl.pollub.hirols.components.player.PlayerDataComponent;
 import pl.pollub.hirols.gameMap.Map;
+import pl.pollub.hirols.managers.RenderPriority;
 import pl.pollub.hirols.managers.enums.Direction;
 import pl.pollub.hirols.managers.input.InputManager;
 import pl.pollub.hirols.pathfinding.Node;
@@ -142,7 +143,7 @@ public class MapInteractionSystem extends GameMapEntitySystem {
             HeroDataComponent unselectedHeroData = heroDataMap.get(unselectedHero);
             if (mapIndexX == (int)Math.floor(unselectedHeroPosition.x / gameMap.getTileWidth()) && mapIndexY == (int)Math.floor(unselectedHeroPosition.y / gameMap.getTileHeight())) {
                 Gdx.app.log("MapInteractionSystem", "Tap on unselected hero id: " + unselectedHeroData.id);
-                changeSelectedHero(unselectedHero);
+                //changeSelectedHero(unselectedHero);
                 return;
             }
         }
@@ -306,7 +307,7 @@ public class MapInteractionSystem extends GameMapEntitySystem {
             HeroDataComponent unselectedHeroData = heroDataMap.get(unselectedHero);
             if (mapIndexX == (int)Math.floor(unselectedHeroPosition.x / gameMap.getTileWidth()) && mapIndexY == (int)Math.floor(unselectedHeroPosition.y / gameMap.getTileHeight())) {
                 Gdx.app.log("MapInteractionSystem", "Tap on unselected hero id: " + unselectedHeroData.id);
-                changeSelectedHero(unselectedHero);
+                //changeSelectedHero(unselectedHero);
                 return;
             }
         }
@@ -318,19 +319,35 @@ public class MapInteractionSystem extends GameMapEntitySystem {
     }
 
     private void handleLongPress(int mapIndexX, int mapIndexY, Vector2 mousePosition) {
+        Gdx.app.log("MapInteractionSystem", "Long press inside map " + mousePosition.toString() + " (" + mapIndexX + "," + mapIndexY + ")");
         GameMapDataComponent gameMapData = gameMapDataMapper.get(gameMapDataArray.first());
         Map gameMap = gameMapData.map;
         Entity mapEntity = gameMap.getEntity(mapIndexX,mapIndexY);
 
-        Gdx.app.log("MapInteractionSystem", "Long press inside map " + mousePosition.toString() + " (" + mapIndexX + "," + mapIndexY + ")");
-        for (Entity hero : heroes) { //TODO action for long press on hero
-            HeroDataComponent heroData = heroDataMap.get(hero);
-            PositionComponent heroPosition = posMap.get(hero);
-            if (mapIndexX == (int)Math.floor(heroPosition.x / gameMap.getTileWidth()) && mapIndexY == (int)Math.floor(heroPosition.y / gameMap.getTileHeight())) {
-                Gdx.app.log("MapInteractionSystem", "Long press on hero id: " + heroData.id);
+        Class<? extends PlayerComponent> currentPlayerClass = game.gameManager.getCurrentPlayerClass();
+        playerUnselectedHeroes = game.engine.getEntitiesFor(Family.all(HeroDataComponent.class, currentPlayerClass, gameMapClass).exclude(SelectedComponent.class).get());
+
+        for (Entity unselectedHero : playerUnselectedHeroes) {
+            PositionComponent unselectedHeroPosition = posMap.get(unselectedHero);
+            HeroDataComponent unselectedHeroData = heroDataMap.get(unselectedHero);
+            if (mapIndexX == (int)Math.floor(unselectedHeroPosition.x / gameMap.getTileWidth()) && mapIndexY == (int)Math.floor(unselectedHeroPosition.y / gameMap.getTileHeight())) {
+                Gdx.app.log("MapInteractionSystem", "Tap on unselected hero id: " + unselectedHeroData.id);
+                changeSelectedHero(unselectedHero);
                 return;
             }
         }
+
+        playerSelectedHeroes = game.engine.getEntitiesFor(Family.all(HeroDataComponent.class, SelectedComponent.class, currentPlayerClass, gameMapClass).get());
+        if(playerSelectedHeroes.size() > 0) {
+            Entity selectedHero = playerSelectedHeroes.first();
+            HeroDataComponent heroData = heroDataMap.get(selectedHero);
+            PositionComponent heroPosition = posMap.get(selectedHero);
+            if (mapIndexX == (int)Math.floor(heroPosition.x / gameMap.getTileWidth()) && mapIndexY == (int)Math.floor(heroPosition.y / gameMap.getTileHeight())) {
+                Gdx.app.log("MapInteractionSystem", "Long press on selected hero id: " + heroData.id);
+                return;
+            }
+        }
+
         //TODO map object action when long press
         if (enemyMap.has(mapEntity)) {
             Gdx.app.log("MapInteractionSystem", "Long Press on enemy");
@@ -348,9 +365,13 @@ public class MapInteractionSystem extends GameMapEntitySystem {
     public boolean deselectHero(Class<? extends PlayerComponent> playerClass) {
         ImmutableArray<Entity> selected = game.engine.getEntitiesFor(Family.all(playerClass, SelectedComponent.class, HeroDataComponent.class, gameMapClass).get());
         if(selected.size() == 0) return true;
-        if(heroDataMap.get(selected.first()).heroPath.hasWalkNodes()) return false;
+        HeroDataComponent selectedHeroData = heroDataMap.get(selected.first());
+        if(selectedHeroData.heroPath.hasWalkNodes()) return false;
 
-        //TODO deselect everything that belongs to selected hero
+        ArrayList<Entity> selectedHeroPathEntities = selectedHeroData.pathEntities;
+        for(Entity pathEntity : selectedHeroPathEntities) {
+            pathEntity.remove(RenderableComponent.class);
+        }
 
         selected.first().remove(SelectedComponent.class);
         return true;
@@ -364,6 +385,11 @@ public class MapInteractionSystem extends GameMapEntitySystem {
         recalculatePathForHero(hero);
         PositionComponent heroPosition = posMap.get(hero);
         gameMapDataMapper.get(gameMapDataArray.first()).gameMapCam.position.set(heroPosition.x,heroPosition.y,0);
+        HeroDataComponent heroData = heroDataMap.get(hero);
+        ArrayList<Entity> heroPathEntities = heroData.pathEntities;
+        for(Entity pathEntity : heroPathEntities) {
+            pathEntity.add(game.engine.createComponent(RenderableComponent.class));
+        }
         return true;
     }
 
@@ -474,19 +500,21 @@ public class MapInteractionSystem extends GameMapEntitySystem {
             heroData.heroPath.getStand().addElement(position.x,position.y, movementCost);
             Entity pathEntity = game.engine.createEntity();
 
-
+            RenderPriority renderPriority = RenderPriority.LOW;
             if (i == (heroData.heroPath.getPathSize() - 1)) {
                 tempSprite.set(pathTexture == LastPathTexture.CROSS ? arrowSprites.cross : arrowSprites.sword);
+                renderPriority = RenderPriority.HIGH;
             }
 
             tempSprite.setSize(gameMap.getTileWidth(), gameMap.getTileHeight());
 
             pathEntity
                     .add(game.engine.createComponent(PositionComponent.class).init(position))
-                    .add(game.engine.createComponent(RenderableComponent.class))
+                    .add(game.engine.createComponent(RenderableComponent.class).init(renderPriority))
                     .add(game.engine.createComponent(TextureComponent.class).setSprite(tempSprite))
                     .add(game.engine.createComponent(gameMap.getGameMapComponentClazz()))
-                    .add(game.engine.createComponent(PathComponent.class).init(heroData.id,direction));
+                    .add(game.engine.createComponent(PathComponent.class).init(heroData.id,direction))
+                    .add(game.engine.createComponent(game.gameManager.getCurrentPlayerClass()));
 
             Pools.free(position);
             getEngine().addEntity(pathEntity);

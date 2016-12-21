@@ -16,6 +16,6 @@ public class BattleCamUpdateSystem extends BattleEntitySystem {
     public void update(float deltaTime) {
         if(battleData.size() < 1) return;
         BattleDataComponent battleDataComponent  = battleDataMapper.get(battleData.first());
-        battleDataComponent.battleCam.update();
+        battleDataComponent.battleViewport.getCamera().update();
     }
 }

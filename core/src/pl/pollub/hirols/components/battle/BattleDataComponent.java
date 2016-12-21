@@ -15,13 +15,11 @@ import pl.pollub.hirols.managers.input.InputManager;
  */
 public class BattleDataComponent implements Component, Pool.Poolable{
 
-    public OrthographicCamera battleCam;
     public Viewport battleViewport;
     public InputManager inputManager;
     public HexagonMapPolygon hexagonMapPolygon;
 
-    public BattleDataComponent init(OrthographicCamera battleCam, InputManager inputManager, HexagonMapPolygon hexagonMapPolygon, Viewport battleViewport) {
-        this.battleCam = battleCam;
+    public BattleDataComponent init(InputManager inputManager, HexagonMapPolygon hexagonMapPolygon, Viewport battleViewport) {
         this.inputManager = inputManager;
         this.hexagonMapPolygon = hexagonMapPolygon;
         this.battleViewport = battleViewport;
@@ -30,7 +28,6 @@ public class BattleDataComponent implements Component, Pool.Poolable{
 
     @Override
     public void reset() {
-        battleCam = null;
         inputManager = null;
         hexagonMapPolygon = null;
         battleViewport = null;

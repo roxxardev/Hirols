@@ -99,8 +99,8 @@ public class GameMapScreen extends GameScreen {
 
         systems.add(new TiledMapRenderSystem(14, gameMapClass));
 
-        systems.add(new RenderSystem(16, game.batch, gameMapClass));
-        systems.add(new BitmapFontRenderSystem(17,game.batch,gameMapClass));
+        systems.add(new RenderSystem(17, game.batch, gameMapClass));
+        systems.add(new BitmapFontRenderSystem(18,game.batch,gameMapClass));
 
         systems.add(new HudRenderSystem(21,gameMapClass,hud));
         systems.add(new ConsoleRenderSystem(22,gameMapClass,console));

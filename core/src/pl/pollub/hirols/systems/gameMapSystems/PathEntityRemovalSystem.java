@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector3;
 
 import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.components.LifePeriodComponent;
+import pl.pollub.hirols.components.graphics.RenderableComponent;
 import pl.pollub.hirols.components.graphics.TransparencyComponent;
 import pl.pollub.hirols.components.map.maps.GameMapComponent;
 import pl.pollub.hirols.components.map.HeroDataComponent;
@@ -48,7 +49,7 @@ public class PathEntityRemovalSystem extends GameMapEntitySystem {
             if (heroPosition.x == node.x && heroPosition.y == node.y) {
                 Entity removedEntity = heroData.pathEntities.remove(0);
                 removedEntity
-                        .add(game.engine.createComponent(LifePeriodComponent.class).init(200))
+                        .add(game.engine.createComponent(LifePeriodComponent.class).init(150))
                         .add(game.engine.createComponent(TransparencyComponent.class));
                 heroData.movementPoints -= node.z;
                 heroData.heroPath.getWalk().removeFirstElement();

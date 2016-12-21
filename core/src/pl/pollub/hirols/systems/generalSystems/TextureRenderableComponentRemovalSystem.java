@@ -4,9 +4,11 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 
 import pl.pollub.hirols.components.LifePeriodComponent;
+import pl.pollub.hirols.components.TextureRenderableRemovalComponent;
 import pl.pollub.hirols.components.graphics.RenderableComponent;
 import pl.pollub.hirols.components.graphics.TextureComponent;
 import pl.pollub.hirols.components.graphics.TransparencyComponent;
@@ -22,7 +24,7 @@ public class TextureRenderableComponentRemovalSystem extends GeneralIteratingSys
     private ComponentMapper<TextureComponent> textureMap = ComponentMapper.getFor(TextureComponent.class);
 
     public TextureRenderableComponentRemovalSystem(int priority, Class<? extends Component> affiliationClass) {
-        super(Family.all(LifePeriodComponent.class, TransparencyComponent.class, TextureComponent.class, RenderableComponent.class, affiliationClass).get(), priority, affiliationClass);
+        super(Family.all(LifePeriodComponent.class, TransparencyComponent.class, TextureComponent.class, RenderableComponent.class, TextureRenderableRemovalComponent.class, affiliationClass).get(), priority, affiliationClass);
     }
 
     @Override

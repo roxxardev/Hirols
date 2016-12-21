@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.components.LifePeriodComponent;
+import pl.pollub.hirols.components.TextureRenderableRemovalComponent;
 import pl.pollub.hirols.components.map.TownDataComponent;
 import pl.pollub.hirols.components.player.PlayerComponent;
 import pl.pollub.hirols.components.player.PlayerDataComponent;
@@ -97,12 +98,13 @@ public class EndNodeInteractionSystem extends GameMapEntitySystem {
             ResourceComponent resourceComponent = resourceMap.get(targetEntity);
 
             playerData.resources.put(resourceComponent.resourceType, playerData.resources.get(resourceComponent.resourceType) + resourceComponent.amount);
-            String resourceText = "Picked up " + resourceComponent.amount + " " + resourceComponent.resourceType + " !";
+            String resourceText = "Picked up " + resourceComponent.amount + " " + resourceComponent.resourceType.toString().toLowerCase() + " !";
             gameMapData.hud.getTopBar().updateResources();
             targetEntity.remove(ResourceComponent.class);
             targetEntity
                     .add(game.engine.createComponent(LifePeriodComponent.class).init(1000))
-                    .add(game.engine.createComponent(TransparencyComponent.class));
+                    .add(game.engine.createComponent(TransparencyComponent.class))
+                    .add(game.engine.createComponent(TextureRenderableRemovalComponent.class));
             mapMapper.get(targetEntity).walkable = true;
             PositionComponent resourcePosition = posMap.get(targetEntity);
             gameMapData.map.updateGraphConnectionsToNode(resourcePosition.x, resourcePosition.y, true);

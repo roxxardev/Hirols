@@ -1,7 +1,7 @@
 package pl.pollub.hirols.systems.battleSystems;
 
 import com.badlogic.ashley.core.Engine;
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -36,7 +36,7 @@ public class HexMapRenderSystem extends BattleEntitySystem {
         if(battleData.size() < 1) return;
         BattleDataComponent battleDataComponent = battleDataMapper.get(battleData.first());
         HexagonMapPolygon hexagonMapPolygon = battleDataComponent.hexagonMapPolygon;
-        OrthographicCamera battleCam = battleDataComponent.battleCam;
+        Camera battleCam = battleDataComponent.battleViewport.getCamera();
 
         spriteBatch.setProjectionMatrix(battleCam.combined);
         spriteBatch.begin();
