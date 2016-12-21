@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pools;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -94,7 +95,7 @@ public class SpawnGenerator {
         Map<AnimationType, Map<Direction, Animation>> orcHeroAnimationMap = AnimationManager.createHeroAnimationMap(game,game.unitsManager.heroOrcWarrior);
         Map<AnimationType, Map<Direction, Animation>> orcMageHeroAnimationMap = AnimationManager.createHeroAnimationMap(game, game.unitsManager.heroOrcMage);
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 2; i++) {
             Map<AnimationType, Map<Direction, Animation>> animationMap = orcHeroAnimationMap;
             UnitsManager.Hero hero = game.unitsManager.heroOrcWarrior;
 
@@ -119,21 +120,33 @@ public class SpawnGenerator {
             Pools.free(heroPosition);
         }
 
-        Map<AnimationType, Map<Direction, Animation>> wywernMap = AnimationManager.createUnitAnimationMaps(game.unitsManager.wyvern, game);
-        for (int i = 0; i < 5; i++) {
-            Vector2 heroPosition = Pools.obtain(Vector2.class);
-            Entity hero = engine.createEntity();
-            hero
-                    .add(engine.createComponent(map.getGameMapComponentClazz()))
-                    .add(engine.createComponent(AnimationComponent.class).init(new AnimationSet(AnimationType.STAND, Direction.getRandomDirection(), wywernMap), true, 0f))
-                    .add(engine.createComponent(PositionComponent.class).init(generateRandomPositionOnMap(heroPosition,map)))
-                    .add(engine.createComponent(RenderableComponent.class))
-                    .add(engine.createComponent(TextureComponent.class).setSize(256, 256).setAdditionalOffset(-80, -70))
-                    .add(engine.createComponent(HeroDataComponent.class).init(++playerId,"nołnejm", 100000f, game.unitsManager.heroOrcMage))
-                    .add(engine.createComponent(VelocityComponent.class))
-                    .add(engine.createComponent(playerClass));
-            engine.addEntity(hero);
-            Pools.free(heroPosition);
+        ArrayList<UnitsManager.Unit> units = new ArrayList<UnitsManager.Unit>();
+        units.add(game.unitsManager.oldShaman);
+        units.add(game.unitsManager.orc);
+        units.add(game.unitsManager.orcWarior);
+        units.add(game.unitsManager.shaman);
+        units.add(game.unitsManager.smallWyvern);
+        units.add(game.unitsManager.wyvern);
+
+        for(UnitsManager.Unit unit : units){
+            AnimationManager.AnimationInformation animationInformation = unit.animationInformation;
+            Map<AnimationType, Map<Direction, Animation>> animationMap = AnimationManager.createUnitAnimationMaps(unit, game);
+
+            for (int i = 0; i < 1; i++) {
+                Vector2 heroPosition = Pools.obtain(Vector2.class);
+                Entity hero = engine.createEntity();
+                hero
+                        .add(engine.createComponent(map.getGameMapComponentClazz()))
+                        .add(engine.createComponent(AnimationComponent.class).init(new AnimationSet(AnimationType.STAND, Direction.getRandomDirection(), animationMap), true, 0f))
+                        .add(engine.createComponent(PositionComponent.class).init(generateRandomPositionOnMap(heroPosition,map)))
+                        .add(engine.createComponent(RenderableComponent.class).init(RenderPriority.LAST))
+                        .add(engine.createComponent(TextureComponent.class).setSize(animationInformation.size.x, animationInformation.size.y).setAdditionalOffset(animationInformation.offset.x, animationInformation.offset.y))
+                        .add(engine.createComponent(HeroDataComponent.class).init(++playerId,"nołnejm", 100000f, game.unitsManager.heroOrcMage))
+                        .add(engine.createComponent(VelocityComponent.class))
+                        .add(engine.createComponent(playerClass));
+                engine.addEntity(hero);
+                Pools.free(heroPosition);
+            }
         }
     }
 

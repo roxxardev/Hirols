@@ -10,5 +10,5 @@ public enum AnimationType {
     RUN,
     SPECIAL,
     ATTACK,
-    BLOCK
+    TAKING_DAMAGE
 }

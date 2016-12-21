@@ -58,6 +58,7 @@ public class MapInteractionSystem extends GameMapEntitySystem {
     private ComponentMapper<ChestComponent> chestMap = ComponentMapper.getFor(ChestComponent.class);
     private ComponentMapper<EnemyComponent> enemyMap = ComponentMapper.getFor(EnemyComponent.class);
     private ComponentMapper<PlayerDataComponent> playerDataMap = ComponentMapper.getFor(PlayerDataComponent.class);
+    private ComponentMapper<SelectedComponent> selectedMap = ComponentMapper.getFor(SelectedComponent.class);
 
     private final Hirols game;
 
@@ -379,6 +380,7 @@ public class MapInteractionSystem extends GameMapEntitySystem {
 
     public boolean changeSelectedHero(Entity hero) {
         //TODO player hero
+        if(selectedMap.has(hero)) return false;
         if(!deselectHero(game.gameManager.getCurrentPlayerClass())) return false;
 
         hero.add(game.engine.createComponent(SelectedComponent.class));
