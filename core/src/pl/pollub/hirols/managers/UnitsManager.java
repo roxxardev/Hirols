@@ -34,7 +34,7 @@ public class UnitsManager {
         swordBearer = new Unit(animationInformation,Race.HUMAN, UnitType.WALK, "Miecznik", new UnitCost().addCost(ResourceType.GOLD, 150), 4, 5, 13, new Vector2(2,4), 6, 15);
         knight = new Unit(animationInformation,Race.HUMAN, UnitType.WALK, "Rycerz", new UnitCost().addCost(ResourceType.GOLD, 150).addCost(ResourceType.METAL, 1), 4, 7, 15, new Vector2(5,7), 4, 12);
 
-        animationInformation = new AnimationManager.AnimationInformation(180, 180, -42, -42);
+        animationInformation = new AnimationManager.AnimationInformation(180, 180, -42, -32);
         animationInformation.animationPropertiesMap.put(AnimationType.STAND, new AnimationManager.AnimationProperties(directions, "animations/Orc_Staying.png", 16, 8, 0.06f));
         animationInformation.animationPropertiesMap.put(AnimationType.RUN, new AnimationManager.AnimationProperties(directions, "animations/Orc_Walking.png", 16, 8, 0.06f));
         animationInformation.animationPropertiesMap.put(AnimationType.ATTACK, new AnimationManager.AnimationProperties(directions, "animations/Orc_Attacking.png", 16, 8, 0.06f));
@@ -42,7 +42,7 @@ public class UnitsManager {
         animationInformation.animationPropertiesMap.put(AnimationType.TAKING_DAMAGE, new AnimationManager.AnimationProperties(directions, "animations/Orc_TakingDamage.png", 11, 8, 0.06f));
         orc = new Unit(animationInformation, Race.ORC, UnitType.WALK, "Ork", new UnitCost().addCost(ResourceType.GOLD, 250), 6, 6, 17, new Vector2(5,7), 5, 7);
 
-        animationInformation = new AnimationManager.AnimationInformation(180, 180, -42, -42);
+        animationInformation = new AnimationManager.AnimationInformation(180, 180, -42, -32);
         animationInformation.animationPropertiesMap.put(AnimationType.STAND, new AnimationManager.AnimationProperties(directions, "animations/OrcWarrior_Standing.png", 16, 8, 0.06f));
         animationInformation.animationPropertiesMap.put(AnimationType.RUN, new AnimationManager.AnimationProperties(directions, "animations/OrcWarrior_Walking.png", 16, 8, 0.06f));
         animationInformation.animationPropertiesMap.put(AnimationType.ATTACK, new AnimationManager.AnimationProperties(directions, "animations/OrcWarrior_Attacking.png", 16, 8, 0.06f));
@@ -72,7 +72,7 @@ public class UnitsManager {
         archer = new Unit(animationInformation, Race.HUMAN, UnitType.RANGE, "Lucznik", new UnitCost().addCost(ResourceType.GOLD, 300).addCost(ResourceType.WOOD, 1), 10, 3, 10, new Vector2(6,9), 5, 7);
         shooter = new Unit(animationInformation, Race.HUMAN, UnitType.RANGE, "Strzelec", new UnitCost().addCost(ResourceType.GOLD, 500).addCost(ResourceType.WOOD, 1).addCost(ResourceType.METAL, 1), 13, 5, 15, new Vector2(11,13), 6, 8);
 
-        animationInformation = new AnimationManager.AnimationInformation(180, 180, -42, -42);
+        animationInformation = new AnimationManager.AnimationInformation(180, 180, -42, -32);
         animationInformation.animationPropertiesMap.put(AnimationType.STAND, new AnimationManager.AnimationProperties(directions, "animations/OrcSlinger_Standing.png", 16, 8, 0.06f));
         animationInformation.animationPropertiesMap.put(AnimationType.RUN, new AnimationManager.AnimationProperties(directions, "animations/OrcSlinger_Walking.png", 16, 8, 0.06f));
         animationInformation.animationPropertiesMap.put(AnimationType.ATTACK, new AnimationManager.AnimationProperties(directions, "animations/OrcSlinger_Attacking.png", 16, 8, 0.06f));
