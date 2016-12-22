@@ -85,14 +85,14 @@ public class LoadingScreen implements Screen {
 
         loadAssets();
 
-        Texture.setAssetManager(assetManager);
+        //Texture.setAssetManager(assetManager);
     }
 
     private void loadAssets() {
         TextureLoader.TextureParameter textureParameter = new TextureLoader.TextureParameter();
-        textureParameter.genMipMaps = true;
+        textureParameter.genMipMaps = false;
         textureParameter.magFilter = Texture.TextureFilter.Linear;
-        textureParameter.minFilter = Texture.TextureFilter.MipMap;
+        textureParameter.minFilter = Texture.TextureFilter.Linear;
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter fontLoaderParameter = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         fontLoaderParameter.fontFileName = "ui/fonts/VIDEOPHREAK.ttf";

@@ -66,7 +66,7 @@ public abstract class GameScreen implements Screen, Disposable {
 
     @Override
     public void resume() {
-
+        game.setScreen(new LoadingScreen(game));
     }
 
     @Override

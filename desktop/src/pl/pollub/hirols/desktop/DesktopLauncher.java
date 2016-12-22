@@ -20,9 +20,9 @@ public class DesktopLauncher {
 		config.samples = 4;
 
 //        TexturePacker.Settings settings = new TexturePacker.Settings();
-//        settings.maxWidth = 4096;
-//        settings.maxHeight = 4096;
-//		settings.filterMin = Texture.TextureFilter.MipMap;
+//        settings.maxWidth = 512;
+//        settings.maxHeight = 512;
+//		settings.filterMin = Texture.TextureFilter.Linear;
 //		settings.filterMag = Texture.TextureFilter.Linear;
 //        TexturePacker.process(settings, "./arrows", "./arrows", "arrows");
 

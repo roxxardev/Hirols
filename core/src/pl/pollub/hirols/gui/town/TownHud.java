@@ -57,7 +57,7 @@ public class TownHud extends Hud {
         buttonGroup.setMinCheckCount(0);
         buttonGroup.setUncheckLast(false);
 
-        Image townBackground = new Image(game.assetManager.get("towns/townBackground.PNG", Texture.class));
+        Image townBackground = new Image(game.assetManager.get("towns/townBackground.png", Texture.class));
         townBackground.setFillParent(true);
 
         inTown = new Garrison(buttonGroup,false);
