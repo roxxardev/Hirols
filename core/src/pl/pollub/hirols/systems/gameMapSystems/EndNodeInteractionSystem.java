@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.components.LifePeriodComponent;
 import pl.pollub.hirols.components.TextureRenderableRemovalComponent;
+import pl.pollub.hirols.components.map.EnemyDataComponent;
 import pl.pollub.hirols.components.map.TownDataComponent;
 import pl.pollub.hirols.components.player.PlayerComponent;
 import pl.pollub.hirols.components.player.PlayerDataComponent;
@@ -48,6 +49,7 @@ public class EndNodeInteractionSystem extends GameMapEntitySystem {
     private ComponentMapper<MineComponent> mineMap = ComponentMapper.getFor(MineComponent.class);
     private ComponentMapper<ChestComponent> chestMap = ComponentMapper.getFor(ChestComponent.class);
     private ComponentMapper<EnemyComponent> enemyMap = ComponentMapper.getFor(EnemyComponent.class);
+    private ComponentMapper<EnemyDataComponent> enemyDataMap = ComponentMapper.getFor(EnemyDataComponent.class);
 
     private final Hirols game;
 
@@ -128,7 +130,8 @@ public class EndNodeInteractionSystem extends GameMapEntitySystem {
         } else if (enemyMap.has(targetEntity)) {
             Gdx.app.log("EndNodeInteractionSystem", "Interaction with enemy: ");
             getEngine().removeEntity(pathEntity);
-            game.setScreen(new BattleScreen(game));
+            Entity enemyEntity = enemyMap.get(targetEntity).enemyEntity;
+            game.setScreen(new BattleScreen(game,selectedHeroData, enemyDataMap.get(enemyEntity)));
         }
 
         selectedHeroData.heroPath.setTargetEntity(null);

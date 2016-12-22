@@ -26,7 +26,7 @@ public class HeroDataComponent implements Component, Pool.Poolable{
     public int attack;
     public int defense;
 
-    public HeroDataComponent init(int id, String name, float movementPoints, UnitsManager.Hero hero) {
+    public HeroDataComponent init(int id, String name, float movementPoints, UnitsManager.Hero hero, UnitsManager.Unit startUnit) {
         this.id = id;
         this.movementPoints = movementPoints;
         this.name = name;
@@ -34,6 +34,7 @@ public class HeroDataComponent implements Component, Pool.Poolable{
         magicPoints = hero.magicPoints;
         attack = hero.attack;
         defense = hero.defense;
+        army.addUnit(startUnit, 1);
         return this;
     }
 

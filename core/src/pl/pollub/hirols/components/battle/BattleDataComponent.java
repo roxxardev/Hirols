@@ -8,6 +8,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import pl.pollub.hirols.battle.HexagonMapPolygon;
+import pl.pollub.hirols.components.map.EnemyDataComponent;
+import pl.pollub.hirols.components.map.HeroDataComponent;
 import pl.pollub.hirols.managers.input.InputManager;
 
 /**
@@ -18,11 +20,15 @@ public class BattleDataComponent implements Component, Pool.Poolable{
     public Viewport battleViewport;
     public InputManager inputManager;
     public HexagonMapPolygon hexagonMapPolygon;
+    public HeroDataComponent heroData;
+    public EnemyDataComponent enemyData;
 
-    public BattleDataComponent init(InputManager inputManager, HexagonMapPolygon hexagonMapPolygon, Viewport battleViewport) {
+    public BattleDataComponent init(InputManager inputManager, HexagonMapPolygon hexagonMapPolygon, Viewport battleViewport, HeroDataComponent heroData, EnemyDataComponent enemyData) {
         this.inputManager = inputManager;
         this.hexagonMapPolygon = hexagonMapPolygon;
         this.battleViewport = battleViewport;
+        this.heroData = heroData;
+        this.enemyData = enemyData;
         return this;
     }
 
@@ -31,5 +37,7 @@ public class BattleDataComponent implements Component, Pool.Poolable{
         inputManager = null;
         hexagonMapPolygon = null;
         battleViewport = null;
+        heroData = null;
+        enemyData = null;
     }
 }

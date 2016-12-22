@@ -43,6 +43,11 @@ public class GameMapCommands extends CommandsContainer {
     }
 
     @Override
+    public void help() {
+        showCommands();
+    }
+
+    @Override
     public void clear() {
         console.clear();
     }

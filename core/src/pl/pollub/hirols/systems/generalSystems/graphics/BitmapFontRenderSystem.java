@@ -32,6 +32,6 @@ public class BitmapFontRenderSystem extends GeneralIteratingSystem {
         BitmapFontComponent bitmapFontData = bitmapMap.get(entity);
         PositionComponent position = posMap.get(entity);
         bitmapFontData.bitmapFont.getData().setScale(bitmapFontData.scale);
-        bitmapFontData.bitmapFont.draw(batch, bitmapFontData.sequence, position.x, position.y);
+        bitmapFontData.bitmapFont.draw(batch, bitmapFontData.sequence, position.x + bitmapFontData.offset.x, position.y + bitmapFontData.offset.y);
     }
 }

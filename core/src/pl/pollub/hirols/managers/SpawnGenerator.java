@@ -40,7 +40,7 @@ public class SpawnGenerator {
 
     public static void loadEntities(Hirols game, pl.pollub.hirols.gameMap.Map map) {
 
-        spawnEnemyRandomPlaces(game,map,game.unitsManager.smallWyvern,6);
+        spawnEnemyRandomPlaces(game,map,game.unitsManager.smallWyvern,20);
 
         spawnPlayerAndHeroes(game, map, game.gameManager.getCurrentPlayerClass());
     }
@@ -66,8 +66,8 @@ public class SpawnGenerator {
                     .add(game.engine.createComponent(map.getGameMapComponentClazz()))
                     .add(game.engine.createComponent(TextureComponent.class).setSize(enemyAnimationInformation.size).setAdditionalOffset(enemyAnimationInformation.offset))
                     .add(game.engine.createComponent(RenderableComponent.class))
-                    .add(game.engine.createComponent(EnemyDataComponent.class).init(unit, rand.nextInt(50) + 1))
-                    .add(game.engine.createComponent(EnemyComponent.class).init(position,true));
+                    .add(game.engine.createComponent(EnemyDataComponent.class).init(unit, rand.nextInt(40) + 1))
+                    .add(game.engine.createComponent(EnemyComponent.class).init(position,mapEntity,true));
             game.engine.addEntity(mapEntity);
 
             mapMapper.get(mapEntity).walkable = false;
@@ -77,7 +77,7 @@ public class SpawnGenerator {
 
             for(Entity entity : map.getAdjacentEntities(position.x,position.y)) {
                 if(mapMapper.get(entity).walkable) {
-                    entity.add(game.engine.createComponent(EnemyComponent.class).init(position,false));
+                    entity.add(game.engine.createComponent(EnemyComponent.class).init(position, mapEntity,false));
                     mapMapper.get(entity).walkable = false;
                     map.updateGraphConnectionsToNode(posMap.get(entity).x,posMap.get(entity).y,false);
                 }
@@ -113,7 +113,7 @@ public class SpawnGenerator {
                     .add(engine.createComponent(RenderableComponent.class))
                     .add(engine.createComponent(TextureComponent.class).setSize(128, 128).setAdditionalOffset(-16, -14))
                     .add(engine.createComponent(HeroDataComponent.class)
-                            .init(++playerId,"nołnejm", 10f, hero))
+                            .init(++playerId,"nołnejm", 10f, hero, game.unitsManager.orc))
                     .add(engine.createComponent(VelocityComponent.class))
                     .add(engine.createComponent(playerClass));
             engine.addEntity(heroEntity);
@@ -140,8 +140,8 @@ public class SpawnGenerator {
                         .add(engine.createComponent(AnimationComponent.class).init(new AnimationSet(AnimationType.STAND, Direction.getRandomDirection(), animationMap), true, 0f))
                         .add(engine.createComponent(PositionComponent.class).init(generateRandomPositionOnMap(heroPosition,map)))
                         .add(engine.createComponent(RenderableComponent.class).init(RenderPriority.LAST))
-                        .add(engine.createComponent(TextureComponent.class).setSize(animationInformation.size.x, animationInformation.size.y).setAdditionalOffset(animationInformation.offset.x, animationInformation.offset.y))
-                        .add(engine.createComponent(HeroDataComponent.class).init(++playerId,"nołnejm", 100000f, game.unitsManager.heroOrcMage))
+                        .add(engine.createComponent(TextureComponent.class).setSize(animationInformation.size).setAdditionalOffset(animationInformation.offset))
+                        .add(engine.createComponent(HeroDataComponent.class).init(++playerId,"nołnejm", 100000f, game.unitsManager.heroOrcMage, unit))
                         .add(engine.createComponent(VelocityComponent.class))
                         .add(engine.createComponent(playerClass));
                 engine.addEntity(hero);

@@ -10,6 +10,8 @@ public abstract class CommandsContainer {
 
     public abstract void showCommands();
 
+    public abstract void help();
+
     public abstract void clear();
 
     public void setConsole(Console console) { this.console = console; }

@@ -1,6 +1,7 @@
 package pl.pollub.hirols.components.map;
 
 import com.badlogic.ashley.core.Component;
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pool;
 
@@ -10,10 +11,12 @@ import com.badlogic.gdx.utils.Pool;
 public class EnemyComponent implements Component, Pool.Poolable {
 
     public final Vector2 enemyPosition = new Vector2();
+    public Entity enemyEntity;
     public boolean trueEntity;
 
-    public EnemyComponent init(Vector2 enemyTargetPosition, boolean trueEntity) {
+    public EnemyComponent init(Vector2 enemyTargetPosition, Entity enemyEntity, boolean trueEntity) {
         this.enemyPosition.set(enemyTargetPosition);
+        this.enemyEntity = enemyEntity;
         this.trueEntity = trueEntity;
         return this;
     }
@@ -22,5 +25,6 @@ public class EnemyComponent implements Component, Pool.Poolable {
     public void reset() {
         enemyPosition.set(0,0);
         trueEntity = false;
+        enemyEntity = null;
     }
 }

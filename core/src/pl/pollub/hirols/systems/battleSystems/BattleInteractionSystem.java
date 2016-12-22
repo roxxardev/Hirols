@@ -32,6 +32,9 @@ public class BattleInteractionSystem extends BattleEntitySystem{
             Pools.free(mouseTemp);
 
 
+
+
+
             HexagonMapPolygon hexagonMap = battleData.hexagonMapPolygon;
             HexagonTilePolygon tile = hexagonMap.getHexagonTileFromPoint(mouseWorldPosition);
             if(tile != null) {

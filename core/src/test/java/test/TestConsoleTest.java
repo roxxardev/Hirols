@@ -31,6 +31,11 @@ public class TestConsoleTest {
             }
 
             @Override
+            public void help() {
+
+            }
+
+            @Override
             public void clear() {
 
             }

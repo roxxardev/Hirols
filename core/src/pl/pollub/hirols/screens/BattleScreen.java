@@ -5,8 +5,10 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
@@ -17,13 +19,25 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import java.util.ArrayList;
 
 import pl.pollub.hirols.Hirols;
+import pl.pollub.hirols.animation.AnimationSet;
 import pl.pollub.hirols.battle.BattleCommands;
 import pl.pollub.hirols.battle.HexagonMapPolygon;
 import pl.pollub.hirols.components.battle.BattleComponent;
 import pl.pollub.hirols.components.battle.BattleDataComponent;
+import pl.pollub.hirols.components.battle.UnitComponent;
+import pl.pollub.hirols.components.graphics.AnimationComponent;
+import pl.pollub.hirols.components.graphics.BitmapFontComponent;
+import pl.pollub.hirols.components.graphics.RenderableComponent;
+import pl.pollub.hirols.components.graphics.TextureComponent;
+import pl.pollub.hirols.components.map.EnemyDataComponent;
+import pl.pollub.hirols.components.map.HeroDataComponent;
 import pl.pollub.hirols.console.GraphicalConsole;
 import pl.pollub.hirols.gui.battle.BattleHud;
+import pl.pollub.hirols.managers.AnimationManager;
 import pl.pollub.hirols.managers.EngineTools;
+import pl.pollub.hirols.managers.UnitsManager;
+import pl.pollub.hirols.managers.enums.AnimationType;
+import pl.pollub.hirols.managers.enums.Direction;
 import pl.pollub.hirols.managers.input.InputManager;
 import pl.pollub.hirols.managers.input.MyGestureListener;
 import pl.pollub.hirols.managers.input.MyInputProcessor;
@@ -51,16 +65,16 @@ public class BattleScreen extends GameScreen {
     private final MyInputProcessor myInputProcessor;
 
     private final BattleComponent battleComponent;
-
+    private final HexagonMapPolygon hexagonMapPolygon;
     private GraphicalConsole console;
 
     private BattleHud hud;
 
-    public BattleScreen(Hirols game) {
+    public BattleScreen(Hirols game, HeroDataComponent heroData, EnemyDataComponent enemyData) {
         super(game);
 
-        int width = 1920;
-        int height = 1080;
+        int width = 1280;
+        int height = 720;
 
         battleViewport = new FitViewport(width,height);
 
@@ -71,7 +85,7 @@ public class BattleScreen extends GameScreen {
         battleComponent = new BattleComponent();
 
         int mapWidth = 12, mapHeight = 7;
-        HexagonMapPolygon hexagonMapPolygon = new HexagonMapPolygon(game,mapWidth,mapHeight,width/29,new Vector2(300f,160f));
+        hexagonMapPolygon = new HexagonMapPolygon(game,mapWidth,mapHeight,width/29,new Vector2(210f,115f));
 
         Sprite backgroundSprite = new Sprite(game.assetManager.get("battle/battleBackground.png", Texture.class));
         backgroundSprite.setBounds(0,0 ,width,height);
@@ -80,7 +94,7 @@ public class BattleScreen extends GameScreen {
 
         Entity battleEntity = game.engine.createEntity()
                 .add(battleComponent)
-                .add(game.engine.createComponent(BattleDataComponent.class).init(inputManager,hexagonMapPolygon,battleViewport));
+                .add(game.engine.createComponent(BattleDataComponent.class).init(inputManager,hexagonMapPolygon,battleViewport, heroData, enemyData));
         game.engine.addEntity(battleEntity);
 
         console = new GraphicalConsole(new BattleCommands(game),
@@ -90,6 +104,63 @@ public class BattleScreen extends GameScreen {
         hud = new BattleHud(game, new FitViewport(width,height));
 
         createSystems();
+
+        spawnUnits(heroData,enemyData);
+    }
+
+    private void spawnUnits(HeroDataComponent heroData, EnemyDataComponent enemyData) {
+        HeroDataComponent.Army.Squad[] squads = heroData.army.getSquads();
+        BitmapFont bitmapFont = game.assetManager.get("testFontSize18.ttf", BitmapFont.class);
+
+        for(int i = 0; i < squads.length; i++) {
+            HeroDataComponent.Army.Squad squad = squads[i];
+            if(squad == null) continue;
+            UnitsManager.Unit unit = squad.getUnit();
+            AnimationManager.AnimationInformation animationInformation = unit.animationInformation;
+            Entity mapEntity = hexagonMapPolygon.getEntity(0, i+1);
+
+            BitmapFontComponent bitmapFontComponent = game.engine.createComponent(BitmapFontComponent.class)
+                    .init(new BitmapFont(bitmapFont.getData(), bitmapFont.getRegion(), bitmapFont.usesIntegerPositions()), squad.getQuantity()+"");
+            bitmapFontComponent.bitmapFont.setColor(Color.GOLD);
+            bitmapFontComponent.offset.set(hexagonMapPolygon.getR(),10);
+            mapEntity
+                    .add(game.engine.createComponent(RenderableComponent.class))
+                    .add(game.engine.createComponent(TextureComponent.class).setAdditionalOffset(animationInformation.offset.x - 15, animationInformation.offset.y + 5).setSize(animationInformation.size))
+                    .add(battleComponent)
+                    .add(game.engine.createComponent(UnitComponent.class).init(unit, squad.getQuantity()))
+                    .add(game.engine.createComponent(AnimationComponent.class)
+                            .init(new AnimationSet(AnimationType.STAND, Direction.E, AnimationManager.createUnitAnimationMaps(unit, game)),true, 0f))
+                    .add(bitmapFontComponent);
+            game.engine.addEntity(mapEntity);
+        }
+
+        int divider = 1;
+        if(enemyData.quantity > 0 && enemyData.quantity < 5) {
+            divider = 1;
+        } else if(enemyData.quantity >= 6 && enemyData.quantity < 15) {
+            divider = 2;
+        } else if(enemyData.quantity >= 16) {
+            divider = 3;
+        }
+        UnitsManager.Unit unit = enemyData.unit;
+        AnimationManager.AnimationInformation animationInformation = unit.animationInformation;
+
+        for(int i = 0; i < divider; i++) {
+            BitmapFontComponent bitmapFontComponent = game.engine.createComponent(BitmapFontComponent.class)
+                    .init(new BitmapFont(bitmapFont.getData(), bitmapFont.getRegion(), bitmapFont.usesIntegerPositions()), enemyData.quantity+"");
+            bitmapFontComponent.bitmapFont.setColor(Color.GOLD);
+            bitmapFontComponent.offset.set(hexagonMapPolygon.getR(),10);
+            Entity mapEntity = hexagonMapPolygon.getEntity(hexagonMapPolygon.getMapWidth() - 1, i*2+1);
+            mapEntity
+                    .add(game.engine.createComponent(RenderableComponent.class))
+                    .add(game.engine.createComponent(TextureComponent.class).setAdditionalOffset(animationInformation.offset.x - 15, animationInformation.offset.y + 5).setSize(animationInformation.size))
+                    .add(battleComponent)
+                    .add(game.engine.createComponent(UnitComponent.class).init(unit,enemyData.quantity / divider))
+                    .add(game.engine.createComponent(AnimationComponent.class)
+                            .init(new AnimationSet(AnimationType.STAND, Direction.W, AnimationManager.createUnitAnimationMaps(unit, game)),true, 0f))
+                    .add(bitmapFontComponent);
+            game.engine.addEntity(mapEntity);
+        }
     }
 
     @Override

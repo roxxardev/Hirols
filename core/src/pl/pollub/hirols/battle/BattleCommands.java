@@ -28,6 +28,11 @@ public class BattleCommands extends CommandsContainer {
     }
 
     @Override
+    public void help() {
+        showCommands();
+    }
+
+    @Override
     public void clear() {
         console.clear();
     }

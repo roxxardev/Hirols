@@ -107,7 +107,7 @@ public class HudManager {
         VisImageTextButton.VisImageTextButtonStyle unitsStyle = new VisImageTextButton.VisImageTextButtonStyle();
         unitsStyle.up = new TextureRegionDrawable(new TextureRegion(whiteTexture)).tint(new Color(0,0,0,0.6f));
         unitsStyle.imageChecked = new TextureRegionDrawable(new TextureRegion(game.assetManager.get("ui/button-images.png", Texture.class),338, 208, 112, 112));
-        unitsStyle.imageCheckedOver = new TextureRegionDrawable((TextureRegionDrawable)unitsStyle.imageChecked).tint(new Color(0,0,0,0.5f));
+        unitsStyle.imageCheckedOver = new TextureRegionDrawable((TextureRegionDrawable)unitsStyle.imageChecked).tint(new Color(0,0,0,0.99f));
         unitsStyle.font = game.assetManager.get("testFontSize12.ttf", BitmapFont.class);
         unitsStyle.imageOver = new SpriteDrawable(new Sprite(whiteTexture)).tint(new Color(0,0,0,0.8f));
         skin.add("units-style", unitsStyle, VisImageTextButton.VisImageTextButtonStyle.class);
