@@ -113,7 +113,7 @@ public class LoadingScreen implements Screen {
         assetManager.load("test.mp3", Music.class);
         assetManager.load("animations/loadingLongPress.png", Texture.class, textureParameter);
         assetManager.load("battle/battleBackground.png", Texture.class, textureParameter);
-        assetManager.load("towns/townBackground.PNG", Texture.class, textureParameter);
+        assetManager.load("towns/townBackground.png", Texture.class, textureParameter);
         assetManager.load("arrows/arrows.atlas", TextureAtlas.class);
         assetManager.load("resources/CoalPile.png", Texture.class, textureParameter);
         assetManager.load("resources/GoldPile.png", Texture.class, textureParameter);
