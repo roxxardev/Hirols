@@ -198,7 +198,6 @@ public class TopBar extends Table {
 
         public void update(int n) {
             label.setText(n+"");
-            Gdx.app.log("dupa", resourceType.toString() + " " + n);
         }
     }
 }

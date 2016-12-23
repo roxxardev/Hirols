@@ -85,14 +85,14 @@ public class LoadingScreen implements Screen {
 
         loadAssets();
 
-        Texture.setAssetManager(assetManager);
+        //Texture.setAssetManager(assetManager);
     }
 
     private void loadAssets() {
         TextureLoader.TextureParameter textureParameter = new TextureLoader.TextureParameter();
-        textureParameter.genMipMaps = true;
+        textureParameter.genMipMaps = false;
         textureParameter.magFilter = Texture.TextureFilter.Linear;
-        textureParameter.minFilter = Texture.TextureFilter.MipMap;
+        textureParameter.minFilter = Texture.TextureFilter.Linear;
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter fontLoaderParameter = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         fontLoaderParameter.fontFileName = "ui/fonts/VIDEOPHREAK.ttf";
@@ -113,7 +113,7 @@ public class LoadingScreen implements Screen {
         assetManager.load("test.mp3", Music.class);
         assetManager.load("animations/loadingLongPress.png", Texture.class, textureParameter);
         assetManager.load("battle/battleBackground.png", Texture.class, textureParameter);
-        assetManager.load("towns/townBackground.PNG", Texture.class, textureParameter);
+        assetManager.load("towns/townBackground.png", Texture.class, textureParameter);
         assetManager.load("arrows/arrows.atlas", TextureAtlas.class);
         assetManager.load("resources/CoalPile.png", Texture.class, textureParameter);
         assetManager.load("resources/GoldPile.png", Texture.class, textureParameter);

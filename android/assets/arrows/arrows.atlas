@@ -1,145 +1,145 @@
 
 arrows.png
-size: 2048,128
+size: 512,512
 format: RGBA8888
-filter: MipMap,Linear
+filter: Linear,Linear
 repeat: none
 arrowG_E
   rotate: false
-  xy: 2, 2
+  xy: 2, 394
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 arrowG_N
   rotate: false
-  xy: 100, 2
+  xy: 2, 296
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 arrowG_NE
   rotate: false
-  xy: 198, 2
+  xy: 100, 394
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 arrowG_NW
   rotate: false
-  xy: 296, 2
+  xy: 2, 198
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 arrowG_S
   rotate: false
-  xy: 394, 2
+  xy: 100, 296
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 arrowG_SE
   rotate: false
-  xy: 492, 2
+  xy: 198, 394
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 arrowG_SW
   rotate: false
-  xy: 590, 2
+  xy: 2, 100
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 arrowG_W
   rotate: false
-  xy: 688, 2
+  xy: 100, 198
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 arrowR_E
   rotate: false
-  xy: 786, 2
+  xy: 198, 296
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 arrowR_N
   rotate: false
-  xy: 884, 2
+  xy: 296, 394
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 arrowR_NE
   rotate: false
-  xy: 982, 2
+  xy: 2, 2
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 arrowR_NW
   rotate: false
-  xy: 1080, 2
+  xy: 100, 100
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 arrowR_S
   rotate: false
-  xy: 1178, 2
+  xy: 198, 198
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 arrowR_SE
   rotate: false
-  xy: 1276, 2
+  xy: 296, 296
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 arrowR_SW
   rotate: false
-  xy: 1374, 2
+  xy: 394, 394
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 arrowR_W
   rotate: false
-  xy: 1472, 2
+  xy: 100, 2
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 crossG
   rotate: false
-  xy: 1570, 2
+  xy: 198, 100
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 crossR
   rotate: false
-  xy: 1668, 2
+  xy: 296, 198
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 swordG
   rotate: false
-  xy: 1766, 2
+  xy: 394, 296
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 swordR
   rotate: false
-  xy: 1864, 2
+  xy: 198, 2
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
