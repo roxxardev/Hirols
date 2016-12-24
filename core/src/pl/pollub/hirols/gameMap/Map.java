@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapLayer;
@@ -25,6 +26,8 @@ import java.util.Random;
 import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.components.graphics.RenderableComponent;
 import pl.pollub.hirols.components.graphics.TextureComponent;
+import pl.pollub.hirols.components.map.BannerComponent;
+import pl.pollub.hirols.components.map.ChestComponent;
 import pl.pollub.hirols.components.map.MapComponent;
 import pl.pollub.hirols.components.map.MineComponent;
 import pl.pollub.hirols.components.map.MineDataComponent;
@@ -32,7 +35,9 @@ import pl.pollub.hirols.components.map.ResourceComponent;
 import pl.pollub.hirols.components.map.TownComponent;
 import pl.pollub.hirols.components.map.TownDataComponent;
 import pl.pollub.hirols.components.map.maps.GameMapComponent;
+import pl.pollub.hirols.components.map.maps.PortalComponent;
 import pl.pollub.hirols.components.physics.PositionComponent;
+import pl.pollub.hirols.components.player.PlayerDataComponent;
 import pl.pollub.hirols.managers.enums.Race;
 import pl.pollub.hirols.managers.enums.ResourceType;
 import pl.pollub.hirols.pathfinding.DiagonalHeuristic;
@@ -152,6 +157,9 @@ public class Map implements Disposable {
         java.util.Map<String, ArrayList<Entity>> mineMap = new HashMap<String, ArrayList<Entity>>();
         java.util.Map<String, ArrayList<Entity>> townMap = new HashMap<String, ArrayList<Entity>>();
         java.util.Map<String, Entity> enterEntityMap = new HashMap<String, Entity>();
+        java.util.Map<MapObject, Entity> portals = new HashMap<MapObject, Entity>();
+
+        PlayerDataComponent playerDataComponent = ComponentMapper.getFor(PlayerDataComponent.class).get(game.gameManager.getCurrentPlayer());
 
         for(MapObject object: mapObjects) {
             String objectName = object.getName();
@@ -168,9 +176,24 @@ public class Map implements Disposable {
                     if(object.getProperties().containsKey("isEnter")) {
                         if(Boolean.valueOf(object.getProperties().get("isEnter").toString())) {
                             enterEntityMap.put(objectName, town);
+                            String townName = objectName;
+                            String lowerCaseTownName = townName.toLowerCase();
+                            Race townRace;
+                            if(lowerCaseTownName.contains("orc")) {
+                                townName = "Gniazdo";
+                                townRace = Race.ORC;
+                            } else {
+                                townName = "Twierdza";
+                                townRace = Race.HUMAN;
+                            }
+                            Sprite flagSprite = new Sprite(game.assetManager.get("temp/Flag.png", Texture.class));
+
                             town
                                     .add(game.engine.createComponent(TownComponent.class).init(town))
-                                    .add(game.engine.createComponent(TownDataComponent.class).init(objectName, Race.ORC)); //TODO town race from map
+                                    .add(game.engine.createComponent(TownDataComponent.class).init(townName, townRace))
+                                    .add(game.engine.createComponent(BannerComponent.class).init(flagSprite, playerDataComponent.color, 0, (int) (getTileHeight() - flagSprite.getHeight())))
+                                    .add(game.engine.createComponent(RenderableComponent.class))
+                                    .add(game.engine.createComponent(game.gameManager.getCurrentPlayerClass()));
                             game.engine.addEntity(town);
                         } else {
                             if(!townMap.containsKey(objectName)) {
@@ -216,8 +239,11 @@ public class Map implements Disposable {
                     if(object.getProperties().containsKey("isEnter")) {
                         if(Boolean.valueOf(object.getProperties().get("isEnter", String.class))) {
                             enterEntityMap.put(objectName, mine);
+                            Sprite flagSprite = new Sprite(game.assetManager.get("temp/Flag.png", Texture.class));
                             mine
                                     .add(game.engine.createComponent(MineDataComponent.class).init(ResourceType.WOOD, 2))
+                                    .add(game.engine.createComponent(BannerComponent.class).init(flagSprite, new Color(Color.GRAY), 0, (int) (getTileHeight() - flagSprite.getHeight())))
+                                    .add(game.engine.createComponent(RenderableComponent.class))
                                     .add(game.engine.createComponent(MineComponent.class).init(mine));
                             game.engine.addEntity(mine);
                         } else {
@@ -229,7 +255,22 @@ public class Map implements Disposable {
                             }
                         }
                     }
+                } else if(type.equals("chest")) {
+                    Gdx.app.log("Chest Object", objectName + " " + position.toString());
+                    Entity chest = entityMap[x][y];
+                    chest
+                            .add(game.engine.createComponent(ChestComponent.class).init(ResourceType.getRandomResource(), random.nextInt(7) + 1, random.nextInt(1500) + 100))
+                            .add(game.engine.createComponent(TextureComponent.class).setSprite(new Sprite(game.assetManager.get("resources/Chest.png", Texture.class))))
+                            .add(game.engine.createComponent(RenderableComponent.class));
+                    game.engine.addEntity(chest);
+                    mapComponentMapper.get(chest).walkable = false;
+
+                    graph.updateConnectionsToNode(position,false);
+                } else if(type.equals("portal")) {
+                    Gdx.app.log("Portal Object", objectName + " " + position.toString());
+                    portals.put(object, entityMap[x][y]);
                 }
+
                 Pools.free(position);
             }
         }
@@ -248,6 +289,19 @@ public class Map implements Disposable {
             for(Entity town : value) {
                 town.add(game.engine.createComponent(TownComponent.class).init(enterEntityMap.get(key)));
             }
+        }
+
+        for(java.util.Map.Entry<MapObject, Entity> e : portals.entrySet()) {
+            MapObject portal = e.getKey();
+            Entity mapEntity = e.getValue();
+            Entity destinationPortal = null;
+            for(MapObject otherPortal : portals.keySet()) {
+                if(portal.getProperties().get("destination", String.class).equals(otherPortal.getName())) {
+                    destinationPortal = portals.get(otherPortal);
+                }
+            }
+            mapEntity.add(game.engine.createComponent(PortalComponent.class).init(destinationPortal));
+            game.engine.addEntity(mapEntity);
         }
 
     }

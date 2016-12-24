@@ -18,6 +18,7 @@ import java.util.Random;
 import pl.pollub.hirols.animation.AnimationSet;
 import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.components.SelectedComponent;
+import pl.pollub.hirols.components.map.BannerComponent;
 import pl.pollub.hirols.components.map.EnemyDataComponent;
 import pl.pollub.hirols.components.player.PlayerComponent;
 import pl.pollub.hirols.components.player.PlayerDataComponent;
@@ -95,6 +96,8 @@ public class SpawnGenerator {
         Map<AnimationType, Map<Direction, Animation>> orcHeroAnimationMap = AnimationManager.createHeroAnimationMap(game,game.unitsManager.heroOrcWarrior);
         Map<AnimationType, Map<Direction, Animation>> orcMageHeroAnimationMap = AnimationManager.createHeroAnimationMap(game, game.unitsManager.heroOrcMage);
 
+        PlayerDataComponent playerDataComponent = ComponentMapper.getFor(PlayerDataComponent.class).get(game.gameManager.getCurrentPlayer());
+
         for (int i = 0; i < 2; i++) {
             Map<AnimationType, Map<Direction, Animation>> animationMap = orcHeroAnimationMap;
             UnitsManager.Hero hero = game.unitsManager.heroOrcWarrior;
@@ -103,6 +106,9 @@ public class SpawnGenerator {
                 animationMap = orcMageHeroAnimationMap;
                 hero = game.unitsManager.heroOrcMage;
             }
+
+            Sprite flagSprite = new Sprite(game.assetManager.get("temp/Flag.png", Texture.class));
+
             Vector2 heroPosition = Pools.obtain(Vector2.class);
             Entity heroEntity = engine.createEntity();
             heroEntity
@@ -115,6 +121,7 @@ public class SpawnGenerator {
                     .add(engine.createComponent(HeroDataComponent.class)
                             .init(++playerId,"nołnejm", 10f, hero, game.unitsManager.orc))
                     .add(engine.createComponent(VelocityComponent.class))
+                    .add(engine.createComponent(BannerComponent.class).init(flagSprite, playerDataComponent.color, 0, (int) (map.getTileHeight() - flagSprite.getHeight())))
                     .add(engine.createComponent(playerClass));
             engine.addEntity(heroEntity);
             Pools.free(heroPosition);
@@ -134,6 +141,7 @@ public class SpawnGenerator {
 
             for (int i = 0; i < 1; i++) {
                 Vector2 heroPosition = Pools.obtain(Vector2.class);
+                Sprite flagSprite = new Sprite(game.assetManager.get("temp/Flag.png", Texture.class));
                 Entity hero = engine.createEntity();
                 hero
                         .add(engine.createComponent(map.getGameMapComponentClazz()))
@@ -142,6 +150,7 @@ public class SpawnGenerator {
                         .add(engine.createComponent(RenderableComponent.class).init(RenderPriority.LAST))
                         .add(engine.createComponent(TextureComponent.class).setSize(animationInformation.size).setAdditionalOffset(animationInformation.offset))
                         .add(engine.createComponent(HeroDataComponent.class).init(++playerId,"nołnejm", 100000f, game.unitsManager.heroOrcMage, unit))
+                        .add(engine.createComponent(BannerComponent.class).init(flagSprite, playerDataComponent.color, 0, (int) (map.getTileHeight() - flagSprite.getHeight())))
                         .add(engine.createComponent(VelocityComponent.class))
                         .add(engine.createComponent(playerClass));
                 engine.addEntity(hero);

@@ -34,8 +34,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import pl.pollub.hirols.Hirols;
+import pl.pollub.hirols.components.map.TownDataComponent;
 import pl.pollub.hirols.components.map.maps.GameMapComponent;
 import pl.pollub.hirols.components.map.HeroDataComponent;
+import pl.pollub.hirols.screens.TownScreen;
 import pl.pollub.hirols.systems.gameMapSystems.MapInteractionSystem;
 
 /**
@@ -50,7 +52,7 @@ class RightBar extends Table {
     private VisImageButton moveButton, turnButton;
     private VisTextButton changeScrollPane;
     private VisScrollPane scrollPaneHeroes, scrollPaneTowns;
-    private GridGroup gridGroupTowns;
+    private GridGroupTowns gridGroupTowns;
     private GridGroupHeroes gridGroupHeroes;
     private Image rightBarDragImage;
     private VisWindow miniMapWindow;
@@ -63,7 +65,8 @@ class RightBar extends Table {
         setBackground(game.hudManager.getTransparentBackground());
         setDebug(game.hudManager.debug);
 
-        createActors(gameMapComponent,gameMapHud);
+        createActors();
+        updateTownsAndHeroes(gameMapComponent,gameMapHud);
 
         //TODO zmienic z Marcinowego na jakies czytelne
         addListener(new ActorGestureListener() {
@@ -93,7 +96,7 @@ class RightBar extends Table {
         });
     }
 
-    private void createActors(Class<? extends GameMapComponent> gameMapComponent, GameMapHud gameMapHud) {
+    private void createActors() {
         moveButton = new VisImageButton(new VisImageButton.VisImageButtonStyle(game.hudManager.skin.get("image-button", VisImageButton.VisImageButtonStyle.class)));
         moveButton.getStyle().imageUp = new SpriteDrawable(new Sprite(new TextureRegion(game.assetManager.get("ui/button-images.png", Texture.class), 0, 2, 128, 176)));
         turnButton = new VisImageButton(new VisImageButton.VisImageButtonStyle(game.hudManager.skin.get("image-button", VisImageButton.VisImageButtonStyle.class)));
@@ -119,21 +122,8 @@ class RightBar extends Table {
         miniMapWindow.setMovable(false);
 
         gridGroupHeroes = new GridGroupHeroes();
+        gridGroupTowns = new GridGroupTowns();
 
-        ImmutableArray<Entity> heroes = game.engine.getEntitiesFor(Family.all(HeroDataComponent.class, gameMapComponent).get());
-
-        for(int i = 0; i < heroes.size(); i++) {
-            gridGroupHeroes.addHero(heroes.get(i), gameMapHud);
-        }
-
-        gridGroupTowns = new GridGroup();
-        for(int i = 0; i < 7; i++) {
-            VisImageTextButton town = new VisImageTextButton("town" + i, new SpriteDrawable(new Sprite(game.assetManager.get("temp/town.gif", Texture.class))));
-            town.clearChildren();
-            town.add(town.getImage()).expand().fill().row();
-            town.add(town.getLabel());
-            gridGroupTowns.addActor(town);
-        }
 
         scrollPaneHeroes = new VisScrollPane(gridGroupHeroes) {{
             setForceScroll(false, true);
@@ -171,6 +161,18 @@ class RightBar extends Table {
         addActor(scrollPaneHeroes);
         addActor(scrollPaneTowns);
         addActor(rightBarDragImage);
+    }
+
+    public void updateTownsAndHeroes(Class<? extends GameMapComponent> gameMapComponent, GameMapHud gameMapHud) {
+        ImmutableArray<Entity> heroes = game.engine.getEntitiesFor(Family.all(HeroDataComponent.class, gameMapComponent, game.gameManager.getCurrentPlayerClass()).get());
+        for(int i = 0; i < heroes.size(); i++) {
+            gridGroupHeroes.addHero(heroes.get(i), gameMapHud);
+        }
+
+        ImmutableArray<Entity> towns = game.engine.getEntitiesFor(Family.all(TownDataComponent.class, gameMapComponent, game.gameManager.getCurrentPlayerClass()).get());
+        for(int i = 0; i < towns.size(); i++) {
+            gridGroupTowns.addTown(towns.get(i));
+        }
     }
 
     public void update() {
@@ -212,11 +214,53 @@ class RightBar extends Table {
         //TODO change grid size when width is high enough to fit 2 rows
         int gridSize = scrollPaneHeroes.getWidth() < scrollPaneHeroes.getHeight() ? (int)(scrollPaneHeroes.getWidth() - pad) : (int)((scrollPaneHeroes.getWidth() - pad)/2);
         gridGroupHeroes.resize(gridSize - 2*gridGroupHeroes.getSpacing(),gridSize- 2*gridGroupHeroes.getSpacing());
-        gridGroupTowns.setItemSize(gridSize- 2*gridGroupTowns.getSpacing(),gridSize- 2*gridGroupTowns.getSpacing());
+        gridGroupTowns.resize(gridSize- 2*gridGroupTowns.getSpacing(),gridSize- 2*gridGroupTowns.getSpacing());
 
         rightBarDragImage.setSize(buttonSize, 3*buttonSize);
         rightBarDragImage.setPosition(-rightBarDragImage.getWidth(), getHeight()/2 - rightBarDragImage.getHeight()/2);
 
+    }
+
+    private class GridGroupTowns extends GridGroup {
+        Map<Entity, TownButton> townButtonMap = new HashMap<Entity, TownButton>();
+
+        public void addTown(Entity townEntity) {
+            TownDataComponent townDataComponent = ComponentMapper.getFor(TownDataComponent.class).get(townEntity);
+            if(townButtonMap.containsKey(townEntity)) {
+                Gdx.app.log("Hud - > RightBar", "Town already added to GridGroup!");
+                return;
+            }
+
+            TownButton townButton = new TownButton(townDataComponent.name, new SpriteDrawable(new Sprite(game.assetManager.get("temp/town.gif", Texture.class))), townEntity);
+
+            addActor(townButton);
+            townButtonMap.put(townEntity, townButton);
+        }
+
+        public void resize(float itemWidth, float itemHeight) {
+            setItemSize(itemWidth,itemHeight);
+        }
+
+        private class TownButton extends VisImageTextButton {
+
+            private Entity townEntity;
+
+            public TownButton(String text, Drawable imageUp, final Entity townEntity) {
+                super(text, imageUp);
+                this.townEntity = townEntity;
+                game.hudManager.moveTextLabelBelowImage(this, Scaling.fit);
+                addListener(new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
+                        game.setScreen(new TownScreen(game,townEntity));
+                    }
+                });
+            }
+
+            public Entity getTownEntity() {
+                return townEntity;
+            }
+        }
     }
 
     private class GridGroupHeroes extends GridGroup {

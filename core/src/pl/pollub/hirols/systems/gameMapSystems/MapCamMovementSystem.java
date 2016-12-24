@@ -9,6 +9,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Pools;
 
 import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.components.SelectedComponent;
@@ -52,7 +53,7 @@ public class MapCamMovementSystem extends GameMapEntitySystem {
 
         if (gameMapData.inputManager.isPan()) {
 
-            Vector3 tempGameCamPosition = cam.position.cpy();
+            Vector3 tempGameCamPosition = Pools.obtain(Vector3.class).set(cam.position);
             tempGameCamPosition.x -= panDelta.x * cam.zoom;
             tempGameCamPosition.y += panDelta.y * cam.zoom;
 
@@ -64,6 +65,7 @@ public class MapCamMovementSystem extends GameMapEntitySystem {
                     tempGameCamPosition.y < gameMapData.map.getMapRect().getHeight()) {
                 cam.position.y = tempGameCamPosition.y;
             }
+            Pools.free(tempGameCamPosition);
         }
 
         float zoom = 1/8f * gameMapData.inputManager.getScrolledAmount();

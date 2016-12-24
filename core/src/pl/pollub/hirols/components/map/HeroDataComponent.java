@@ -26,6 +26,8 @@ public class HeroDataComponent implements Component, Pool.Poolable{
     public int attack;
     public int defense;
 
+    public HeroLevel heroLevel = new HeroLevel();
+
     public HeroDataComponent init(int id, String name, float movementPoints, UnitsManager.Hero hero, UnitsManager.Unit startUnit) {
         this.id = id;
         this.movementPoints = movementPoints;
@@ -49,6 +51,7 @@ public class HeroDataComponent implements Component, Pool.Poolable{
         attack = 0;
         defense = 0;
         army.clear();
+        heroLevel.clear();
     }
 
     public class Army {
@@ -98,6 +101,19 @@ public class HeroDataComponent implements Component, Pool.Poolable{
             public UnitsManager.Unit getUnit() {
                 return unit;
             }
+        }
+    }
+
+    public class HeroLevel {
+        private int experience;
+        private int level;
+
+        public void addExperience(int amount) {
+
+        }
+
+        public void clear(){
+
         }
     }
 }

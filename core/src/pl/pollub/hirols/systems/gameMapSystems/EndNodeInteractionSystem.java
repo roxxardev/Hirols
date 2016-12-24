@@ -12,13 +12,13 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.components.LifePeriodComponent;
 import pl.pollub.hirols.components.TextureRenderableRemovalComponent;
+import pl.pollub.hirols.components.map.BannerComponent;
 import pl.pollub.hirols.components.map.EnemyDataComponent;
-import pl.pollub.hirols.components.map.TownDataComponent;
+import pl.pollub.hirols.components.map.maps.PortalComponent;
 import pl.pollub.hirols.components.player.PlayerComponent;
 import pl.pollub.hirols.components.player.PlayerDataComponent;
 import pl.pollub.hirols.components.graphics.BitmapFontComponent;
 import pl.pollub.hirols.components.graphics.RenderableComponent;
-import pl.pollub.hirols.components.graphics.TextureComponent;
 import pl.pollub.hirols.components.graphics.TransparencyComponent;
 import pl.pollub.hirols.components.map.ChestComponent;
 import pl.pollub.hirols.components.map.EnemyComponent;
@@ -50,6 +50,8 @@ public class EndNodeInteractionSystem extends GameMapEntitySystem {
     private ComponentMapper<ChestComponent> chestMap = ComponentMapper.getFor(ChestComponent.class);
     private ComponentMapper<EnemyComponent> enemyMap = ComponentMapper.getFor(EnemyComponent.class);
     private ComponentMapper<EnemyDataComponent> enemyDataMap = ComponentMapper.getFor(EnemyDataComponent.class);
+    private ComponentMapper<PortalComponent> portalMap = ComponentMapper.getFor(PortalComponent.class);
+    private ComponentMapper<BannerComponent> bannerMap = ComponentMapper.getFor(BannerComponent.class);
 
     private final Hirols game;
 
@@ -86,9 +88,16 @@ public class EndNodeInteractionSystem extends GameMapEntitySystem {
                 Gdx.app.log("EndNodeInteractionSystem", "Interaction with mine");
                 Class<? extends PlayerComponent> mineOwner = game.gameManager.attachedToPlayer(targetEntity);
                 if(mineOwner != currentPlayerClass) {
+                    bannerMap.get(targetEntity).color.set(playerData.color);
                     targetEntity.add(game.engine.createComponent(currentPlayerClass));
                     Gdx.app.log("EndNodeInteractionSystem", "Mine taken by "+currentPlayerClass.getSimpleName() + " from " + ((mineOwner != null) ? mineOwner.getSimpleName() : "no one"));
                 }
+            } else if(portalMap.has(targetEntity)) {
+                Gdx.app.log("EndNodeInteractionSystem", "Interaction with portal");
+                Entity destinationPortalEntity = portalMap.get(targetEntity).destinationMapEntity;
+                PositionComponent destinationPortalPosition = posMap.get(destinationPortalEntity);
+                posMap.get(selectedHero).init(destinationPortalPosition.x, destinationPortalPosition.y);
+                gameMapData.gameMapCam.position.set(destinationPortalPosition.x, destinationPortalPosition.y, 0);
             }
             selectedHeroData.heroPath.setTargetEntity(null);
             return;
@@ -124,8 +133,41 @@ public class EndNodeInteractionSystem extends GameMapEntitySystem {
             getEngine().removeEntity(pathEntity);
             Gdx.app.log("EndNodeInteractionSystem", "Interaction with resource: " + resourceText);
         } else if (chestMap.has(targetEntity)) {
-            ChestComponent chestComponent = chestMap.get(targetEntity);
             Gdx.app.log("EndNodeInteractionSystem", "Interaction with chest: ");
+            ChestComponent chestComponent = chestMap.get(targetEntity);
+            String chestText = "";
+            if(chestComponent.resourceType != null && chestComponent.amountResource > 0) {
+                playerData.resources.put(chestComponent.resourceType, playerData.resources.get(chestComponent.resourceType) + chestComponent.amountResource);
+                chestText = "Picked up " + chestComponent.amountResource + " " + chestComponent.resourceType.toString().toLowerCase() + " ";
+            }
+            if(chestComponent.experience > 0) {
+                selectedHeroData.heroLevel.addExperience(chestComponent.experience);
+                chestText += "Picked up " + chestComponent.experience + " experience";
+            }
+            if(chestText.length() > 0) {
+                chestText += "!";
+                PositionComponent chestPosition = posMap.get(targetEntity);
+                gameMapData.hud.getTopBar().updateResources();
+                targetEntity.remove(ChestComponent.class);
+                targetEntity
+                        .add(game.engine.createComponent(LifePeriodComponent.class).init(1000))
+                        .add(game.engine.createComponent(TransparencyComponent.class))
+                        .add(game.engine.createComponent(TextureRenderableRemovalComponent.class));
+                mapMapper.get(targetEntity).walkable = true;
+                gameMapData.map.updateGraphConnectionsToNode(chestPosition.x, chestPosition.y, true);
+
+                BitmapFont bitmapFont = game.assetManager.get("testFontSize32.ttf", BitmapFont.class);
+                BitmapFontComponent bitmapFontComponent = game.engine.createComponent(BitmapFontComponent.class).init(new BitmapFont(bitmapFont.getData(), bitmapFont.getRegion(), bitmapFont.usesIntegerPositions()), chestText);
+                bitmapFontComponent.bitmapFont.setColor(new Color(0,0,0,1));
+                getEngine().addEntity(game.engine.createEntity()
+                        .add(game.engine.createComponent(LifePeriodComponent.class).init(3000))
+                        .add(bitmapFontComponent)
+                        .add(game.engine.createComponent(TransparencyComponent.class).init(1))
+                        .add(game.engine.createComponent(RenderableComponent.class))
+                        .add(game.engine.createComponent(PositionComponent.class).init(chestPosition.x - gameMapData.map.getTileWidth(), chestPosition.y + gameMapData.map.getTileHeight()))
+                        .add(game.engine.createComponent(VelocityComponent.class))
+                        .add(game.engine.createComponent(gameMapData.map.getGameMapComponentClazz())));
+            }
             getEngine().removeEntity(pathEntity);
         } else if (enemyMap.has(targetEntity)) {
             Gdx.app.log("EndNodeInteractionSystem", "Interaction with enemy: ");

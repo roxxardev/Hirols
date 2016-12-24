@@ -119,6 +119,8 @@ public class LoadingScreen implements Screen {
         assetManager.load("resources/GoldPile.png", Texture.class, textureParameter);
         assetManager.load("resources/LogPile.png", Texture.class, textureParameter);
         assetManager.load("resources/StonePile.png", Texture.class, textureParameter);
+        assetManager.load("resources/Chest.png", Texture.class, textureParameter);
+        assetManager.load("temp/Flag.png", Texture.class, textureParameter);
 
         assetManager.load("animations/OrcWyvern_Standing.png", Texture.class, textureParameter);
         assetManager.load("animations/OrcWyvern_Walking.png", Texture.class, textureParameter);

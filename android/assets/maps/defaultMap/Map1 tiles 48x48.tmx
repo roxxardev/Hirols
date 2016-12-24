@@ -1283,6 +1283,16 @@
     <property name="walkable" value="false"/>
    </properties>
   </tile>
+  <tile id="36">
+   <properties>
+    <property name="walkable" value="false"/>
+   </properties>
+  </tile>
+  <tile id="37">
+   <properties>
+    <property name="walkable" value="false"/>
+   </properties>
+  </tile>
   <tile id="40">
    <properties>
     <property name="walkable" value="false"/>
@@ -1299,6 +1309,16 @@
    </properties>
   </tile>
   <tile id="43">
+   <properties>
+    <property name="walkable" value="false"/>
+   </properties>
+  </tile>
+  <tile id="44">
+   <properties>
+    <property name="walkable" value="false"/>
+   </properties>
+  </tile>
+  <tile id="45">
    <properties>
     <property name="walkable" value="false"/>
    </properties>

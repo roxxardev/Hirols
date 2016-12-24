@@ -36,4 +36,6 @@ public class PlayerDataComponent implements Component, Pool.Poolable {
         color = null;
         name = null;
     }
+
+
 }

@@ -1,5 +1,4 @@
 apply plugin: "java"
-sourceCompatibility = 1.6
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 sourceSets.main.java.srcDirs = [ "src/" ]
@@ -11,6 +10,5 @@ eclipse.project {
 
 dependencies{
     compile "com.kotcrab.vis:vis-ui:$visuiVersion"
-    compile "com.strongjoshua:libgdx-inGameConsole:0.5.0"
     compile 'junit:junit:4.12'
 }

@@ -98,12 +98,14 @@ public class GameManager {
         }
     }
 
-    public void createMap(String filePath) {
-        //TODO exception handling
+    public GameMapScreen createMap(String filePath) {
+        if(mapScreens.containsKey(filePath)) return null;
+        if(availableGameMapComponents.size() < 1) throw new NullPointerException("There is no GameMapComponent left!");
         pl.pollub.hirols.gameMap.Map map = new pl.pollub.hirols.gameMap.Map(game,tmxMapLoader.load(filePath, parameters),getNewGameMapComponentClass());
         GameMapScreen gameMapScreen = new GameMapScreen(game,map,gameMapCam,gameMapPort);
         mapScreens.put(filePath,gameMapScreen);
         if(currentGameMapScreen == null) currentGameMapScreen = gameMapScreen; else gameMapScreen.setSystemsProcessing(false);
+        return gameMapScreen;
     }
 
     private Class<? extends GameMapComponent> getNewGameMapComponentClass() {
@@ -152,7 +154,7 @@ public class GameManager {
 
     public Entity getCurrentPlayer() {
         ImmutableArray<Entity> currentPlayers = game.engine.getEntitiesFor(Family.all(SelectedComponent.class, PlayerDataComponent.class).get());
-        if(currentPlayers.size() > 1) throw new ArrayIndexOutOfBoundsException();
+        if(currentPlayers.size() > 1) throw new IllegalStateException("Current player can only by one at time!");
 
         return currentPlayers.first();
     }

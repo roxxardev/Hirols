@@ -57,10 +57,12 @@ public class GameMapCommands extends CommandsContainer {
     public void setMovementPoints(float value) {
         Entity selectedHero = game.engine.getSystem(MapInteractionSystem.class).getSelectedHeroes().first();
         HeroDataComponent selectedHeroData = ComponentMapper.getFor(HeroDataComponent.class).get(selectedHero);
-        selectedHeroData.movementPoints = value;
-        game.engine.getSystem(MapInteractionSystem.class).resetHeroPath(selectedHeroData, true);
-
-        console.log("SelectedComponent Hero id: "+ selectedHeroData.id +" movement points set to " + value + ".");
+        if (game.engine.getSystem(MapInteractionSystem.class).resetHeroPath(selectedHeroData, true)) {
+            selectedHeroData.movementPoints = value;
+            console.log("SelectedComponent Hero id: " + selectedHeroData.id + " movement points set to " + value + ".");
+        } else {
+            console.log("SelectedComponent Hero id: " + selectedHeroData.id + " cannot set movement points, hero must stand!");
+        }
     }
 
     public void recalculatePath() {
