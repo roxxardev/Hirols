@@ -230,8 +230,8 @@ class RightBar extends Table {
                 Gdx.app.log("Hud - > RightBar", "Town already added to GridGroup!");
                 return;
             }
-
-            TownButton townButton = new TownButton(townDataComponent.name, new SpriteDrawable(new Sprite(game.assetManager.get("temp/town.gif", Texture.class))), townEntity);
+            //TODO get texture path from town data
+            TownButton townButton = new TownButton(townDataComponent.name, new SpriteDrawable(new Sprite(game.assetManager.get("towns/OrcTown.png", Texture.class))), townEntity);
 
             addActor(townButton);
             townButtonMap.put(townEntity, townButton);
