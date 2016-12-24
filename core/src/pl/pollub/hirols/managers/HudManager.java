@@ -57,7 +57,7 @@ public class HudManager {
         transparentBackground = new SpriteDrawable(new Sprite(whiteTexture) {{
             setColor(0,0,0,0.3f);
         }});
-
+        if(!VisUI.isLoaded())
         VisUI.load();
     }
 
