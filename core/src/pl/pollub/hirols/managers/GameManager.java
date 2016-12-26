@@ -9,11 +9,13 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import pl.pollub.hirols.Hirols;
@@ -36,7 +38,7 @@ import pl.pollub.hirols.systems.genericSystems.EndSystem;
 /**
  * Created by Eryk on 2016-04-25.
  */
-public class GameManager {
+public class GameManager implements Disposable{
 
     private final Hirols game;
 
@@ -54,7 +56,7 @@ public class GameManager {
     private final OrthographicCamera gameMapCam;
     private final Viewport gameMapPort;
 
-    public GameManager(Hirols game, int playersNumber) {
+    public GameManager(Hirols game, List<String> playerNames) {
         this.game = game;
         parameters.generateMipMaps = false;
         parameters.textureMagFilter = Texture.TextureFilter.Nearest;
@@ -79,8 +81,8 @@ public class GameManager {
 
         Random random = new Random();
 
-        if(playersNumber > availablePlayerComponents.size()) throw new IndexOutOfBoundsException();
-        for(int i = 0; i < playersNumber; i++) {
+        if(playerNames.size() > availablePlayerComponents.size()) throw new IndexOutOfBoundsException();
+        for(int i = 0; i < playerNames.size(); i++) {
             players.add(availablePlayerComponents.get(i));
 
             float r = random.nextFloat();
@@ -91,15 +93,15 @@ public class GameManager {
             Entity player = game.engine.createEntity();
             player
                     .add(game.engine.createComponent(players.get(i)))
-                    .add(game.engine.createComponent(PlayerDataComponent.class).init(color, "Gracz "+(i+1)));
-            if(i == 1)
+                    .add(game.engine.createComponent(PlayerDataComponent.class).init(color, playerNames.get(i)));
+            if(i == 0)
                     player.add(game.engine.createComponent(SelectedComponent.class));
             game.engine.addEntity(player);
         }
     }
 
     public GameMapScreen createMap(String filePath) {
-        if(mapScreens.containsKey(filePath)) return null;
+        if(mapScreens.containsKey(filePath)) return mapScreens.get(filePath);
         if(availableGameMapComponents.size() < 1) throw new NullPointerException("There is no GameMapComponent left!");
         pl.pollub.hirols.gameMap.Map map = new pl.pollub.hirols.gameMap.Map(game,tmxMapLoader.load(filePath, parameters),getNewGameMapComponentClass());
         GameMapScreen gameMapScreen = new GameMapScreen(game,map,gameMapCam,gameMapPort);
@@ -170,10 +172,12 @@ public class GameManager {
         return null;
     }
 
+    @Override
     public void dispose() {
         removeSharedSystemsFromEngine();
         for(GameMapScreen mapScreen : mapScreens.values()) {
             mapScreen.dispose();
         }
+        game.engine.removeAllEntities();
     }
 }

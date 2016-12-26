@@ -1,17 +1,22 @@
 package pl.pollub.hirols.screens;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.util.ArrayList;
+
 import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.components.map.maps.GameMapComponent;
 import pl.pollub.hirols.components.map.GameMapDataComponent;
 import pl.pollub.hirols.console.GraphicalConsole;
 import pl.pollub.hirols.gui.gameMap.GameMapHud;
+import pl.pollub.hirols.managers.EngineTools;
 import pl.pollub.hirols.managers.SpawnGenerator;
 import pl.pollub.hirols.managers.input.InputManager;
 import pl.pollub.hirols.gameMap.Map;
@@ -144,7 +149,11 @@ public class GameMapScreen extends GameScreen {
     @Override
     public void dispose() {
         map.dispose();
-        game.engine.removeEntity(gameMapEntity);
+        ImmutableArray<Entity> battleEntities = game.engine.getEntitiesFor(Family.all(getGameMapComponentClass()).get());
+        ArrayList<Entity> battleEntitiesSnapshot = EngineTools.getArraySnapshot(battleEntities);
+        for(Entity gameMapEntity : battleEntitiesSnapshot) {
+            game.engine.removeEntity(gameMapEntity);
+        }
         console.dispose();
         hud.dispose();
     }

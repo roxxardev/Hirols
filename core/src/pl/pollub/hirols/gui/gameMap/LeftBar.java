@@ -17,6 +17,7 @@ import com.kotcrab.vis.ui.widget.VisImageButton;
 
 import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.screens.GameMapScreen;
+import pl.pollub.hirols.screens.MainMenuScreen;
 
 /**
  * Created by erykp_000 on 2016-08-14.
@@ -94,6 +95,13 @@ public class LeftBar extends Table {
 
         exitToMenuButton = new VisImageButton(new VisImageButton.VisImageButtonStyle(buttonStyle));
         exitToMenuButton.getStyle().imageUp = new SpriteDrawable(new Sprite(new TextureRegion(game.assetManager.get("ui/button-images.png", Texture.class),338, 208, 112, 112)));
+        exitToMenuButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                game.setScreen(new MainMenuScreen(game));
+                game.gameManager.dispose();
+            }
+        });
 
         addActor(menuDrag);
         addActor(optionsButton);

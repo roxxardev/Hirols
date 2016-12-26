@@ -25,6 +25,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import pl.pollub.hirols.Hirols;
+
 import pl.pollub.hirols.managers.HudManager;
 
 /**
@@ -189,8 +190,12 @@ public class LoadingScreen implements Screen {
         if(assetManager.update()) {
             if(Gdx.input.isTouched()) {
                 game.hudManager = new HudManager(game);
-                game.gameManager.createMap("maps/defaultMap/Map1 tiles 48x48.tmx");
-                game.gameManager.setCurrentMapScreen("maps/defaultMap/Map1 tiles 48x48.tmx");
+                game.setScreen(new MainMenuScreen(game));
+//                ArrayList<String> playerNames = new ArrayList<>();
+//                playerNames.add("dsa");
+//                game.gameManager = new GameManager(game, playerNames);
+//                game.gameManager.createMap("maps/defaultMap/Map1 tiles 48x48.tmx");
+//                game.gameManager.setCurrentMapScreen("maps/defaultMap/Map1 tiles 48x48.tmx");
                 //game.setScreen(new TownScreen(game));
                 //game.setScreen(new BattleScreen(game));
             }

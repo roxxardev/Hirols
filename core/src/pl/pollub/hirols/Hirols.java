@@ -31,7 +31,7 @@ public class Hirols extends Game {
         engine = new PooledEngine(100,1000,100,1000);
 		assetManager = new AssetManager();
 		soundManager = new SoundManager(assetManager);
-		gameManager = new GameManager(this,4);
+		//gameManager = new GameManager(this,4);
 		unitsManager = new UnitsManager();
 
 		Gdx.input.setInputProcessor(multiplexer);

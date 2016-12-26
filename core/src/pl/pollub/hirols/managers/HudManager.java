@@ -36,7 +36,7 @@ public class HudManager {
 
     public HudManager(Hirols game){
         this.game = game;
-        skin = new Skin();
+        skin = game.assetManager.get("ui/default_skin/uiskin.json", Skin.class);
 
         bitmapFont = game.assetManager.get("testFontSize18.ttf", BitmapFont.class);
 
@@ -111,6 +111,14 @@ public class HudManager {
         unitsStyle.font = game.assetManager.get("testFontSize12.ttf", BitmapFont.class);
         unitsStyle.imageOver = new SpriteDrawable(new Sprite(whiteTexture)).tint(new Color(0,0,0,0.8f));
         skin.add("units-style", unitsStyle, VisImageTextButton.VisImageTextButtonStyle.class);
+
+        VisTextButton.VisTextButtonStyle menuStyle = new VisTextButton.VisTextButtonStyle();
+        menuStyle.up = drawableUp.tint(new Color(1,1,1,0.1f));
+        menuStyle.down = drawableUp.tint(new Color(1,1,1,0.5f));
+        menuStyle.over = drawableUp.tint(new Color(1,1,1,0.2f));
+        menuStyle.font = game.assetManager.get("testFontSize32.ttf", BitmapFont.class);
+        menuStyle.fontColor = Color.GOLD;
+        skin.add("mainMenuStyle", menuStyle, VisTextButton.VisTextButtonStyle.class);
 
     }
 
