@@ -36,6 +36,7 @@ import pl.pollub.hirols.components.player.PlayerDataComponent;
 import pl.pollub.hirols.gameMap.Map;
 import pl.pollub.hirols.managers.RenderPriority;
 import pl.pollub.hirols.managers.enums.Direction;
+import pl.pollub.hirols.managers.enums.GroundType;
 import pl.pollub.hirols.managers.input.InputManager;
 import pl.pollub.hirols.pathfinding.Node;
 import pl.pollub.hirols.screens.TownScreen;
@@ -478,9 +479,12 @@ public class MapInteractionSystem extends GameMapEntitySystem {
             Direction direction = null;
             Sprite tempSprite = new Sprite();
 
+            GroundType groundType = mapMapper.get(gameMap.getEntity(nodeX,nodeY)).groundType;
+            float penalty = (100+groundType.penalty)/100;
             if (previousNodeX == nodeX || previousNodeY == nodeY) {
-                movementCost = 1f;
-            } else movementCost = 1.41421356f;
+                movementCost = 1f * penalty;
+            } else movementCost = 1.41421356f * penalty;
+
 
             heroMovementPoints -= movementCost;
             Arrows.ArrowSprites arrowSprites = (heroMovementPoints < 0) ? arrows.red : arrows.green;

@@ -40,6 +40,7 @@ import pl.pollub.hirols.components.map.maps.GameMapComponent;
 import pl.pollub.hirols.components.map.maps.PortalComponent;
 import pl.pollub.hirols.components.physics.PositionComponent;
 import pl.pollub.hirols.components.player.PlayerDataComponent;
+import pl.pollub.hirols.managers.enums.GroundType;
 import pl.pollub.hirols.managers.enums.Race;
 import pl.pollub.hirols.managers.enums.ResourceType;
 import pl.pollub.hirols.pathfinding.DiagonalHeuristic;
@@ -99,18 +100,31 @@ public class Map implements Disposable {
 
                 Entity entity = game.engine.createEntity();
                 boolean walkable = false;
+                GroundType groundType = GroundType.SAND;
                 for(TiledMapTileLayer.Cell cell : cells) {
-                    if(cell != null) {
-                        Object property = cell.getTile().getProperties().get("walkable");
-                        if(property != null) {
-                            walkable = Boolean.parseBoolean(property.toString());
-                            if(!walkable) break;
-                        }
+                    if(cell == null) {
+                        walkable = false;
+                        break;
                     }
+
+                    String groundTypeProperty = cell.getTile().getProperties().get("groundType", String.class);
+                    if(groundTypeProperty != null) {
+                        groundTypeProperty = groundTypeProperty.toUpperCase();
+                        groundType = GroundType.valueOf(groundTypeProperty);
+                    }
+
+                    Object property = cell.getTile().getProperties().get("walkable");
+                    if(property == null) {
+                        walkable = false;
+                        break;
+                    }
+
+                    walkable = Boolean.parseBoolean(property.toString());
+                    if(!walkable) break;
                 }
 
                 entity
-                        .add(game.engine.createComponent(MapComponent.class).init(walkable))
+                        .add(game.engine.createComponent(MapComponent.class).init(walkable, groundType))
                         .add(game.engine.createComponent(PositionComponent.class).init(i/2*tileWidth,j/2*tileHeight))
                         .add(game.engine.createComponent(gameMapComponentClazz));
 
@@ -340,7 +354,7 @@ public class Map implements Disposable {
     }
 
     public List<Entity> getAdjacentEntities(float positionX, float positionY) {
-        List<Entity> adjacentEntities = new ArrayList<Entity>();
+        List<Entity> adjacentEntities = new ArrayList<>();
 
         int x = (int)Math.floor(positionX / tileWidth);
         int y = (int)Math.floor(positionY / tileHeight);
