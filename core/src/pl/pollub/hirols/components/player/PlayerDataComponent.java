@@ -17,6 +17,7 @@ public class PlayerDataComponent implements Component, Pool.Poolable {
 
     public Color color;
     public String name;
+    public int day;
 
     public PlayerDataComponent init(Color color, String name) {
         this.color = color;
@@ -27,6 +28,8 @@ public class PlayerDataComponent implements Component, Pool.Poolable {
         resources.put(ResourceType.STONE, 3);
         resources.put(ResourceType.METAL, 5);
 
+        day = 1;
+
         return this;
     }
 
@@ -35,6 +38,7 @@ public class PlayerDataComponent implements Component, Pool.Poolable {
         resources.clear();
         color = null;
         name = null;
+        day = 0;
     }
 
 

@@ -243,7 +243,7 @@ public class Map implements Disposable {
                             break;
                     }
                     resource
-                            .add(game.engine.createComponent(ResourceComponent.class).init(resourceType, random.nextInt(7) + 1))
+                            .add(game.engine.createComponent(ResourceComponent.class).init(resourceType, random.nextInt(15) + 1))
                             .add(game.engine.createComponent(TextureComponent.class).setSprite(new Sprite(game.assetManager.get(resourceTexturePath, Texture.class))))
                             .add(game.engine.createComponent(RenderableComponent.class));
                     mapComponentMapper.get(resource).walkable = false;

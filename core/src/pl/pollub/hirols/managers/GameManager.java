@@ -88,7 +88,11 @@ public class GameManager implements Disposable{
             float r = random.nextFloat();
             float g = random.nextFloat();
             float b = random.nextFloat();
-            Color color = new Color(r,g,b,1f);
+            float min = 0.6f;
+            float max = 0.85f;
+            float a = random.nextFloat() * (max - min) + min;
+
+            Color color = new Color(r,g,b,a);
 
             Entity player = game.engine.createEntity();
             player

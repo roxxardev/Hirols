@@ -1,22 +1,21 @@
 package pl.pollub.hirols.gui;
 
 import com.badlogic.ashley.core.ComponentMapper;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
-import com.kotcrab.vis.ui.widget.VisLabel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import pl.pollub.hirols.Hirols;
@@ -30,11 +29,11 @@ import pl.pollub.hirols.managers.enums.ResourceType;
 public class TopBar extends Table {
     private Hirols game;
 
-    private Image playerColour;
-    private VisLabel playerLabel;
-    private ArrayList<Image> resourceImages = new ArrayList<Image>();
-    private ArrayList<Label> resourceLabels = new ArrayList<Label>();
-    private Map<ResourceType, Resource> resourceMap = new HashMap<ResourceType, Resource>(4);
+    private Label playerLabel;
+    private Label dayLabel;
+    private ArrayList<Image> resourceImages = new ArrayList<>();
+    private ArrayList<Label> resourceLabels = new ArrayList<>();
+    private Map<ResourceType, Resource> resourceMap = new HashMap<>(4);
 
     private Class<? extends PlayerComponent> currentPlayer;
 
@@ -46,11 +45,13 @@ public class TopBar extends Table {
         this.setHeight(stage.getHeight() / heightDivider);
 
         this.setTouchable(Touchable.enabled);
-        this.setDebug(game.hudManager.debug);
+        this.setDebug(false);
         this.setBackground(game.hudManager.getTransparentBackground());
 
-        addResources();
         addPlayer();
+        addResources();
+        addDayLabel();
+        updatePlayer();
     }
 
     public boolean updatePlayer() {
@@ -58,25 +59,34 @@ public class TopBar extends Table {
         if(currentPlayer == player) return false;
         currentPlayer = player;
         PlayerDataComponent playerData = ComponentMapper.getFor(PlayerDataComponent.class).get(game.gameManager.getCurrentPlayer());
-        Color color = playerData.color;
-        playerColour.setColor(color);
-        playerLabel.setText(playerData.name);
+        Color color = new Color(playerData.color);
+        playerLabel.getStyle().background = new SpriteDrawable(new Sprite(game.hudManager.getWhiteTexture())).tint(color);
+        playerLabel.setText(" Player: "+playerData.name + " ");
+        int week = (playerData.day / 7) + 1;
+        dayLabel.setText("Week " + week + ", Day "+playerData.day+" ");
 
         updateResources();
         return true;
     }
 
     private void addPlayer() {
-        playerColour = new Image(game.hudManager.getWhiteTexture());
-        playerColour.setPosition(0,0);
-        addActor(playerColour);
-
-        BitmapFont font = game.assetManager.get("testFontSize12.ttf", BitmapFont.class);
+        BitmapFont font = game.assetManager.get("testFontSize18.ttf", BitmapFont.class);
         Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.GOLD);
-        playerLabel = new VisLabel("no player", labelStyle);
-        addActor(playerLabel);
+        playerLabel = new Label("no player", labelStyle);
+        add(playerLabel).expand().fill();
+        playerLabel.setWrap(true);
+        playerLabel.setEllipsis(true);
+        playerLabel.setAlignment(Align.center);
+    }
 
-        updatePlayer();
+    private void addDayLabel() {
+        BitmapFont font = game.assetManager.get("testFontSize18.ttf", BitmapFont.class);
+        Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.GOLD);
+        dayLabel = new Label("Week 0, Day 0", labelStyle);
+        dayLabel.setWrap(true);
+        dayLabel.setEllipsis(true);
+        dayLabel.setAlignment(Align.center);
+        add(dayLabel).expand().fill();
     }
 
     private void addResources() {
@@ -84,61 +94,29 @@ public class TopBar extends Table {
 
         Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.GOLD);
 
-//        Image woodImage = new Image(game.assetManager.get("resources/LogPile.png", Texture.class));
-//        resourceImages.add(woodImage);
-//        Label woodLabel = new Label("0", labelStyle);
-//        resourceLabels.add(woodLabel);
-//        woodImage.setScaling(Scaling.fit);
-//        this.add(woodImage).fill();
-//        this.add(woodLabel);
-//
-//        Image stoneImage = new Image(game.assetManager.get("resources/StonePile.png", Texture.class));
-//        resourceImages.add(stoneImage);
-//        Label stoneLabel = new Label("0", labelStyle);
-//        resourceLabels.add(stoneLabel);
-//        stoneImage.setScaling(Scaling.fit);
-//        this.add(stoneImage).fill();
-//        this.add(stoneLabel);
-//
-//        Image goldImage = new Image(game.assetManager.get("resources/GoldPile.png", Texture.class));
-//        resourceImages.add(goldImage);
-//        goldImage.setWidth(0);
-//        goldImage.setHeight(0);
-//        Label goldLabel = new Label("0", labelStyle);
-//        resourceLabels.add(goldLabel);
-//        goldImage.setScaling(Scaling.fit);
-//        this.add(goldImage).fill();
-//        this.add(goldLabel);
-//
-//        Image metalImage = new Image(game.assetManager.get("resources/CoalPile.png", Texture.class));
-//        resourceImages.add(metalImage);
-//        Label metalLabel = new Label("0", labelStyle);
-//        resourceLabels.add(metalLabel);
-//        metalImage.setScaling(Scaling.fit);
-//        this.add(metalImage).fill();
-//        this.add(metalLabel);
+        defaults().expandY().padRight(5);
 
         Resource wood = new Resource(game.assetManager.get("resources/LogPile.png", Texture.class), ResourceType.WOOD, 0, labelStyle);
-        add(wood.image).fill();
-        add(wood.label);
+        add(wood.image);
+        add(wood.label).fill();
         resourceImages.add(wood.image);
         resourceLabels.add(wood.label);
 
         Resource gold = new Resource(game.assetManager.get("resources/GoldPile.png", Texture.class), ResourceType.GOLD, 0, labelStyle);
-        add(gold.image).fill();
-        add(gold.label);
+        add(gold.image);
+        add(gold.label).fill();
         resourceImages.add(gold.image);
         resourceLabels.add(gold.label);
 
         Resource metal = new Resource(game.assetManager.get("resources/CoalPile.png", Texture.class), ResourceType.METAL, 0, labelStyle);
-        add(metal.image).fill();
-        add(metal.label);
+        add(metal.image);
+        add(metal.label).fill();
         resourceImages.add(metal.image);
         resourceLabels.add(metal.label);
 
         Resource stone = new Resource(game.assetManager.get("resources/StonePile.png", Texture.class), ResourceType.STONE, 0, labelStyle);
-        add(stone.image).fill();
-        add(stone.label);
+        add(stone.image);
+        add(stone.label).fill();
         resourceImages.add(stone.image);
         resourceLabels.add(stone.label);
 
@@ -153,19 +131,6 @@ public class TopBar extends Table {
         float tempHeight = height / heightDivider;
         this.setHeight(tempHeight < 25 ? 25 : tempHeight);
         this.setPosition(0, height - this.getHeight());
-
-        float resourceImageWidth = width/heightDivider;
-        for(Actor actor : resourceImages) {
-            getCell(actor).width(resourceImageWidth);
-        }
-
-        float resourceLabelWidth = width / heightDivider;
-        for(Actor actor : resourceLabels) {
-            getCell(actor).width(resourceLabelWidth);
-        }
-
-        playerLabel.setBounds(4, 0, 0,getHeight());
-        playerColour.setBounds(0,0, playerLabel.getPrefWidth() + 10, getHeight());
     }
 
     public void setHeightDivider(int heightDivider) {
@@ -194,6 +159,7 @@ public class TopBar extends Table {
             image = new Image(texture);
             image.setScaling(Scaling.fit);
             label = new Label(n+"", labelStyle);
+            label.setAlignment(Align.left);
         }
 
         public void update(int n) {
