@@ -31,6 +31,8 @@ import pl.pollub.hirols.components.map.ChestComponent;
 import pl.pollub.hirols.components.map.MapComponent;
 import pl.pollub.hirols.components.map.MineComponent;
 import pl.pollub.hirols.components.map.MineDataComponent;
+import pl.pollub.hirols.components.map.RecruitComponent;
+import pl.pollub.hirols.components.map.RecruitDataComponent;
 import pl.pollub.hirols.components.map.ResourceComponent;
 import pl.pollub.hirols.components.map.TownComponent;
 import pl.pollub.hirols.components.map.TownDataComponent;
@@ -80,7 +82,7 @@ public class Map implements Disposable {
         entityMap = new Entity[tileMapWidth][tileMapHeight];
         createEntities();
         graph = GraphGenerator.generateDiagonalGraph(this,tileWidth,tileHeight,tileMapWidth,tileMapHeight);
-        pathFinder = new IndexedAStarPathFinder<Node>(graph);
+        pathFinder = new IndexedAStarPathFinder<>(graph);
         loadObjects();
     }
 
@@ -154,10 +156,11 @@ public class Map implements Disposable {
         MapLayer objectLayer = tiledMap.getLayers().get("objects");
         MapObjects mapObjects = objectLayer.getObjects();
 
-        java.util.Map<String, ArrayList<Entity>> mineMap = new HashMap<String, ArrayList<Entity>>();
-        java.util.Map<String, ArrayList<Entity>> townMap = new HashMap<String, ArrayList<Entity>>();
-        java.util.Map<String, Entity> enterEntityMap = new HashMap<String, Entity>();
-        java.util.Map<MapObject, Entity> portals = new HashMap<MapObject, Entity>();
+        java.util.Map<String, ArrayList<Entity>> mineMap = new HashMap<>();
+        java.util.Map<String, ArrayList<Entity>> townMap = new HashMap<>();
+        java.util.Map<String, ArrayList<Entity>> recruitMap = new HashMap<>();
+        java.util.Map<String, Entity> enterEntityMap = new HashMap<>();
+        java.util.Map<MapObject, Entity> portals = new HashMap<>();
 
         PlayerDataComponent playerDataComponent = ComponentMapper.getFor(PlayerDataComponent.class).get(game.gameManager.getCurrentPlayer());
 
@@ -269,6 +272,28 @@ public class Map implements Disposable {
                 } else if(type.equals("portal")) {
                     Gdx.app.log("Portal Object", objectName + " " + position.toString());
                     portals.put(object, entityMap[x][y]);
+                } else if(type.equals("recruit")) {
+                    Gdx.app.log("Recruit Object", objectName + " " + position.toString());
+                    Entity recruit = entityMap[x][y];
+                    if(object.getProperties().containsKey("isEnter")) {
+                        if(Boolean.valueOf(object.getProperties().get("isEnter", String.class))) {
+                            enterEntityMap.put(objectName, recruit);
+                            Sprite flagSprite = new Sprite(game.assetManager.get("temp/Flag.png", Texture.class));
+                            recruit
+                                    .add(game.engine.createComponent(RecruitDataComponent.class).init(game.unitsManager.oldShaman, 2))
+                                    .add(game.engine.createComponent(BannerComponent.class).init(flagSprite, new Color(Color.GRAY), 0, (int) (getTileHeight() - flagSprite.getHeight())))
+                                    .add(game.engine.createComponent(RenderableComponent.class))
+                                    .add(game.engine.createComponent(RecruitComponent.class).init(recruit));
+                            game.engine.addEntity(recruit);
+                        } else {
+                            if(!recruitMap.containsKey(objectName)) {
+                                recruitMap.put(objectName, new ArrayList<Entity>());
+                                recruitMap.get(objectName).add(recruit);
+                            } else {
+                                recruitMap.get(objectName).add(recruit);
+                            }
+                        }
+                    }
                 }
 
                 Pools.free(position);
@@ -288,6 +313,14 @@ public class Map implements Disposable {
             ArrayList<Entity> value = e.getValue();
             for(Entity town : value) {
                 town.add(game.engine.createComponent(TownComponent.class).init(enterEntityMap.get(key)));
+            }
+        }
+
+        for(java.util.Map.Entry<String, ArrayList<Entity>> e : recruitMap.entrySet()) {
+            String key = e.getKey();
+            ArrayList<Entity> value = e.getValue();
+            for(Entity recruit : value) {
+                recruit.add(game.engine.createComponent(RecruitComponent.class).init(enterEntityMap.get(key)));
             }
         }
 

@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.components.graphics.RenderableComponent;
 import pl.pollub.hirols.components.graphics.TextureComponent;
+import pl.pollub.hirols.components.map.RecruitComponent;
 import pl.pollub.hirols.components.map.maps.GameMapComponent;
 import pl.pollub.hirols.components.map.GameMapDataComponent;
 import pl.pollub.hirols.components.map.ChestComponent;
@@ -62,6 +63,7 @@ public class MapInteractionSystem extends GameMapEntitySystem {
     private ComponentMapper<PlayerDataComponent> playerDataMap = ComponentMapper.getFor(PlayerDataComponent.class);
     private ComponentMapper<SelectedComponent> selectedMap = ComponentMapper.getFor(SelectedComponent.class);
     private ComponentMapper<PortalComponent> portalMap = ComponentMapper.getFor(PortalComponent.class);
+    private ComponentMapper<RecruitComponent> recruitMap = ComponentMapper.getFor(RecruitComponent.class);
 
     private final Hirols game;
 
@@ -266,6 +268,7 @@ public class MapInteractionSystem extends GameMapEntitySystem {
                 Gdx.app.log("MapInteractionSystem", "Path created for hero id: "
                         + selectedHeroData.id + " Length: " + selectedHeroData.heroPath.getPathSize() + " to town");
             }
+            Pools.free(townPos);
         } else if (mineMap.has(mapEntity)) {
             Gdx.app.log("MapInteractionSystem", "Tap on mine");
             Entity mineEnterEntity = mineMap.get(mapEntity).enterEntity;
@@ -290,11 +293,21 @@ public class MapInteractionSystem extends GameMapEntitySystem {
                         + selectedHeroData.id + " Length: " + selectedHeroData.heroPath.getPathSize() + " to chest");
             }
         } else if(portalMap.has(mapEntity)) {
-            Gdx.app.log("MapInteractionSystem", "Tap on Portal");
+            Gdx.app.log("MapInteractionSystem", "Tap on portal");
             if(findPathNonWalkable(pathStartPosition.set(selectedHeroPosition.x, selectedHeroPosition.y), mousePosition, gameMap, selectedHeroData, mapEntity, LastPathTexture.CROSS, true)) {
                 Gdx.app.log("MapInteractionSystem", "Path created for hero id: "
                         + selectedHeroData.id + " Length: " + selectedHeroData.heroPath.getPathSize() + " to portal");
             }
+        } else if(recruitMap.has(mapEntity)) {
+            Gdx.app.log("MapInteractionSystem", "Tap on recruit building");
+            Entity recruitEnterEntity = recruitMap.get(mapEntity).enterEntity;
+            PositionComponent mineEnterPosition = posMap.get(recruitEnterEntity);
+            Vector2 minePos = Pools.obtain(Vector2.class).set(mineEnterPosition.x, mineEnterPosition.y);
+            if(findPathNonWalkable(pathStartPosition.set(selectedHeroPosition.x, selectedHeroPosition.y), minePos, gameMap, selectedHeroData, recruitEnterEntity, LastPathTexture.CROSS, true)) {
+                Gdx.app.log("MapInteractionSystem", "Path created for hero id: "
+                        + selectedHeroData.id + " Length: " + selectedHeroData.heroPath.getPathSize() + " to recruit building");
+            }
+            Pools.free(minePos);
         }
     }
 

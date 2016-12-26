@@ -14,6 +14,8 @@ import pl.pollub.hirols.components.LifePeriodComponent;
 import pl.pollub.hirols.components.TextureRenderableRemovalComponent;
 import pl.pollub.hirols.components.map.BannerComponent;
 import pl.pollub.hirols.components.map.EnemyDataComponent;
+import pl.pollub.hirols.components.map.RecruitComponent;
+import pl.pollub.hirols.components.map.RecruitDataComponent;
 import pl.pollub.hirols.components.map.maps.PortalComponent;
 import pl.pollub.hirols.components.player.PlayerComponent;
 import pl.pollub.hirols.components.player.PlayerDataComponent;
@@ -52,6 +54,9 @@ public class EndNodeInteractionSystem extends GameMapEntitySystem {
     private ComponentMapper<EnemyDataComponent> enemyDataMap = ComponentMapper.getFor(EnemyDataComponent.class);
     private ComponentMapper<PortalComponent> portalMap = ComponentMapper.getFor(PortalComponent.class);
     private ComponentMapper<BannerComponent> bannerMap = ComponentMapper.getFor(BannerComponent.class);
+    private ComponentMapper<RecruitComponent> recruitMap = ComponentMapper.getFor(RecruitComponent.class);
+    private ComponentMapper<RecruitDataComponent> recruitDataMap = ComponentMapper.getFor(RecruitDataComponent.class);
+
 
     private final Hirols game;
 
@@ -87,6 +92,7 @@ public class EndNodeInteractionSystem extends GameMapEntitySystem {
             } else if (mineMap.has(targetEntity)) {
                 Gdx.app.log("EndNodeInteractionSystem", "Interaction with mine");
                 Class<? extends PlayerComponent> mineOwner = game.gameManager.attachedToPlayer(targetEntity);
+                if(mineOwner != null) targetEntity.remove(mineOwner);
                 if(mineOwner != currentPlayerClass) {
                     bannerMap.get(targetEntity).color.set(playerData.color);
                     targetEntity.add(game.engine.createComponent(currentPlayerClass));
@@ -98,6 +104,20 @@ public class EndNodeInteractionSystem extends GameMapEntitySystem {
                 PositionComponent destinationPortalPosition = posMap.get(destinationPortalEntity);
                 posMap.get(selectedHero).init(destinationPortalPosition.x, destinationPortalPosition.y);
                 gameMapData.gameMapCam.position.set(destinationPortalPosition.x, destinationPortalPosition.y, 0);
+            } else if(recruitMap.has(targetEntity)) {
+                Gdx.app.log("EndNodeInteractionSystem", "Interaction with recruit building");
+                Class<? extends PlayerComponent> recruitBuildingOwner = game.gameManager.attachedToPlayer(targetEntity);
+                if(recruitBuildingOwner != null ) targetEntity.remove(recruitBuildingOwner);
+                if(recruitBuildingOwner != currentPlayerClass) {
+                    bannerMap.get(targetEntity).color.set(playerData.color);
+                    targetEntity.add(game.engine.createComponent(currentPlayerClass));
+                    Gdx.app.log("EndNodeInteractionSystem", "Recruit building taken by "+currentPlayerClass.getSimpleName() + " from " + ((recruitBuildingOwner != null) ? recruitBuildingOwner.getSimpleName() : "no one"));
+                }
+                RecruitDataComponent recruitData = recruitDataMap.get(targetEntity);
+                if(selectedHeroData.army.addUnit(recruitData.unit, recruitData.currentNumber)) {
+                    Gdx.app.log("EndNodeInteractionSystem", "Recruited " + recruitData.currentNumber + " " + recruitData.unit.name);
+                    recruitData.currentNumber = 0;
+                }
             }
             selectedHeroData.heroPath.setTargetEntity(null);
             return;

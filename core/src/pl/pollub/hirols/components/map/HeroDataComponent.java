@@ -59,6 +59,7 @@ public class HeroDataComponent implements Component, Pool.Poolable{
         final Squad[] squads = new Squad[capacity];
 
         public boolean addUnit(UnitsManager.Unit unitToInsert, int quantity) {
+            if(quantity < 1) return false;
             for(int i = 0; i < capacity; i++) {
                 if(squads[i] != null && squads[i].unit.equals(unitToInsert)) {
                     squads[i].quantity += quantity;
