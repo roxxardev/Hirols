@@ -409,14 +409,19 @@ public class MapInteractionSystem extends GameMapEntitySystem {
 
         hero.add(game.engine.createComponent(SelectedComponent.class));
         recalculatePathForHero(hero);
-        PositionComponent heroPosition = posMap.get(hero);
-        gameMapDataMapper.get(gameMapDataArray.first()).gameMapCam.position.set(heroPosition.x,heroPosition.y,0);
+        setCameraPositionOnHero(hero);
         HeroDataComponent heroData = heroDataMap.get(hero);
         ArrayList<Entity> heroPathEntities = heroData.pathEntities;
         for(Entity pathEntity : heroPathEntities) {
             pathEntity.add(game.engine.createComponent(RenderableComponent.class));
         }
         return true;
+    }
+
+    public void setCameraPositionOnHero(Entity hero) {
+        Gdx.app.log("MapInteractionSystem", "Camera position set to selected player position");
+        PositionComponent heroPosition = posMap.get(hero);
+        gameMapDataMapper.get(gameMapDataArray.first()).gameMapCam.position.set(heroPosition.x,heroPosition.y,0);
     }
 
     private void handleTapOutsideOfMap(Vector2 mousePosition) {

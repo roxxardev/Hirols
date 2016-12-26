@@ -35,7 +35,7 @@ public class GameMapHud extends Hud {
         rightBar = new RightBar(game, this,gameMapScreen.getGameMapComponentClass());
         leftBar = new LeftBar(game,stage,gameMapScreen);
 
-        longPressImage = new pl.pollub.hirols.gui.AnimatedImage(AnimationManager.createAnimation(game.assetManager.get("animations/loadingLongPress.png", Texture.class), 32, 1, 0.034375f), false);
+        longPressImage = new pl.pollub.hirols.gui.AnimatedImage(AnimationManager.createAnimation(game.assetManager.get("animations/loadingLongPress.png", Texture.class), 32, 1, 0.037f), false);
 
         stage.addActor(longPressImage);
         stage.addActor(topBar);
@@ -95,5 +95,9 @@ public class GameMapHud extends Hud {
 
     public TopBar getTopBar() {
         return topBar;
+    }
+
+    public RightBar getRightBar() {
+        return rightBar;
     }
 }
