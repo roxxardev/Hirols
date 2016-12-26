@@ -106,15 +106,26 @@ public class HeroDataComponent implements Component, Pool.Poolable{
     }
 
     public class HeroLevel {
-        private int experience;
-        private int level;
+        private int experience = 1000;
+        private int level = 1;
 
         public void addExperience(int amount) {
-
+            experience += Math.abs(amount);
+            double lvl = Math.log(experience/1000d)/Math.log(2.5d) + 1;
+            level = (lvl >= 1) ? (int)Math.floor(lvl) : 1;
         }
 
         public void clear(){
+            experience = 1000;
+            level = 1;
+        }
 
+        public int getExperience() {
+            return experience;
+        }
+
+        public int getLevel() {
+            return level;
         }
     }
 }

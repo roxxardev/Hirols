@@ -109,4 +109,11 @@ public class GameMapCommands extends CommandsContainer {
         gameMapScreen.getHud().getTopBar().setHeightDivider(heightDivider);
         console.log("TopBar heightdivider set to " + heightDivider+".");
     }
+
+    public void addExperience(int experience) {
+        Entity selectedHero = game.engine.getSystem(MapInteractionSystem.class).getSelectedHeroes().first();
+        HeroDataComponent selectedHeroData = ComponentMapper.getFor(HeroDataComponent.class).get(selectedHero);
+        selectedHeroData.heroLevel.addExperience(experience);
+        console.log(experience + " experience added. Hero is now " + selectedHeroData.heroLevel.getLevel() + " level with " + selectedHeroData.heroLevel.getExperience() +  " experience.");
+    }
 }
