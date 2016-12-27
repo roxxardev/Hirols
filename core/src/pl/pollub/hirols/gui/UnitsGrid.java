@@ -56,7 +56,7 @@ public class UnitsGrid extends GridGroup {
                 button.removeUnitImage();
                 continue;
             }
-            button.getLabel().setText(squads[i].getUnit().name + squads[i].getQuantity());
+            button.getLabel().setText(squads[i].getUnit().name + " "+squads[i].getQuantity());
             AnimationManager.AnimationInformation animationInformation = squads[i].getUnit().animationInformation;
             AnimationManager.AnimationProperties animationProperties = animationInformation.animationPropertiesMap.get(AnimationType.STAND);
             Animation animation = AnimationManager.createAnimation(animationProperties.getDirections(),game.assetManager.get(animationProperties.getPath(), Texture.class), animationProperties.getCols(), animationProperties.getRows(), animationProperties.getTime())

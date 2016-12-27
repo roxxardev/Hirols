@@ -368,6 +368,7 @@ public class MapInteractionSystem extends GameMapEntitySystem {
             PositionComponent heroPosition = posMap.get(selectedHero);
             if (mapIndexX == (int)Math.floor(heroPosition.x / gameMap.getTileWidth()) && mapIndexY == (int)Math.floor(heroPosition.y / gameMap.getTileHeight())) {
                 Gdx.app.log("MapInteractionSystem", "Long press on selected hero id: " + heroData.id);
+                setCameraPositionOnHero(selectedHero);
                 return;
             }
         }

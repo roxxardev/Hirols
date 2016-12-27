@@ -336,7 +336,7 @@ public class RightBar extends Table {
         }
 
         public boolean addHero(final Entity heroEntity, final GameMapHud gameMapHud) {
-            HeroDataComponent heroData = ComponentMapper.getFor(HeroDataComponent.class).get(heroEntity);
+            final HeroDataComponent heroData = ComponentMapper.getFor(HeroDataComponent.class).get(heroEntity);
 
             if(heroButtonMap.get(heroEntity) != null) {
                 Gdx.app.log("Hud -> RightBar", "Hero already added to GridGroup!");
@@ -356,7 +356,7 @@ public class RightBar extends Table {
             image.addListener(new ActorGestureListener(20, 0.4f, 0.6f, 0.15f) {
                 @Override
                 public boolean longPress(Actor actor, float x, float y) {
-                    gameMapHud.addHeroWindow();
+                    gameMapHud.addLongPressWindow(heroData);
                     return super.longPress(actor, x, y);
                 }
             });
