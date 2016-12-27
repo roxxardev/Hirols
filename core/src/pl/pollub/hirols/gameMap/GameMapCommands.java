@@ -60,7 +60,7 @@ public class GameMapCommands extends CommandsContainer {
         if (game.engine.getSystem(MapInteractionSystem.class).resetHeroPath(selectedHeroData, true)) {
             selectedHeroData.movementPoints = value;
             gameMapScreen.getHud().getRightBar().updateSelectedHero(selectedHero);
-            console.log("SelectedComponent Hero id: " + selectedHeroData.id + " movement points set to " + value + ".");
+            console.log("SelectedComponent Hero id: " + selectedHeroData.id + " current movement points set to " + value + ".");
         } else {
             console.log("SelectedComponent Hero id: " + selectedHeroData.id + " cannot set movement points, hero must stand!");
         }
