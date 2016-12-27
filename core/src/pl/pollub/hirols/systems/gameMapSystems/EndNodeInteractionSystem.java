@@ -16,7 +16,7 @@ import pl.pollub.hirols.components.map.BannerComponent;
 import pl.pollub.hirols.components.map.EnemyDataComponent;
 import pl.pollub.hirols.components.map.RecruitComponent;
 import pl.pollub.hirols.components.map.RecruitDataComponent;
-import pl.pollub.hirols.components.map.maps.PortalComponent;
+import pl.pollub.hirols.components.map.PortalComponent;
 import pl.pollub.hirols.components.player.PlayerComponent;
 import pl.pollub.hirols.components.player.PlayerDataComponent;
 import pl.pollub.hirols.components.graphics.BitmapFontComponent;

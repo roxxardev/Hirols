@@ -51,7 +51,7 @@ public class UnitsManager {
         orcWarior = new Unit(animationInformation, Race.ORC, UnitType.WALK, "Ork wojownik", new UnitCost().addCost(ResourceType.GOLD, 250).addCost(ResourceType.METAL, 1), 8, 7, 20, new Vector2(8,10), 5, 5,1);
 
         griffin = new Unit(animationInformation, Race.HUMAN, UnitType.FLY, "Gryf", new UnitCost().addCost(ResourceType.GOLD, 600).addCost(ResourceType.STONE, 2), 20, 10, 25, new Vector2(10,12), 7, 5,1);
-        griffinRider = new Unit(animationInformation, Race.HUMAN, UnitType.FLY, "Gryf z jeźdźcem", new UnitCost().addCost(ResourceType.GOLD, 750).addCost(ResourceType.STONE, 2).addCost(ResourceType.METAL, 1), 24, 13, 30, new Vector2(14,16), 6, 5,1);
+        griffinRider = new Unit(animationInformation, Race.HUMAN, UnitType.FLY, "Gryf z jezdzcem", new UnitCost().addCost(ResourceType.GOLD, 750).addCost(ResourceType.STONE, 2).addCost(ResourceType.METAL, 1), 24, 13, 30, new Vector2(14,16), 6, 5,1);
 
         animationInformation = new AnimationManager.AnimationInformation(176,176, -40, -40);
         animationInformation.animationPropertiesMap.put(AnimationType.STAND, new AnimationManager.AnimationProperties(directions, "animations/OrcWyvern_Standing.png", 16, 8, 0.06f));
@@ -59,7 +59,7 @@ public class UnitsManager {
         animationInformation.animationPropertiesMap.put(AnimationType.ATTACK, new AnimationManager.AnimationProperties(directions, "animations/OrcWyvern_Attacking.png", 11, 8, 0.06f));
         animationInformation.animationPropertiesMap.put(AnimationType.DIE, new AnimationManager.AnimationProperties(directions, "animations/OrcWyvern_Dying.png", 16, 8, 0.06f));
         animationInformation.animationPropertiesMap.put(AnimationType.TAKING_DAMAGE, new AnimationManager.AnimationProperties(directions, "animations/OrcWyvern_TakingDamage.png", 11, 8, 0.06f));
-        smallWyvern = new Unit(animationInformation, Race.ORC, UnitType.FLY, "Wiwerna mała", new UnitCost().addCost(ResourceType.GOLD, 1000).addCost(ResourceType.STONE, 1), 25, 13, 30, new Vector2(13,16), 5, 2,1);
+        smallWyvern = new Unit(animationInformation, Race.ORC, UnitType.FLY, "Wiwerna mala", new UnitCost().addCost(ResourceType.GOLD, 1000).addCost(ResourceType.STONE, 1), 25, 13, 30, new Vector2(13,16), 5, 2,1);
 
         animationInformation = new AnimationManager.AnimationInformation(256,256, -80, -80);
         animationInformation.animationPropertiesMap.put(AnimationType.STAND, new AnimationManager.AnimationProperties(directions, "animations/OrcRider_Standing.png", 16, 8, 0.06f));

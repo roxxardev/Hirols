@@ -134,6 +134,6 @@ public class HudManager {
         button.getImage().setScaling(scaling);
         button.clearChildren();
         button.add(button.getImage()).expand().fill().row();
-        button.add(button.getLabel());
+        button.add(button.getLabel()).fill();
     }
 }

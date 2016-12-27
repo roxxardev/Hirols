@@ -37,7 +37,7 @@ import pl.pollub.hirols.components.map.ResourceComponent;
 import pl.pollub.hirols.components.map.TownComponent;
 import pl.pollub.hirols.components.map.TownDataComponent;
 import pl.pollub.hirols.components.map.maps.GameMapComponent;
-import pl.pollub.hirols.components.map.maps.PortalComponent;
+import pl.pollub.hirols.components.map.PortalComponent;
 import pl.pollub.hirols.components.physics.PositionComponent;
 import pl.pollub.hirols.components.player.PlayerDataComponent;
 import pl.pollub.hirols.managers.enums.GroundType;

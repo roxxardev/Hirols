@@ -1,4 +1,4 @@
-package pl.pollub.hirols.components.map.maps;
+package pl.pollub.hirols.components.map;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;

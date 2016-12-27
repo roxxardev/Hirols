@@ -35,6 +35,7 @@ public class UnitsGrid extends GridGroup {
             buttonGroup.add(in);
             HudManager.moveTextLabelBelowImage(in, Scaling.fit);
             in.getImageCell().expand();
+            in.getLabel().setWrap(true);
         }
     }
 

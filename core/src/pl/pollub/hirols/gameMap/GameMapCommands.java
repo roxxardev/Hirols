@@ -98,8 +98,8 @@ public class GameMapCommands extends CommandsContainer {
             ImmutableArray<Entity> towns = game.engine.getEntitiesFor(Family.all(player, TownComponent.class, TownDataComponent.class, gameMap.getGameMapComponentClazz()).get());
 
             stringBuilder.append(player.getSimpleName()).append(" towns:");
-            for(Entity mine : towns) {
-                stringBuilder.append(ComponentMapper.getFor(MineDataComponent.class).get(mine).type.toString()).append(", ");
+            for(Entity town : towns) {
+                stringBuilder.append(ComponentMapper.getFor(TownDataComponent.class).get(town).name).append(", ");
             }
         }
         console.log(stringBuilder.toString());
