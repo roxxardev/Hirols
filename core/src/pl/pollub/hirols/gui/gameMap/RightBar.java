@@ -18,7 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Scaling;
@@ -181,7 +180,7 @@ public class RightBar extends Table {
 
     public void updateTownsAndHeroes(Class<? extends GameMapComponent> gameMapComponent, GameMapHud gameMapHud) {
         ImmutableArray<Entity> heroes = game.engine.getEntitiesFor(Family.all(HeroDataComponent.class, gameMapComponent, game.gameManager.getCurrentPlayerClass()).get());
-        ArrayList<Entity> currentHeroesInGridGroup = new ArrayList<>(gridGroupHeroes.heroButtonMap.keySet());
+        ArrayList<Entity> currentHeroesInGridGroup = new ArrayList<>(gridGroupHeroes.heroTableMap.keySet());
         for (Entity hero : currentHeroesInGridGroup) {
             if (!heroes.contains(hero, true)) {
                 gridGroupHeroes.removeHero(hero);
@@ -308,16 +307,16 @@ public class RightBar extends Table {
     }
 
     private class GridGroupHeroes extends GridGroup {
-        final Map<Entity, HeroTable> heroButtonMap = new HashMap<>();
+        final Map<Entity, HeroTable> heroTableMap = new HashMap<>();
 
         @Override
         public void clear() {
             super.clear();
-            heroButtonMap.clear();
+            heroTableMap.clear();
         }
 
         public boolean updateHero(Entity heroEntity) {
-            HeroTable heroTable = heroButtonMap.get(heroEntity);
+            HeroTable heroTable = heroTableMap.get(heroEntity);
             if (heroTable == null) return false;
             HeroDataComponent heroData = ComponentMapper.getFor(HeroDataComponent.class).get(heroEntity);
             heroTable.updateMagicProgressBar(heroData.magicPoints);
@@ -328,22 +327,30 @@ public class RightBar extends Table {
         public boolean addHero(final Entity heroEntity, final GameMapHud gameMapHud) {
             final HeroDataComponent heroData = ComponentMapper.getFor(HeroDataComponent.class).get(heroEntity);
 
-            if (heroButtonMap.get(heroEntity) != null) {
+            if (heroTableMap.get(heroEntity) != null) {
                 Gdx.app.log("Hud -> RightBar", "Hero already added to GridGroup!");
                 return false;
             }
 
             Image image = new Image(game.assetManager.get(heroData.hero.avatarPath, Texture.class));
-            image.addListener(new ClickListener() {
+
+            FixedProgressBar progressBarLeft = new FixedProgressBar(0, 50, 0.5f, true);
+            FixedProgressBar progressBarRight = new FixedProgressBar(0, 80, 0.5f, true);
+
+            final HeroTable heroTable = new HeroTable(image, progressBarLeft, progressBarRight);
+
+            image.addListener(new ActorGestureListener(20, 0.4f, 0.6f, 0.15f) {
                 @Override
-                public void clicked(InputEvent event, float x, float y) {
+                public void tap(InputEvent event, float x, float y, int count, int button) {
                     MapInteractionSystem mapInteractionSystem = game.engine.getSystem(MapInteractionSystem.class);
                     if (!mapInteractionSystem.changeSelectedHero(heroEntity)) {
                         mapInteractionSystem.setCameraPositionOnHero(heroEntity);
+
                     }
+                    scrollPaneHeroes.scrollTo(0,heroTable.getY() + heroTable.getHeight()/2,0,0, true, true);
+                    super.tap(event, x, y, count, button);
                 }
-            });
-            image.addListener(new ActorGestureListener(20, 0.4f, 0.6f, 0.15f) {
+
                 @Override
                 public boolean longPress(Actor actor, float x, float y) {
                     gameMapHud.addLongPressWindow(heroData);
@@ -351,30 +358,27 @@ public class RightBar extends Table {
                 }
             });
 
-            FixedProgressBar progressBarLeft = new FixedProgressBar(0, 50, 0.5f, true);
-            FixedProgressBar progressBarRight = new FixedProgressBar(0, 80, 0.5f, true);
 
-            HeroTable heroTable = new HeroTable(image, progressBarLeft, progressBarRight);
 
             addActor(heroTable);
-            heroButtonMap.put(heroEntity, heroTable);
+            heroTableMap.put(heroEntity, heroTable);
             updateHero(heroEntity);
             return true;
         }
 
         public void removeHero(final Entity heroEntity) {
             HeroDataComponent heroData = ComponentMapper.getFor(HeroDataComponent.class).get(heroEntity);
-            if (heroButtonMap.get(heroEntity) == null) {
+            if (heroTableMap.get(heroEntity) == null) {
                 Gdx.app.log("Hud -> RightBar", "There is no hero id " + heroData.id + "!");
                 return;
             }
 
-            removeActor(heroButtonMap.remove(heroEntity));
+            removeActor(heroTableMap.remove(heroEntity));
         }
 
         public void resize(float itemWidth, float itemHeight) {
             setItemSize(itemWidth, itemHeight);
-            for (HeroTable table : heroButtonMap.values()) {
+            for (HeroTable table : heroTableMap.values()) {
                 table.setSize(itemWidth, itemHeight);
                 float progressBarWidth = itemWidth / 10;
                 table.movement.getStyle().background.setMinWidth(progressBarWidth);

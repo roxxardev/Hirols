@@ -6,7 +6,7 @@ public enum ResourceType {
     public static ResourceType fromString(String resource) {
         if (resource.equals("stone"))
             return ResourceType.STONE;
-        else if (resource.equals("steel"))
+        else if (resource.equals("metal"))
             return ResourceType.METAL;
         else if (resource.equals("wood"))
             return ResourceType.WOOD;

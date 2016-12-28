@@ -223,7 +223,7 @@ public class Map implements Disposable {
                     } else {
                         Gdx.app.log("Castle Object", objectName + " " +position.toString() + " has no enter");
                     }
-                } else if(type.equals("resourceType")) {
+                } else if(type.equals("resource")) {
                     Gdx.app.log("Resource Object", objectName + " " + position.toString());
                     Entity resource = entityMap[x][y];
                     ResourceType resourceType = ResourceType.fromString(objectName);
@@ -256,9 +256,11 @@ public class Map implements Disposable {
                     if(object.getProperties().containsKey("isEnter")) {
                         if(Boolean.valueOf(object.getProperties().get("isEnter", String.class))) {
                             enterEntityMap.put(objectName, mine);
+                            ResourceType resourceType = ResourceType.fromString(object.getProperties().get("resourceType", String.class));
+
                             Sprite flagSprite = new Sprite(game.assetManager.get("temp/Flag.png", Texture.class));
                             mine
-                                    .add(game.engine.createComponent(MineDataComponent.class).init(ResourceType.WOOD, 2))
+                                    .add(game.engine.createComponent(MineDataComponent.class).init(resourceType, 2))
                                     .add(game.engine.createComponent(BannerComponent.class).init(flagSprite, new Color(Color.GRAY), 0, (int) (getTileHeight() - flagSprite.getHeight())))
                                     .add(game.engine.createComponent(RenderableComponent.class))
                                     .add(game.engine.createComponent(MineComponent.class).init(mine));
