@@ -28,7 +28,6 @@ import com.kotcrab.vis.ui.widget.VisImageTextButton;
 import com.kotcrab.vis.ui.widget.VisProgressBar;
 import com.kotcrab.vis.ui.widget.VisScrollPane;
 import com.kotcrab.vis.ui.widget.VisTextButton;
-import com.kotcrab.vis.ui.widget.VisWindow;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,12 +53,11 @@ public class RightBar extends Table {
     private boolean slided = false;
 
     private VisImageButton moveButton, turnButton;
-    private VisTextButton changeScrollPane;
+    private VisTextButton changeButton;
     private VisScrollPane scrollPaneHeroes, scrollPaneTowns;
     private GridGroupTowns gridGroupTowns;
     private GridGroupHeroes gridGroupHeroes;
     private Image rightBarDragImage;
-    private VisWindow miniMapWindow;
 
     private Class<? extends PlayerComponent> currentPlayer;
 
@@ -81,11 +79,11 @@ public class RightBar extends Table {
             public void pan(InputEvent event, float x, float y, float deltaX, float deltaY) {
                 clearActions();
                 setX(getX() + deltaX);
-                if(getX() < stage.getWidth() - getWidth()) {
+                if (getX() < stage.getWidth() - getWidth()) {
                     setX(stage.getWidth() - getWidth());
                     slided = true;
-                } else if(getX() > stage.getWidth() - getWidth() / 8) {
-                    setX(stage.getWidth() - stage.getWidth()/30);
+                } else if (getX() > stage.getWidth() - getWidth() / 8) {
+                    setX(stage.getWidth() - stage.getWidth() / 30);
                     slided = false;
                 }
                 rightBarDragImage.addAction(Actions.fadeOut(0.3f));
@@ -93,9 +91,9 @@ public class RightBar extends Table {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if(getX() <= stage.getWidth() - getWidth() / 4 && !slided || getX() < stage.getWidth() - getWidth()*3/4) {
+                if (getX() <= stage.getWidth() - getWidth() / 4 && !slided || getX() < stage.getWidth() - getWidth() * 3 / 4) {
                     addAction(Actions.moveTo(stage.getWidth() - getWidth(), 0, 0.3f));
-                } else if(getX() >= stage.getWidth() - getWidth() * 3/4 && slided || getX() > stage.getWidth() - getWidth() / 4) {
+                } else if (getX() >= stage.getWidth() - getWidth() * 3 / 4 && slided || getX() > stage.getWidth() - getWidth() / 4) {
                     addAction(Actions.moveTo(stage.getWidth(), 0, 0.3f));
                     rightBarDragImage.addAction(Actions.fadeIn(0.3f));
                 }
@@ -109,7 +107,7 @@ public class RightBar extends Table {
 
     public boolean updatePlayer(Class<? extends GameMapComponent> gameMapComponent) {
         Class<? extends PlayerComponent> player = game.gameManager.getCurrentPlayerClass();
-        if(currentPlayer == player) return false;
+        if (currentPlayer == player) return false;
         currentPlayer = player;
 
         gridGroupHeroes.clear();
@@ -130,7 +128,7 @@ public class RightBar extends Table {
             public void changed(ChangeEvent event, Actor actor) {
                 MapInteractionSystem mapInteractionSystem = game.engine.getSystem(MapInteractionSystem.class);
                 ImmutableArray<Entity> heroes = mapInteractionSystem.getSelectedHeroes();
-                if(heroes.size() < 1) return;
+                if (heroes.size() < 1) return;
                 Entity selectedHero = heroes.first();
                 HeroDataComponent selectedHeroData = ComponentMapper.getFor(HeroDataComponent.class).get(selectedHero);
                 selectedHeroData.heroPath.followPath();
@@ -139,10 +137,6 @@ public class RightBar extends Table {
 
         addActor(moveButton);
         addActor(turnButton);
-
-        miniMapWindow = new VisWindow("MINIMAP");
-        miniMapWindow.setKeepWithinStage(false);
-        miniMapWindow.setMovable(false);
 
         gridGroupHeroes = new GridGroupHeroes();
         gridGroupTowns = new GridGroupTowns();
@@ -162,7 +156,7 @@ public class RightBar extends Table {
             setFadeScrollBars(false);
         }};
 
-        changeScrollPane = new VisTextButton("HEROES TOWNS", game.hudManager.skin.get("text-button", VisTextButton.VisTextButtonStyle.class)) {{
+        changeButton = new VisTextButton("HEROES TOWNS", game.hudManager.skin.get("text-button", VisTextButton.VisTextButtonStyle.class)) {{
             addListener(new ActorGestureListener() {
                 @Override
                 public void tap(InputEvent event, float x, float y, int count, int button) {
@@ -179,8 +173,7 @@ public class RightBar extends Table {
 
         rightBarDragImage = new Image(game.assetManager.get("ui/minimapDrag.png", Texture.class));
 
-        addActor(miniMapWindow);
-        addActor(changeScrollPane);
+        addActor(changeButton);
         addActor(scrollPaneHeroes);
         addActor(scrollPaneTowns);
         addActor(rightBarDragImage);
@@ -189,25 +182,25 @@ public class RightBar extends Table {
     public void updateTownsAndHeroes(Class<? extends GameMapComponent> gameMapComponent, GameMapHud gameMapHud) {
         ImmutableArray<Entity> heroes = game.engine.getEntitiesFor(Family.all(HeroDataComponent.class, gameMapComponent, game.gameManager.getCurrentPlayerClass()).get());
         ArrayList<Entity> currentHeroesInGridGroup = new ArrayList<>(gridGroupHeroes.heroButtonMap.keySet());
-        for(Entity hero : currentHeroesInGridGroup) {
-            if(!heroes.contains(hero, true)) {
+        for (Entity hero : currentHeroesInGridGroup) {
+            if (!heroes.contains(hero, true)) {
                 gridGroupHeroes.removeHero(hero);
             } else {
                 gridGroupHeroes.updateHero(hero);
             }
         }
-        for(Entity hero : heroes) {
+        for (Entity hero : heroes) {
             gridGroupHeroes.addHero(hero, gameMapHud);
         }
 
         ImmutableArray<Entity> towns = game.engine.getEntitiesFor(Family.all(TownDataComponent.class, gameMapComponent, game.gameManager.getCurrentPlayerClass()).get());
         ArrayList<Entity> currentTownsInGridGroup = new ArrayList<>(gridGroupTowns.townButtonMap.keySet());
-        for(Entity town : currentTownsInGridGroup) {
-            if(!towns.contains(town, true)) {
+        for (Entity town : currentTownsInGridGroup) {
+            if (!towns.contains(town, true)) {
                 gridGroupTowns.removeTown(town);
             }
         }
-        for(Entity town : towns) {
+        for (Entity town : towns) {
             gridGroupTowns.addTown(town);
         }
     }
@@ -222,8 +215,7 @@ public class RightBar extends Table {
     }
 
     public void resize(float width, float height, float topBarHeight) {
-        //TODO wysokosc topbara
-        if(slided) {
+        if (slided) {
             setSize(width / 4, height - topBarHeight);
             setPosition(width - getWidth(), 0);
         } else {
@@ -231,30 +223,28 @@ public class RightBar extends Table {
             setPosition(width, 0);
         }
 
-        float buttonSize = width<height ? width/10 : height/10;
-        float imagePadding = buttonSize/10;
+        float buttonSize = width < height ? width / 10 : height / 10;
+        float imagePadding = buttonSize / 10;
 
-        moveButton.setSize(buttonSize,buttonSize);
-        moveButton.setPosition(-buttonSize*3/2, getHeight() - buttonSize*3/2);
+        moveButton.setSize(buttonSize, buttonSize);
+        moveButton.setPosition(-buttonSize * 3 / 2, getHeight() - buttonSize * 3 / 2);
         moveButton.pad(imagePadding);
 
-        turnButton.setSize(buttonSize,buttonSize);
-        turnButton.setPosition(-buttonSize*3/2, buttonSize/2);
+        turnButton.setSize(buttonSize, buttonSize);
+        turnButton.setPosition(-buttonSize * 3 / 2, buttonSize / 2);
         turnButton.pad(imagePadding);
 
-        float pad = width<height ? width/30 : height/30;
+        float pad = width < height ? width / 30 : height / 30;
 
-        miniMapWindow.setBounds(pad, getHeight()*2/3, getWidth() - 2*pad, getHeight()/3 - pad);
-        changeScrollPane.setBounds(pad, pad, getWidth() - 2 * pad, pad);
-        scrollPaneHeroes.setBounds(pad, pad+changeScrollPane.getY() + pad, getWidth() - 2 * pad, getHeight() * 2 / 3 - changeScrollPane.getHeight() -3*pad);
-        scrollPaneTowns.setBounds(pad, pad+changeScrollPane.getY() + pad, getWidth() - 2 * pad, getHeight() * 2 / 3 - changeScrollPane.getHeight() -3*pad);
-        //TODO change grid size when width is high enough to fit 2 rows
-        int gridSize = scrollPaneHeroes.getWidth() < scrollPaneHeroes.getHeight() ? (int)(scrollPaneHeroes.getWidth() - pad) : (int)((scrollPaneHeroes.getWidth() - pad)/2);
-        gridGroupHeroes.resize(gridSize - 2*gridGroupHeroes.getSpacing(),gridSize- 2*gridGroupHeroes.getSpacing());
-        gridGroupTowns.resize(gridSize- 2*gridGroupTowns.getSpacing(),gridSize- 2*gridGroupTowns.getSpacing());
+        changeButton.setBounds(pad, pad, getWidth() - 2 * pad, pad);
+        scrollPaneHeroes.setBounds(pad, pad + changeButton.getY() + pad, getWidth() - 2 * pad, getHeight() - changeButton.getHeight() - 3 * pad);
+        scrollPaneTowns.setBounds(pad, pad + changeButton.getY() + pad, getWidth() - 2 * pad, getHeight() - changeButton.getHeight() - 3 * pad);
+        int gridSize = scrollPaneHeroes.getWidth() < scrollPaneHeroes.getHeight() ? (int) (scrollPaneHeroes.getWidth() - pad) : (int) ((scrollPaneHeroes.getWidth() - pad) / 2);
+        gridGroupHeroes.resize(gridSize - 2 * gridGroupHeroes.getSpacing(), gridSize - 2 * gridGroupHeroes.getSpacing());
+        gridGroupTowns.resize(gridSize - 2 * gridGroupTowns.getSpacing(), gridSize - 2 * gridGroupTowns.getSpacing());
 
-        rightBarDragImage.setSize(buttonSize, 3*buttonSize);
-        rightBarDragImage.setPosition(-rightBarDragImage.getWidth(), getHeight()/2 - rightBarDragImage.getHeight()/2);
+        rightBarDragImage.setSize(buttonSize, 3 * buttonSize);
+        rightBarDragImage.setPosition(-rightBarDragImage.getWidth(), getHeight() / 2 - rightBarDragImage.getHeight() / 2);
 
     }
 
@@ -269,7 +259,7 @@ public class RightBar extends Table {
 
         public boolean addTown(Entity townEntity) {
             TownDataComponent townDataComponent = ComponentMapper.getFor(TownDataComponent.class).get(townEntity);
-            if(townButtonMap.containsKey(townEntity)) {
+            if (townButtonMap.containsKey(townEntity)) {
                 Gdx.app.log("Hud - > RightBar", "Town already added to GridGroup!");
                 return false;
             }
@@ -282,7 +272,7 @@ public class RightBar extends Table {
         }
 
         public boolean removeTown(Entity townEntity) {
-            if(!townButtonMap.containsKey(townEntity)) {
+            if (!townButtonMap.containsKey(townEntity)) {
                 Gdx.app.log("Hud -> RightBar", "There is no such town to remove");
                 return false;
             }
@@ -292,7 +282,7 @@ public class RightBar extends Table {
 
 
         public void resize(float itemWidth, float itemHeight) {
-            setItemSize(itemWidth,itemHeight);
+            setItemSize(itemWidth, itemHeight);
         }
 
         private class TownButton extends VisImageTextButton {
@@ -306,7 +296,7 @@ public class RightBar extends Table {
                 addListener(new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
-                        game.setScreen(new TownScreen(game,townEntity));
+                        game.setScreen(new TownScreen(game, townEntity));
                     }
                 });
             }
@@ -328,7 +318,7 @@ public class RightBar extends Table {
 
         public boolean updateHero(Entity heroEntity) {
             HeroTable heroTable = heroButtonMap.get(heroEntity);
-            if(heroTable == null) return false;
+            if (heroTable == null) return false;
             HeroDataComponent heroData = ComponentMapper.getFor(HeroDataComponent.class).get(heroEntity);
             heroTable.updateMagicProgressBar(heroData.magicPoints);
             heroTable.updateMovementProgressBar(heroData.movementPoints);
@@ -338,17 +328,17 @@ public class RightBar extends Table {
         public boolean addHero(final Entity heroEntity, final GameMapHud gameMapHud) {
             final HeroDataComponent heroData = ComponentMapper.getFor(HeroDataComponent.class).get(heroEntity);
 
-            if(heroButtonMap.get(heroEntity) != null) {
+            if (heroButtonMap.get(heroEntity) != null) {
                 Gdx.app.log("Hud -> RightBar", "Hero already added to GridGroup!");
                 return false;
             }
 
             Image image = new Image(game.assetManager.get(heroData.hero.avatarPath, Texture.class));
-            image.addListener(new ClickListener(){
+            image.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     MapInteractionSystem mapInteractionSystem = game.engine.getSystem(MapInteractionSystem.class);
-                    if(!mapInteractionSystem.changeSelectedHero(heroEntity)) {
+                    if (!mapInteractionSystem.changeSelectedHero(heroEntity)) {
                         mapInteractionSystem.setCameraPositionOnHero(heroEntity);
                     }
                 }
@@ -361,10 +351,10 @@ public class RightBar extends Table {
                 }
             });
 
-            FixedProgressBar progressBarLeft = new FixedProgressBar(0,50,0.5f,true);
-            FixedProgressBar progressBarRight = new FixedProgressBar(0,80,0.5f,true);
+            FixedProgressBar progressBarLeft = new FixedProgressBar(0, 50, 0.5f, true);
+            FixedProgressBar progressBarRight = new FixedProgressBar(0, 80, 0.5f, true);
 
-            HeroTable heroTable = new HeroTable(image,progressBarLeft,progressBarRight);
+            HeroTable heroTable = new HeroTable(image, progressBarLeft, progressBarRight);
 
             addActor(heroTable);
             heroButtonMap.put(heroEntity, heroTable);
@@ -374,8 +364,8 @@ public class RightBar extends Table {
 
         public void removeHero(final Entity heroEntity) {
             HeroDataComponent heroData = ComponentMapper.getFor(HeroDataComponent.class).get(heroEntity);
-            if(heroButtonMap.get(heroEntity) == null) {
-                Gdx.app.log("Hud -> RightBar", "There is no hero id " + heroData.id +"!");
+            if (heroButtonMap.get(heroEntity) == null) {
+                Gdx.app.log("Hud -> RightBar", "There is no hero id " + heroData.id + "!");
                 return;
             }
 
@@ -383,12 +373,9 @@ public class RightBar extends Table {
         }
 
         public void resize(float itemWidth, float itemHeight) {
-            setItemSize(itemWidth,itemHeight);
-            for(HeroTable table : heroButtonMap.values()) {
-                table.setSize(itemWidth,itemHeight);
-                //Image image = table.image;
-                //float imageWidth = itemWidth * (image.getPrefWidth() / image.getPrefHeight());
-                //float progressBarWidth = (table.getWidth() - imageWidth) / 2 + 1;
+            setItemSize(itemWidth, itemHeight);
+            for (HeroTable table : heroButtonMap.values()) {
+                table.setSize(itemWidth, itemHeight);
                 float progressBarWidth = itemWidth / 10;
                 table.movement.getStyle().background.setMinWidth(progressBarWidth);
                 table.movement.getStyle().knob.setMinWidth(progressBarWidth);
@@ -407,19 +394,17 @@ public class RightBar extends Table {
 
 
                 backgroundSprite = new Sprite(game.hudManager.getWhiteTexture());
-                backgroundSprite.setColor(0,0,0,0.9f);
+                backgroundSprite.setColor(0, 0, 0, 0.9f);
                 setBackground(new SpriteDrawable(backgroundSprite));
 
                 float duration = 0.6f;
                 magic.setAnimateDuration(duration);
                 movement.setAnimateDuration(duration);
-
                 image.setHeight(0);
                 image.setScaling(Scaling.fit);
                 add(movement).fillY();
                 add(image).expand().fill();
                 add(magic).fillY();
-                row();
             }
 
             void updateMagicProgressBar(float value) {
