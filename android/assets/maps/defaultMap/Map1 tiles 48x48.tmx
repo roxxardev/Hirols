@@ -1808,11 +1808,13 @@
     <property name="EnterX" value="2400"/>
     <property name="EnterY" value="1152"/>
     <property name="isEnter" value="false"/>
+    <property name="resourceType" value="coal"/>
    </properties>
   </object>
   <object id="4356" name="Mine1" type="mine" x="2400" y="1152" width="96" height="96">
    <properties>
     <property name="isEnter" value="true"/>
+    <property name="resourceType" value="coal"/>
    </properties>
   </object>
   <object id="4357" name="Mine2" type="mine" x="1248" y="1728" width="96" height="96">
@@ -1820,16 +1822,19 @@
     <property name="EnterX" value="1344"/>
     <property name="EnterY" value="1728"/>
     <property name="isEnter" value="false"/>
+    <property name="resourceType" value="gold"/>
    </properties>
   </object>
   <object id="4358" name="Mine2" type="mine" x="1344" y="1728" width="96" height="96">
    <properties>
     <property name="isEnter" value="true"/>
+    <property name="resourceType" value="gold"/>
    </properties>
   </object>
   <object id="4359" name="Mine3" type="mine" x="2880" y="2208" width="96" height="96">
    <properties>
     <property name="isEnter" value="true"/>
+    <property name="resourceType" value="stone"/>
    </properties>
   </object>
   <object id="4360" name="Mine3" type="mine" x="2976" y="2208" width="96" height="96">
@@ -1837,11 +1842,13 @@
     <property name="EnterX" value="2880"/>
     <property name="EnterY" value="2208"/>
     <property name="isEnter" value="false"/>
+    <property name="resourceType" value="stone"/>
    </properties>
   </object>
   <object id="4361" name="Mine8" type="mine" x="1056" y="3072" width="96" height="96">
    <properties>
     <property name="isEnter" value="true"/>
+    <property name="resourceType" value="wood"/>
    </properties>
   </object>
   <object id="4362" name="Mine8" type="mine" x="1152" y="3072" width="96" height="96">
@@ -1849,6 +1856,7 @@
     <property name="EnterX" value="1056"/>
     <property name="EnterY" value="3072"/>
     <property name="isEnter" value="false"/>
+    <property name="resourceType" value="wood"/>
    </properties>
   </object>
   <object id="4363" name="Mine4" type="mine" x="3744" y="3072" width="96" height="96">
@@ -1856,16 +1864,19 @@
     <property name="EnterX" value="3840"/>
     <property name="EnterY" value="3072"/>
     <property name="isEnter" value="false"/>
+    <property name="resourceType" value="gold"/>
    </properties>
   </object>
   <object id="4364" name="Mine4" type="mine" x="3840" y="3072" width="96" height="96">
    <properties>
     <property name="isEnter" value="true"/>
+    <property name="resourceType" value="gold"/>
    </properties>
   </object>
   <object id="4365" name="Mine5" type="mine" x="2880" y="3744" width="96" height="96">
    <properties>
     <property name="isEnter" value="true"/>
+    <property name="resourceType" value="wood"/>
    </properties>
   </object>
   <object id="4366" name="Mine5" type="mine" x="2976" y="3744" width="96" height="96">
@@ -1873,6 +1884,7 @@
     <property name="EnterX" value="2880"/>
     <property name="EnterY" value="3744"/>
     <property name="isEnter" value="false"/>
+    <property name="resourceType" value="wood"/>
    </properties>
   </object>
   <object id="4367" name="Mine6" type="mine" x="4224" y="4032" width="96" height="96">
@@ -1880,11 +1892,13 @@
     <property name="EnterX" value="4320"/>
     <property name="EnterY" value="4032"/>
     <property name="isEnter" value="false"/>
+    <property name="resourceType" value="coal"/>
    </properties>
   </object>
   <object id="4368" name="Mine6" type="mine" x="4320" y="4032" width="96" height="96">
    <properties>
     <property name="isEnter" value="true"/>
+    <property name="resourceType" value="coal"/>
    </properties>
   </object>
   <object id="4369" name="Mine7" type="mine" x="3456" y="4416" width="96" height="96">
@@ -1892,17 +1906,20 @@
     <property name="EnterX" value="3552"/>
     <property name="EnterY" value="4416"/>
     <property name="isEnter" value="false"/>
+    <property name="resourceType" value="coal"/>
    </properties>
   </object>
   <object id="4370" name="Mine7" type="mine" x="3552" y="4416" width="96" height="96">
    <properties>
     <property name="isEnter" value="true"/>
+    <property name="resourceType" value="coal"/>
    </properties>
   </object>
   <object id="4372" name="gold" type="resourceType" x="1680" y="3072" width="96" height="96"/>
   <object id="4373" name="Mine9" type="mine" x="2976" y="3264" width="96" height="96">
    <properties>
     <property name="isEnter" value="true"/>
+    <property name="resourceType" value="stone"/>
    </properties>
   </object>
   <object id="4374" name="Mine9" type="mine" x="3072" y="3264" width="96" height="96">
@@ -1910,6 +1927,7 @@
     <property name="EnterX" value="2976"/>
     <property name="EnterY" value="3264"/>
     <property name="isEnter" value="false"/>
+    <property name="resourceType" value="stone"/>
    </properties>
   </object>
   <object id="4377" name="Recruitment2" type="recruit" x="2016" y="3744" width="96" height="96">
