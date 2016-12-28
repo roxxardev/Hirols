@@ -30,6 +30,7 @@ import com.kotcrab.vis.ui.widget.VisScrollPane;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisWindow;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,15 +38,18 @@ import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.components.map.TownDataComponent;
 import pl.pollub.hirols.components.map.maps.GameMapComponent;
 import pl.pollub.hirols.components.map.HeroDataComponent;
+import pl.pollub.hirols.components.player.PlayerComponent;
+import pl.pollub.hirols.managers.HudManager;
 import pl.pollub.hirols.screens.TownScreen;
 import pl.pollub.hirols.systems.gameMapSystems.MapInteractionSystem;
 
 /**
  * Created by erykp_000 on 2016-08-14.
  */
-class RightBar extends Table {
+public class RightBar extends Table {
     private final Hirols game;
     private final Stage stage;
+    private GameMapHud gameMapHud;
 
     private boolean slided = false;
 
@@ -57,16 +61,19 @@ class RightBar extends Table {
     private Image rightBarDragImage;
     private VisWindow miniMapWindow;
 
+    private Class<? extends PlayerComponent> currentPlayer;
+
     RightBar(Hirols game, GameMapHud gameMapHud, Class<? extends GameMapComponent> gameMapComponent) {
         this.game = game;
         this.stage = gameMapHud.getStage();
+        this.gameMapHud = gameMapHud;
 
         setTouchable(Touchable.enabled);
         setBackground(game.hudManager.getTransparentBackground());
         setDebug(game.hudManager.debug);
 
         createActors();
-        updateTownsAndHeroes(gameMapComponent,gameMapHud);
+        updatePlayer(gameMapComponent);
 
         //TODO zmienic z Marcinowego na jakies czytelne
         addListener(new ActorGestureListener() {
@@ -94,6 +101,22 @@ class RightBar extends Table {
                 }
             }
         });
+    }
+
+    public void updateSelectedHero(Entity selectedHero) {
+        gridGroupHeroes.updateHero(selectedHero);
+    }
+
+    public boolean updatePlayer(Class<? extends GameMapComponent> gameMapComponent) {
+        Class<? extends PlayerComponent> player = game.gameManager.getCurrentPlayerClass();
+        if(currentPlayer == player) return false;
+        currentPlayer = player;
+
+        gridGroupHeroes.clear();
+        gridGroupTowns.clear();
+
+        updateTownsAndHeroes(gameMapComponent, gameMapHud);
+        return true;
     }
 
     private void createActors() {
@@ -165,13 +188,27 @@ class RightBar extends Table {
 
     public void updateTownsAndHeroes(Class<? extends GameMapComponent> gameMapComponent, GameMapHud gameMapHud) {
         ImmutableArray<Entity> heroes = game.engine.getEntitiesFor(Family.all(HeroDataComponent.class, gameMapComponent, game.gameManager.getCurrentPlayerClass()).get());
-        for(int i = 0; i < heroes.size(); i++) {
-            gridGroupHeroes.addHero(heroes.get(i), gameMapHud);
+        ArrayList<Entity> currentHeroesInGridGroup = new ArrayList<>(gridGroupHeroes.heroButtonMap.keySet());
+        for(Entity hero : currentHeroesInGridGroup) {
+            if(!heroes.contains(hero, true)) {
+                gridGroupHeroes.removeHero(hero);
+            } else {
+                gridGroupHeroes.updateHero(hero);
+            }
+        }
+        for(Entity hero : heroes) {
+            gridGroupHeroes.addHero(hero, gameMapHud);
         }
 
         ImmutableArray<Entity> towns = game.engine.getEntitiesFor(Family.all(TownDataComponent.class, gameMapComponent, game.gameManager.getCurrentPlayerClass()).get());
-        for(int i = 0; i < towns.size(); i++) {
-            gridGroupTowns.addTown(towns.get(i));
+        ArrayList<Entity> currentTownsInGridGroup = new ArrayList<>(gridGroupTowns.townButtonMap.keySet());
+        for(Entity town : currentTownsInGridGroup) {
+            if(!towns.contains(town, true)) {
+                gridGroupTowns.removeTown(town);
+            }
+        }
+        for(Entity town : towns) {
+            gridGroupTowns.addTown(town);
         }
     }
 
@@ -222,20 +259,37 @@ class RightBar extends Table {
     }
 
     private class GridGroupTowns extends GridGroup {
-        Map<Entity, TownButton> townButtonMap = new HashMap<Entity, TownButton>();
+        final Map<Entity, TownButton> townButtonMap = new HashMap<>();
 
-        public void addTown(Entity townEntity) {
+        @Override
+        public void clear() {
+            super.clear();
+            townButtonMap.clear();
+        }
+
+        public boolean addTown(Entity townEntity) {
             TownDataComponent townDataComponent = ComponentMapper.getFor(TownDataComponent.class).get(townEntity);
             if(townButtonMap.containsKey(townEntity)) {
                 Gdx.app.log("Hud - > RightBar", "Town already added to GridGroup!");
-                return;
+                return false;
             }
             //TODO get texture path from town data
             TownButton townButton = new TownButton(townDataComponent.name, new SpriteDrawable(new Sprite(game.assetManager.get("towns/OrcTown.png", Texture.class))), townEntity);
 
             addActor(townButton);
             townButtonMap.put(townEntity, townButton);
+            return true;
         }
+
+        public boolean removeTown(Entity townEntity) {
+            if(!townButtonMap.containsKey(townEntity)) {
+                Gdx.app.log("Hud -> RightBar", "There is no such town to remove");
+                return false;
+            }
+            removeActor(townButtonMap.remove(townEntity));
+            return true;
+        }
+
 
         public void resize(float itemWidth, float itemHeight) {
             setItemSize(itemWidth,itemHeight);
@@ -248,7 +302,7 @@ class RightBar extends Table {
             public TownButton(String text, Drawable imageUp, final Entity townEntity) {
                 super(text, imageUp);
                 this.townEntity = townEntity;
-                game.hudManager.moveTextLabelBelowImage(this, Scaling.fit);
+                HudManager.moveTextLabelBelowImage(this, Scaling.fit);
                 addListener(new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
@@ -264,47 +318,68 @@ class RightBar extends Table {
     }
 
     private class GridGroupHeroes extends GridGroup {
-        Map<Integer, HeroTable> heroButtonMap = new HashMap<Integer, HeroTable>();
+        final Map<Entity, HeroTable> heroButtonMap = new HashMap<>();
 
-        public void addHero(final Entity heroEntity, final GameMapHud gameMapHud) {
+        @Override
+        public void clear() {
+            super.clear();
+            heroButtonMap.clear();
+        }
+
+        public boolean updateHero(Entity heroEntity) {
+            HeroTable heroTable = heroButtonMap.get(heroEntity);
+            if(heroTable == null) return false;
             HeroDataComponent heroData = ComponentMapper.getFor(HeroDataComponent.class).get(heroEntity);
+            heroTable.updateMagicProgressBar(heroData.magicPoints);
+            heroTable.updateMovementProgressBar(heroData.movementPoints);
+            return true;
+        }
 
-            if(heroButtonMap.get(heroData.id) != null) {
+        public boolean addHero(final Entity heroEntity, final GameMapHud gameMapHud) {
+            final HeroDataComponent heroData = ComponentMapper.getFor(HeroDataComponent.class).get(heroEntity);
+
+            if(heroButtonMap.get(heroEntity) != null) {
                 Gdx.app.log("Hud -> RightBar", "Hero already added to GridGroup!");
-                return;
+                return false;
             }
 
             Image image = new Image(game.assetManager.get(heroData.hero.avatarPath, Texture.class));
             image.addListener(new ClickListener(){
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    game.engine.getSystem(MapInteractionSystem.class).changeSelectedHero(heroEntity);
+                    MapInteractionSystem mapInteractionSystem = game.engine.getSystem(MapInteractionSystem.class);
+                    if(!mapInteractionSystem.changeSelectedHero(heroEntity)) {
+                        mapInteractionSystem.setCameraPositionOnHero(heroEntity);
+                    }
                 }
             });
             image.addListener(new ActorGestureListener(20, 0.4f, 0.6f, 0.15f) {
                 @Override
                 public boolean longPress(Actor actor, float x, float y) {
-                    gameMapHud.addHeroWindow();
+                    gameMapHud.addLongPressWindow(heroData);
                     return super.longPress(actor, x, y);
                 }
             });
 
-            FixedProgressBar progressBarLeft = new FixedProgressBar(0,10,1,true);
-            FixedProgressBar progressBarRight = new FixedProgressBar(0,10,1,true);
+            FixedProgressBar progressBarLeft = new FixedProgressBar(0,50,0.5f,true);
+            FixedProgressBar progressBarRight = new FixedProgressBar(0,80,0.5f,true);
 
             HeroTable heroTable = new HeroTable(image,progressBarLeft,progressBarRight);
 
             addActor(heroTable);
-            heroButtonMap.put(heroData.id, heroTable);
+            heroButtonMap.put(heroEntity, heroTable);
+            updateHero(heroEntity);
+            return true;
         }
 
-        public void removeHero(final HeroDataComponent heroData) {
-            if(heroButtonMap.get(heroData.id) == null) {
+        public void removeHero(final Entity heroEntity) {
+            HeroDataComponent heroData = ComponentMapper.getFor(HeroDataComponent.class).get(heroEntity);
+            if(heroButtonMap.get(heroEntity) == null) {
                 Gdx.app.log("Hud -> RightBar", "There is no hero id " + heroData.id +"!");
                 return;
             }
 
-            removeActor(heroButtonMap.remove(heroData.id));
+            removeActor(heroButtonMap.remove(heroEntity));
         }
 
         public void resize(float itemWidth, float itemHeight) {
@@ -335,17 +410,9 @@ class RightBar extends Table {
                 backgroundSprite.setColor(0,0,0,0.9f);
                 setBackground(new SpriteDrawable(backgroundSprite));
 
-                float duration = 0.5f;
+                float duration = 0.6f;
                 magic.setAnimateDuration(duration);
                 movement.setAnimateDuration(duration);
-
-                //TODO remove
-                movement.addListener(new ClickListener() {
-                    @Override
-                    public void clicked(InputEvent event, float x, float y) {
-                        movement.setValue(movement.getValue() + 1);
-                    }
-                });
 
                 image.setHeight(0);
                 image.setScaling(Scaling.fit);
@@ -353,6 +420,14 @@ class RightBar extends Table {
                 add(image).expand().fill();
                 add(magic).fillY();
                 row();
+            }
+
+            void updateMagicProgressBar(float value) {
+                magic.setValue(value);
+            }
+
+            void updateMovementProgressBar(float value) {
+                movement.setValue(value);
             }
         }
 

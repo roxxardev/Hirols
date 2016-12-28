@@ -35,6 +35,7 @@ public class UnitsGrid extends GridGroup {
             buttonGroup.add(in);
             HudManager.moveTextLabelBelowImage(in, Scaling.fit);
             in.getImageCell().expand();
+            in.getLabel().setWrap(true);
         }
     }
 
@@ -56,13 +57,14 @@ public class UnitsGrid extends GridGroup {
                 button.removeUnitImage();
                 continue;
             }
-            button.getLabel().setText(squads[i].getUnit().name + squads[i].getQuantity());
+            button.getLabel().setText(squads[i].getUnit().name + " "+squads[i].getQuantity());
             AnimationManager.AnimationInformation animationInformation = squads[i].getUnit().animationInformation;
             AnimationManager.AnimationProperties animationProperties = animationInformation.animationPropertiesMap.get(AnimationType.STAND);
             Animation animation = AnimationManager.createAnimation(animationProperties.getDirections(),game.assetManager.get(animationProperties.getPath(), Texture.class), animationProperties.getCols(), animationProperties.getRows(), animationProperties.getTime())
                     .get(Direction.S);
             Image image = new AnimatedImage(animation, true);
-            image.setPosition(animationInformation.offset.x, animationInformation.offset.y + button.getLabel().getHeight());
+            int offsetTargetSize = 96;
+            image.setPosition(animationInformation.offset.x - 0.6f* (offsetTargetSize - getItemWidth()), animationInformation.offset.y  + button.getLabel().getHeight());
             button.setUnitImage(image);
         }
     }

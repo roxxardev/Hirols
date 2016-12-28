@@ -73,7 +73,7 @@ public class TopBar extends Table {
         BitmapFont font = game.assetManager.get("testFontSize18.ttf", BitmapFont.class);
         Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.GOLD);
         playerLabel = new Label("no player", labelStyle);
-        add(playerLabel).expand().fill();
+        add(playerLabel).expand().fill().padRight(30);
         playerLabel.setWrap(true);
         playerLabel.setEllipsis(true);
         playerLabel.setAlignment(Align.center);

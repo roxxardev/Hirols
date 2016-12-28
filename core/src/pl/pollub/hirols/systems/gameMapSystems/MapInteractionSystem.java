@@ -17,7 +17,10 @@ import java.util.ArrayList;
 import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.components.graphics.RenderableComponent;
 import pl.pollub.hirols.components.graphics.TextureComponent;
+import pl.pollub.hirols.components.map.EnemyDataComponent;
+import pl.pollub.hirols.components.map.MineDataComponent;
 import pl.pollub.hirols.components.map.RecruitComponent;
+import pl.pollub.hirols.components.map.RecruitDataComponent;
 import pl.pollub.hirols.components.map.maps.GameMapComponent;
 import pl.pollub.hirols.components.map.GameMapDataComponent;
 import pl.pollub.hirols.components.map.ChestComponent;
@@ -29,7 +32,7 @@ import pl.pollub.hirols.components.map.PathComponent;
 import pl.pollub.hirols.components.map.ResourceComponent;
 import pl.pollub.hirols.components.SelectedComponent;
 import pl.pollub.hirols.components.map.TownComponent;
-import pl.pollub.hirols.components.map.maps.PortalComponent;
+import pl.pollub.hirols.components.map.PortalComponent;
 import pl.pollub.hirols.components.physics.PositionComponent;
 import pl.pollub.hirols.components.player.PlayerComponent;
 import pl.pollub.hirols.components.player.PlayerDataComponent;
@@ -57,14 +60,17 @@ public class MapInteractionSystem extends GameMapEntitySystem {
     private ComponentMapper<HeroDataComponent> heroDataMap = ComponentMapper.getFor(HeroDataComponent.class);
     private ComponentMapper<MapComponent> mapMapper = ComponentMapper.getFor(MapComponent.class);
     private ComponentMapper<MineComponent> mineMap = ComponentMapper.getFor(MineComponent.class);
+    private ComponentMapper<MineDataComponent> mineDataMap = ComponentMapper.getFor(MineDataComponent.class);
     private ComponentMapper<ResourceComponent> resourceMap = ComponentMapper.getFor(ResourceComponent.class);
     private ComponentMapper<TownComponent> townMap = ComponentMapper.getFor(TownComponent.class);
     private ComponentMapper<ChestComponent> chestMap = ComponentMapper.getFor(ChestComponent.class);
     private ComponentMapper<EnemyComponent> enemyMap = ComponentMapper.getFor(EnemyComponent.class);
+    private ComponentMapper<EnemyDataComponent> enemyDataMap = ComponentMapper.getFor(EnemyDataComponent.class);
     private ComponentMapper<PlayerDataComponent> playerDataMap = ComponentMapper.getFor(PlayerDataComponent.class);
     private ComponentMapper<SelectedComponent> selectedMap = ComponentMapper.getFor(SelectedComponent.class);
     private ComponentMapper<PortalComponent> portalMap = ComponentMapper.getFor(PortalComponent.class);
     private ComponentMapper<RecruitComponent> recruitMap = ComponentMapper.getFor(RecruitComponent.class);
+    private ComponentMapper<RecruitDataComponent> recruitDataMap = ComponentMapper.getFor(RecruitDataComponent.class);
 
     private final Hirols game;
 
@@ -102,6 +108,7 @@ public class MapInteractionSystem extends GameMapEntitySystem {
         if (gameMapData.inputManager.getUnreadTap()) {
             gameMapData.hud.unfocusScroll();
             gameMapData.hud.hideLeftBar();
+            gameMapData.hud.removeLongPressWindow();
 
             Vector3 mouseTemp = Pools.obtain(Vector3.class).set(gameMapData.inputManager.getMouseCoords().x,gameMapData.inputManager.getMouseCoords().y,0);
             gameMapData.gameMapCam.unproject(mouseTemp);
@@ -368,22 +375,32 @@ public class MapInteractionSystem extends GameMapEntitySystem {
             PositionComponent heroPosition = posMap.get(selectedHero);
             if (mapIndexX == (int)Math.floor(heroPosition.x / gameMap.getTileWidth()) && mapIndexY == (int)Math.floor(heroPosition.y / gameMap.getTileHeight())) {
                 Gdx.app.log("MapInteractionSystem", "Long press on selected hero id: " + heroData.id);
+                setCameraPositionOnHero(selectedHero);
                 return;
             }
         }
 
-        //TODO map object action when long press
         if (enemyMap.has(mapEntity)) {
             Gdx.app.log("MapInteractionSystem", "Long Press on enemy");
+            gameMapData.hud.addLongPressWindow(enemyDataMap.get(enemyMap.get(mapEntity).enemyEntity));
         } else if (townMap.has(mapEntity)) {
             Gdx.app.log("MapInteractionSystem", "Long Press on town");
             game.setScreen(new TownScreen(game, townMap.get(mapEntity).enterEntity));
         } else if (mineMap.has(mapEntity)) {
             Gdx.app.log("MapInteractionSystem", "Long Press on mine");
+            gameMapData.hud.addLongPressWindow(mineDataMap.get(mineMap.get(mapEntity).enterEntity));
         } else if (resourceMap.has(mapEntity)) {
             Gdx.app.log("MapInteractionSystem", "Long Press on resource");
+            gameMapData.hud.addLongPressWindow(resourceMap.get(mapEntity));
         } else if (chestMap.has(mapEntity)) {
             Gdx.app.log("MapInteractionSystem", "Long Press on chest");
+            gameMapData.hud.addLongPressWindow(chestMap.get(mapEntity));
+        } else if (recruitMap.has(mapEntity)) {
+            Gdx.app.log("MapInteractionSystem", "Long Press on recruit building");
+            gameMapData.hud.addLongPressWindow(recruitDataMap.get(recruitMap.get(mapEntity).enterEntity));
+        } else if (portalMap.has(mapEntity)) {
+            Gdx.app.log("MapInteractionSystem", "Long Press on portal");
+            gameMapData.hud.addLongPressWindow(portalMap.get(mapEntity));
         }
     }
 
@@ -409,14 +426,19 @@ public class MapInteractionSystem extends GameMapEntitySystem {
 
         hero.add(game.engine.createComponent(SelectedComponent.class));
         recalculatePathForHero(hero);
-        PositionComponent heroPosition = posMap.get(hero);
-        gameMapDataMapper.get(gameMapDataArray.first()).gameMapCam.position.set(heroPosition.x,heroPosition.y,0);
+        setCameraPositionOnHero(hero);
         HeroDataComponent heroData = heroDataMap.get(hero);
         ArrayList<Entity> heroPathEntities = heroData.pathEntities;
         for(Entity pathEntity : heroPathEntities) {
             pathEntity.add(game.engine.createComponent(RenderableComponent.class));
         }
         return true;
+    }
+
+    public void setCameraPositionOnHero(Entity hero) {
+        Gdx.app.log("MapInteractionSystem", "Camera position set to selected player position");
+        PositionComponent heroPosition = posMap.get(hero);
+        gameMapDataMapper.get(gameMapDataArray.first()).gameMapCam.position.set(heroPosition.x,heroPosition.y,0);
     }
 
     private void handleTapOutsideOfMap(Vector2 mousePosition) {

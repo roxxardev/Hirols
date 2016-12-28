@@ -176,6 +176,7 @@ public class LoadingScreen implements Screen {
         assetManager.load("temp/portrait.png", Texture.class, textureParameter);
         assetManager.load("temp/orki.png", Texture.class, textureParameter);
         assetManager.load("towns/OrcTown.png", Texture.class, textureParameter);
+        assetManager.load("towns/townButton.png", Texture.class, textureParameter);
     }
 
     @Override

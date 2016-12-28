@@ -41,7 +41,7 @@ public class SpawnGenerator {
 
     public static void loadEntities(Hirols game, pl.pollub.hirols.gameMap.Map map) {
 
-        spawnEnemyRandomPlaces(game,map,game.unitsManager.smallWyvern,20);
+        spawnEnemyRandomPlaces(game,map,game.unitsManager.smallWyvern,5);
 
         spawnPlayerAndHeroes(game, map, game.gameManager.getCurrentPlayerClass());
     }

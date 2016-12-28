@@ -59,7 +59,8 @@ public class GameMapCommands extends CommandsContainer {
         HeroDataComponent selectedHeroData = ComponentMapper.getFor(HeroDataComponent.class).get(selectedHero);
         if (game.engine.getSystem(MapInteractionSystem.class).resetHeroPath(selectedHeroData, true)) {
             selectedHeroData.movementPoints = value;
-            console.log("SelectedComponent Hero id: " + selectedHeroData.id + " movement points set to " + value + ".");
+            gameMapScreen.getHud().getRightBar().updateSelectedHero(selectedHero);
+            console.log("SelectedComponent Hero id: " + selectedHeroData.id + " current movement points set to " + value + ".");
         } else {
             console.log("SelectedComponent Hero id: " + selectedHeroData.id + " cannot set movement points, hero must stand!");
         }
@@ -97,8 +98,8 @@ public class GameMapCommands extends CommandsContainer {
             ImmutableArray<Entity> towns = game.engine.getEntitiesFor(Family.all(player, TownComponent.class, TownDataComponent.class, gameMap.getGameMapComponentClazz()).get());
 
             stringBuilder.append(player.getSimpleName()).append(" towns:");
-            for(Entity mine : towns) {
-                stringBuilder.append(ComponentMapper.getFor(MineDataComponent.class).get(mine).type.toString()).append(", ");
+            for(Entity town : towns) {
+                stringBuilder.append(ComponentMapper.getFor(TownDataComponent.class).get(town).name).append(", ");
             }
         }
         console.log(stringBuilder.toString());
@@ -107,5 +108,12 @@ public class GameMapCommands extends CommandsContainer {
     public void setTopBarHeightDivider(int heightDivider) {
         gameMapScreen.getHud().getTopBar().setHeightDivider(heightDivider);
         console.log("TopBar heightdivider set to " + heightDivider+".");
+    }
+
+    public void addExperience(int experience) {
+        Entity selectedHero = game.engine.getSystem(MapInteractionSystem.class).getSelectedHeroes().first();
+        HeroDataComponent selectedHeroData = ComponentMapper.getFor(HeroDataComponent.class).get(selectedHero);
+        selectedHeroData.heroLevel.addExperience(experience);
+        console.log(experience + " experience added. Hero is now " + selectedHeroData.heroLevel.getLevel() + " level with " + selectedHeroData.heroLevel.getExperience() +  " experience.");
     }
 }

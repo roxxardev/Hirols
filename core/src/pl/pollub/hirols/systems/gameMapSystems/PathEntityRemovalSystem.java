@@ -11,6 +11,7 @@ import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.components.LifePeriodComponent;
 import pl.pollub.hirols.components.graphics.RenderableComponent;
 import pl.pollub.hirols.components.graphics.TransparencyComponent;
+import pl.pollub.hirols.components.map.GameMapDataComponent;
 import pl.pollub.hirols.components.map.maps.GameMapComponent;
 import pl.pollub.hirols.components.map.HeroDataComponent;
 import pl.pollub.hirols.components.SelectedComponent;
@@ -52,6 +53,8 @@ public class PathEntityRemovalSystem extends GameMapEntitySystem {
                         .add(game.engine.createComponent(LifePeriodComponent.class).init(150))
                         .add(game.engine.createComponent(TransparencyComponent.class));
                 heroData.movementPoints -= node.z;
+                GameMapDataComponent gameMapData = gameMapDataMapper.get(this.gameMapDataArray.first());
+                gameMapData.hud.getRightBar().updateSelectedHero(hero);
                 heroData.heroPath.getWalk().removeFirstElement();
             }
         }
