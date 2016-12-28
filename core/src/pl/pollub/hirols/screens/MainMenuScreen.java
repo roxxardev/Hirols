@@ -31,7 +31,6 @@ public class MainMenuScreen implements Screen{
 
     private final Stage stage;
     private final Skin skin;
-    private VisTextButton singlelayerButton, multiplayerButton, optionsButton, closeButton;
     private Table buttonsTable, hotSeatTable;
 
     private final int screenWidth = 1920;
@@ -50,12 +49,13 @@ public class MainMenuScreen implements Screen{
 
         VisTextButton.VisTextButtonStyle buttonStyle = skin.get("mainMenuStyle", VisTextButton.VisTextButtonStyle.class);
 
-        singlelayerButton = new VisTextButton("Singleplayer", new VisTextButton.VisTextButtonStyle(buttonStyle));
-        multiplayerButton = new VisTextButton("Multiplayer", new VisTextButton.VisTextButtonStyle(buttonStyle));
+        VisTextButton singlePlayerButton, multiPlayerButton, optionsButton, closeButton;
+        singlePlayerButton = new VisTextButton("Singleplayer", new VisTextButton.VisTextButtonStyle(buttonStyle));
+        multiPlayerButton = new VisTextButton("Multiplayer", new VisTextButton.VisTextButtonStyle(buttonStyle));
         optionsButton = new VisTextButton("Options", new VisTextButton.VisTextButtonStyle(buttonStyle));
         closeButton = new VisTextButton("Close game", new VisTextButton.VisTextButtonStyle(buttonStyle));
 
-        multiplayerButton.addListener(new ChangeListener() {
+        multiPlayerButton.addListener(new ChangeListener() {
 
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -133,8 +133,8 @@ public class MainMenuScreen implements Screen{
         });
 
         buttonsTable.defaults().fill().pad(20);
-        buttonsTable.add(singlelayerButton).expand().row();
-        buttonsTable.add(multiplayerButton).expand().row();
+        buttonsTable.add(singlePlayerButton).expand().row();
+        buttonsTable.add(multiPlayerButton).expand().row();
         buttonsTable.add(optionsButton).expand().row();
         buttonsTable.add(closeButton).expand();
 

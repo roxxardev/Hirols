@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
@@ -120,6 +121,12 @@ public class HudManager {
         menuStyle.fontColor = Color.GOLD;
         skin.add("mainMenuStyle", menuStyle, VisTextButton.VisTextButtonStyle.class);
 
+        ImageButton.ImageButtonStyle townImageButtonStyle = new ImageButton.ImageButtonStyle();
+        TextureRegionDrawable townBuildingDrawable = new TextureRegionDrawable(new TextureRegion(game.assetManager.get("towns/townButton.png", Texture.class)));
+        townImageButtonStyle.over = townBuildingDrawable.tint(new Color(0,0,0,0.7f));
+        townImageButtonStyle.down = townBuildingDrawable.tint(new Color(0,0,0,0.45f));
+        townImageButtonStyle.up = townBuildingDrawable.tint(new Color(0,0,0,0.22f));
+        skin.add("townBuildingStyle", townImageButtonStyle, ImageButton.ImageButtonStyle.class);
     }
 
     public SpriteDrawable getTransparentBackground() {

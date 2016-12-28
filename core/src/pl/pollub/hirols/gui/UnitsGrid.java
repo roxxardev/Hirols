@@ -63,7 +63,8 @@ public class UnitsGrid extends GridGroup {
             Animation animation = AnimationManager.createAnimation(animationProperties.getDirections(),game.assetManager.get(animationProperties.getPath(), Texture.class), animationProperties.getCols(), animationProperties.getRows(), animationProperties.getTime())
                     .get(Direction.S);
             Image image = new AnimatedImage(animation, true);
-            image.setPosition(animationInformation.offset.x, animationInformation.offset.y + button.getLabel().getHeight());
+            int offsetTargetSize = 96;
+            image.setPosition(animationInformation.offset.x - 0.6f* (offsetTargetSize - getItemWidth()), animationInformation.offset.y  + button.getLabel().getHeight());
             button.setUnitImage(image);
         }
     }
