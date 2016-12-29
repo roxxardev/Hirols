@@ -63,7 +63,7 @@ public abstract class DefaultConsole implements Console {
             if(parameterTypes.length == 0) {
                 try {
                     method.setAccessible(true);
-                    method.invoke(commands,null);
+                    method.invoke(commands,(Object[]) null);
                     return;
                 } catch (ReflectionException e) {
                     e.printStackTrace();
