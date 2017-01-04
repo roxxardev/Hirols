@@ -48,7 +48,7 @@ public class GameManager implements Disposable{
     private final ArrayList<EntitySystem> sharedSystems = new ArrayList<EntitySystem>();
 
     private final ArrayList<Class<? extends GameMapComponent>> availableGameMapComponents = new ArrayList<Class<? extends GameMapComponent>>();
-    private final ArrayList<Class<? extends PlayerComponent>> players = new ArrayList<Class<? extends PlayerComponent>>();
+    private final ArrayList<Class<? extends PlayerComponent>> playerClasses = new ArrayList<Class<? extends PlayerComponent>>();
 
     private final TmxMapLoader tmxMapLoader = new TmxMapLoader();
     private final TmxMapLoader.Parameters parameters = new TmxMapLoader.Parameters();
@@ -83,7 +83,7 @@ public class GameManager implements Disposable{
 
         if(playerNames.size() > availablePlayerComponents.size()) throw new IndexOutOfBoundsException();
         for(int i = 0; i < playerNames.size(); i++) {
-            players.add(availablePlayerComponents.get(i));
+            playerClasses.add(availablePlayerComponents.get(i));
 
             float r = random.nextFloat();
             float g = random.nextFloat();
@@ -96,7 +96,7 @@ public class GameManager implements Disposable{
 
             Entity player = game.engine.createEntity();
             player
-                    .add(game.engine.createComponent(players.get(i)))
+                    .add(game.engine.createComponent(playerClasses.get(i)))
                     .add(game.engine.createComponent(PlayerDataComponent.class).init(color, playerNames.get(i)));
             if(i == 0)
                     player.add(game.engine.createComponent(SelectedComponent.class));
@@ -135,8 +135,8 @@ public class GameManager implements Disposable{
         setCurrentMapScreen(mapScreens.get(mapName));
     }
 
-    public ArrayList<Class<? extends PlayerComponent>> getPlayerClasses() {
-        return players;
+    public List<Class<? extends PlayerComponent>> getPlayerClasses() {
+        return playerClasses;
     }
 
     private void createSharedSystems() {
@@ -165,12 +165,23 @@ public class GameManager implements Disposable{
         return currentPlayers.first();
     }
 
+    public boolean changePlayer(Class<? extends PlayerComponent> playerClass) {
+        if (getCurrentPlayerClass() == playerClass) return false;
+        Entity currentPlayer = getCurrentPlayer();
+        currentPlayer.remove(SelectedComponent.class);
+
+        ImmutableArray<Entity> players = game.engine.getEntitiesFor(Family.all(PlayerDataComponent.class, playerClass).get());
+        Entity newSelectedPlayer = players.first();
+        newSelectedPlayer.add(game.engine.createComponent(SelectedComponent.class));
+        return true;
+    }
+
     public Class<? extends PlayerComponent> getCurrentPlayerClass() {
         return attachedToPlayer(getCurrentPlayer());
     }
 
     public Class<? extends PlayerComponent> attachedToPlayer(Entity entity) {
-        for(Class<? extends PlayerComponent> playerClass : players) {
+        for(Class<? extends PlayerComponent> playerClass : playerClasses) {
             if(ComponentMapper.getFor(playerClass).has(entity)) return playerClass;
         }
         return null;

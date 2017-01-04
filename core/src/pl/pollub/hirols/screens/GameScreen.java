@@ -8,7 +8,6 @@ import com.badlogic.gdx.utils.Disposable;
 import java.util.ArrayList;
 
 import pl.pollub.hirols.Hirols;
-import pl.pollub.hirols.systems.TempSystem;
 
 /**
  * Created by Eryk on 2016-05-03.
@@ -72,7 +71,5 @@ public abstract class GameScreen implements Screen, Disposable {
     @Override
     public void dispose() {
         removeSystemsFromEngine();
-//        //TODO wait for ashley to fix bug and delete
-//        game.engine.addSystem(new TempSystem());
     }
 }

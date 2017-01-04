@@ -56,13 +56,12 @@ public class TopBar extends Table {
 
     public boolean updatePlayer() {
         Class<? extends PlayerComponent> player = game.gameManager.getCurrentPlayerClass();
-        if(currentPlayer == player) return false;
         currentPlayer = player;
         PlayerDataComponent playerData = ComponentMapper.getFor(PlayerDataComponent.class).get(game.gameManager.getCurrentPlayer());
         Color color = new Color(playerData.color);
         playerLabel.getStyle().background = new SpriteDrawable(new Sprite(game.hudManager.getWhiteTexture())).tint(color);
         playerLabel.setText(" Player: "+playerData.name + " ");
-        int week = (playerData.day / 7) + 1;
+        int week = ((playerData.day - 1) / 7) + 1;
         dayLabel.setText("Week " + week + ", Day "+playerData.day+" ");
 
         updateResources();

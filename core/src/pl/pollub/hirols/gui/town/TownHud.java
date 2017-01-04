@@ -96,7 +96,10 @@ public class TownHud extends Hud {
         barrackButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                addTownBuildingWindow(new Barracks());
+                if(addTownBuildingWindow(new Barracks(game))) {
+                    townBuildingWindow.setSize(800,600);
+                    townBuildingWindow.setPosition(200,100);
+                }
             }
         });
 
@@ -105,7 +108,9 @@ public class TownHud extends Hud {
         townHallButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                addTownBuildingWindow(new Barracks());
+                if(addTownBuildingWindow(new TownHall())) {
+                    townBuildingWindow.setBounds(200,200,600,400);
+                }
             }
         });
 
@@ -114,7 +119,9 @@ public class TownHud extends Hud {
         libraryButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                addTownBuildingWindow(new Barracks());
+                if(addTownBuildingWindow(new Library())) {
+                    townBuildingWindow.setBounds(200,200,600,400);
+                }
             }
         });
 
@@ -123,7 +130,9 @@ public class TownHud extends Hud {
         marketButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                addTownBuildingWindow(new Barracks());
+                if(addTownBuildingWindow(new Market())) {
+                    townBuildingWindow.setBounds(200,200,600,400);
+                }
             }
         });
 
@@ -132,7 +141,9 @@ public class TownHud extends Hud {
         wallsButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                addTownBuildingWindow(new Barracks());
+                if(addTownBuildingWindow(new Walls())) {
+                    townBuildingWindow.setBounds(200,200,600,400);
+                }
             }
         });
 
@@ -141,7 +152,9 @@ public class TownHud extends Hud {
         tavernButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                addTownBuildingWindow(new Barracks());
+                if(addTownBuildingWindow(new Tavern(game))) {
+                    townBuildingWindow.setBounds(200,300,800,200);
+                }
             }
         });
 

@@ -68,7 +68,7 @@ public class MapCamMovementSystem extends GameMapEntitySystem {
             Pools.free(tempGameCamPosition);
         }
 
-        float zoom = 1/8f * gameMapData.inputManager.getScrolledAmount();
+        float zoom = 1/16f * gameMapData.inputManager.getScrolledAmount();
 
         if(zoom != 0) {
             final float minZoomTilesVertically = 7.5f;

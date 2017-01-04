@@ -45,7 +45,7 @@ public class GameMapHud extends Hud {
     private pl.pollub.hirols.gui.AnimatedImage longPressImage;
     private LongPressWindow longPressWindow;
 
-    private GameMapScreen gameMapScreen;
+    GameMapScreen gameMapScreen;
 
     public GameMapHud(Hirols game, GameMapScreen gameMapScreen) {
         super(game, new ScreenViewport());
@@ -55,7 +55,7 @@ public class GameMapHud extends Hud {
 
     private void createActors(){
         topBar = new TopBar(game,stage);
-        rightBar = new RightBar(game, this,gameMapScreen.getGameMapComponentClass());
+        rightBar = new RightBar(game, this);
         leftBar = new LeftBar(game,stage,gameMapScreen);
 
         longPressImage = new pl.pollub.hirols.gui.AnimatedImage(AnimationManager.createAnimation(game.assetManager.get("animations/loadingLongPress.png", Texture.class), 32, 1, 0.037f), false);
@@ -131,12 +131,12 @@ public class GameMapHud extends Hud {
             Table heroTable = new Table();
             Table heroInfoTable = new Table();
             Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, Color.GOLD);
-            Label playerName = new Label(heroDataComponent.hero.name , labelStyle);
-            Label playerLevel = new Label("Level " + heroDataComponent.heroLevel.getLevel() , labelStyle);
-            Label playerExperience = new Label("Experience " + heroDataComponent.heroLevel.getExperience() , labelStyle);
-            heroInfoTable.add(playerName).expand().fill().row();
-            heroInfoTable.add(playerLevel).expand().fill().row();
-            heroInfoTable.add(playerExperience).expand().fill();
+            Label heroName = new Label(heroDataComponent.hero.name , labelStyle);
+            Label heroLevel = new Label("Level " + heroDataComponent.heroLevel.getLevel() , labelStyle);
+            Label heroExperience = new Label("Experience " + heroDataComponent.heroLevel.getExperience() , labelStyle);
+            heroInfoTable.add(heroName).expand().fill().row();
+            heroInfoTable.add(heroLevel).expand().fill().row();
+            heroInfoTable.add(heroExperience).expand().fill();
             heroTable.add(heroInfoTable).row();
             Table heroSkillsTable = new Table();
             heroSkillsTable.add().expand();
@@ -302,6 +302,11 @@ public class GameMapHud extends Hud {
         longPressWindow.setPosition(200,200);
         stage.addActor(longPressWindow);
         return true;
+    }
+
+    public void newTurn() {
+        topBar.updatePlayer();
+        rightBar.updatePlayer();
     }
 
     public TopBar getTopBar() {

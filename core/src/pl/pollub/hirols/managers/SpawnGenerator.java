@@ -2,8 +2,9 @@ package pl.pollub.hirols.managers;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.PooledEngine;
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -11,15 +12,15 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pools;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
 import pl.pollub.hirols.animation.AnimationSet;
 import pl.pollub.hirols.Hirols;
-import pl.pollub.hirols.components.SelectedComponent;
 import pl.pollub.hirols.components.map.BannerComponent;
 import pl.pollub.hirols.components.map.EnemyDataComponent;
+import pl.pollub.hirols.components.player.Player1;
+import pl.pollub.hirols.components.player.Player2;
 import pl.pollub.hirols.components.player.PlayerComponent;
 import pl.pollub.hirols.components.player.PlayerDataComponent;
 import pl.pollub.hirols.components.graphics.AnimationComponent;
@@ -43,7 +44,9 @@ public class SpawnGenerator {
 
         spawnEnemyRandomPlaces(game,map,game.unitsManager.smallWyvern,5);
 
-        spawnPlayerAndHeroes(game, map, game.gameManager.getCurrentPlayerClass());
+        for (Class<? extends PlayerComponent> playerClass : game.gameManager.getPlayerClasses()) {
+            spawnHeroes(game, map, playerClass);
+        }
     }
 
     private static void spawnEnemyRandomPlaces(Hirols game, pl.pollub.hirols.gameMap.Map map, UnitsManager.Unit unit, int number) {
@@ -88,15 +91,16 @@ public class SpawnGenerator {
     }
 
 
-    private static void spawnPlayerAndHeroes(Hirols game, pl.pollub.hirols.gameMap.Map map, Class<? extends PlayerComponent> playerClass) {
+    private static void spawnHeroes(Hirols game, pl.pollub.hirols.gameMap.Map map, Class<? extends PlayerComponent> playerClass) {
         //TODO remove player id
-        int playerId = -1;
+        int heroID = -1;
         PooledEngine engine = game.engine;
 
         Map<AnimationType, Map<Direction, Animation>> orcHeroAnimationMap = AnimationManager.createHeroAnimationMap(game,game.unitsManager.heroOrcWarrior);
         Map<AnimationType, Map<Direction, Animation>> orcMageHeroAnimationMap = AnimationManager.createHeroAnimationMap(game, game.unitsManager.heroOrcMage);
 
-        PlayerDataComponent playerDataComponent = ComponentMapper.getFor(PlayerDataComponent.class).get(game.gameManager.getCurrentPlayer());
+        ImmutableArray<Entity> players = game.engine.getEntitiesFor(Family.all(PlayerDataComponent.class, playerClass).get());
+        PlayerDataComponent playerDataComponent = ComponentMapper.getFor(PlayerDataComponent.class).get(players.first());
 
         for (int i = 0; i < 2; i++) {
             Map<AnimationType, Map<Direction, Animation>> animationMap = orcHeroAnimationMap;
@@ -119,7 +123,7 @@ public class SpawnGenerator {
                     .add(engine.createComponent(RenderableComponent.class))
                     .add(engine.createComponent(TextureComponent.class).setSize(128, 128).setAdditionalOffset(-16, -14))
                     .add(engine.createComponent(HeroDataComponent.class)
-                            .init(++playerId,"nołnejm", 10f, hero, game.unitsManager.orc))
+                            .init(++heroID,"nołnejm", 10f, hero, game.unitsManager.orc))
                     .add(engine.createComponent(VelocityComponent.class))
                     .add(engine.createComponent(BannerComponent.class).init(flagSprite, playerDataComponent.color, 0, (int) (map.getTileHeight() - flagSprite.getHeight())))
                     .add(engine.createComponent(playerClass));
@@ -149,7 +153,7 @@ public class SpawnGenerator {
                         .add(engine.createComponent(PositionComponent.class).init(generateRandomPositionOnMap(heroPosition,map)))
                         .add(engine.createComponent(RenderableComponent.class).init(RenderPriority.LAST))
                         .add(engine.createComponent(TextureComponent.class).setSize(animationInformation.size).setAdditionalOffset(animationInformation.offset))
-                        .add(engine.createComponent(HeroDataComponent.class).init(++playerId,"nołnejm", 100000f, game.unitsManager.heroOrcMage, unit))
+                        .add(engine.createComponent(HeroDataComponent.class).init(++heroID,"nołnejm", 100000f, game.unitsManager.heroOrcMage, unit))
                         .add(engine.createComponent(BannerComponent.class).init(flagSprite, playerDataComponent.color, 0, (int) (map.getTileHeight() - flagSprite.getHeight())))
                         .add(engine.createComponent(VelocityComponent.class))
                         .add(engine.createComponent(playerClass));

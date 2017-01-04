@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Pools;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.components.graphics.RenderableComponent;
@@ -573,6 +574,49 @@ public class MapInteractionSystem extends GameMapEntitySystem {
             getEngine().addEntity(pathEntity);
             heroData.pathEntities.add(pathEntity);
         }
+
+        return true;
+    }
+
+    public boolean newTurn() {
+        Class<? extends PlayerComponent> currentPlayerClass = game.gameManager.getCurrentPlayerClass();
+        playerSelectedHeroes = game.engine.getEntitiesFor(Family.all(HeroDataComponent.class, SelectedComponent.class, currentPlayerClass, gameMapClass).get());
+        if(playerSelectedHeroes.size() > 0 && heroDataMap.get(playerSelectedHeroes.first()).heroPath.hasWalkNodes()) return false;
+
+        List<Class<? extends PlayerComponent>> players = game.gameManager.getPlayerClasses();
+        int playerIndex = players.indexOf(currentPlayerClass);
+        playerIndex = (playerIndex < players.size() - 1) ? playerIndex + 1 : 0;
+
+        Class<? extends PlayerComponent> newSelectedPlayerClass = players.get(playerIndex);
+        game.gameManager.changePlayer(newSelectedPlayerClass);
+        Gdx.app.log("MapInteractionSystem", "New turn");
+
+        Entity newSelectedPlayer = game.engine.getEntitiesFor(Family.all(PlayerDataComponent.class, players.get(playerIndex)).get()).first();
+        PlayerDataComponent playerDataComponent = playerDataMap.get(newSelectedPlayer);
+        playerDataComponent.day++;
+        if((playerDataComponent.day - 1) % 7 == 0) {
+            ImmutableArray<Entity> recruitBuildingEntities = game.engine.getEntitiesFor(Family.all(RecruitDataComponent.class, gameMapClass, newSelectedPlayerClass).get());
+            for (Entity recruitBuildingEntity : recruitBuildingEntities) {
+                RecruitDataComponent recruitDataComponent = recruitDataMap.get(recruitBuildingEntity);
+                recruitDataComponent.currentNumber = recruitDataComponent.amountPerWeek;
+            }
+
+            ImmutableArray<Entity> playerMines = game.engine.getEntitiesFor(Family.all(MineDataComponent.class, newSelectedPlayerClass, gameMapClass).get());
+            for (Entity playerMine : playerMines) {
+                MineDataComponent mineDataComponent = mineDataMap.get(playerMine);
+                int resourceAmount = playerDataComponent.resources.get(mineDataComponent.type);
+                playerDataComponent.resources.put(mineDataComponent.type, resourceAmount + mineDataComponent.amountPerWeek);
+            }
+        }
+
+        ImmutableArray<Entity> playerHeroEntities = game.engine.getEntitiesFor(Family.all(HeroDataComponent.class, gameMapClass, newSelectedPlayerClass).get());
+        for (Entity hero : playerHeroEntities) {
+            HeroDataComponent heroDataComponent = heroDataMap.get(hero);
+            heroDataComponent.movementPoints = heroDataComponent.basicMovementPoints + heroDataComponent.additionalMovementPoints;
+        }
+
+        GameMapDataComponent gameMapData = gameMapDataMapper.get(gameMapDataArray.first());
+        gameMapData.hud.newTurn();
 
         return true;
     }

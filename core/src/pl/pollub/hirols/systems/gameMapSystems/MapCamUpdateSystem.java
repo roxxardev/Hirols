@@ -17,7 +17,5 @@ public class MapCamUpdateSystem extends GameMapEntitySystem {
         if(gameMapDataArray.size() < 1) return;
         GameMapDataComponent gameMapData = gameMapDataMapper.get(this.gameMapDataArray.first());
         gameMapData.gameMapCam.update();
-        //Gdx.app.log("MapCamUpdateSystem",priority + "");
-
     }
 }

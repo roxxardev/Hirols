@@ -87,13 +87,22 @@ public class EndNodeInteractionSystem extends GameMapEntitySystem {
         if(selectedHeroData.pathEntities.isEmpty()){
             if (townMap.has(targetEntity)) {
                 TownComponent townComponent = townMap.get(targetEntity);
+
+                Class<? extends PlayerComponent> townOwner = game.gameManager.attachedToPlayer(targetEntity);
+                if(townOwner != currentPlayerClass) {
+                    if(townOwner != null) targetEntity.remove(townOwner);
+                    bannerMap.get(targetEntity).color.set(playerData.color);
+                    targetEntity.add(game.engine.createComponent(currentPlayerClass));
+                    Gdx.app.log("EndNodeInteractionSystem", "Town taken by "+currentPlayerClass.getSimpleName() + " from " + ((townOwner != null) ? townOwner.getSimpleName() : "no one"));
+                }
+
                 Gdx.app.log("EndNodeInteractionSystem", "Interaction with town: ");
                 game.setScreen(new TownScreen(game,townComponent.enterEntity));
             } else if (mineMap.has(targetEntity)) {
                 Gdx.app.log("EndNodeInteractionSystem", "Interaction with mine");
                 Class<? extends PlayerComponent> mineOwner = game.gameManager.attachedToPlayer(targetEntity);
-                if(mineOwner != null) targetEntity.remove(mineOwner);
                 if(mineOwner != currentPlayerClass) {
+                    if(mineOwner != null) targetEntity.remove(mineOwner);
                     bannerMap.get(targetEntity).color.set(playerData.color);
                     targetEntity.add(game.engine.createComponent(currentPlayerClass));
                     Gdx.app.log("EndNodeInteractionSystem", "Mine taken by "+currentPlayerClass.getSimpleName() + " from " + ((mineOwner != null) ? mineOwner.getSimpleName() : "no one"));
@@ -107,8 +116,8 @@ public class EndNodeInteractionSystem extends GameMapEntitySystem {
             } else if(recruitMap.has(targetEntity)) {
                 Gdx.app.log("EndNodeInteractionSystem", "Interaction with recruit building");
                 Class<? extends PlayerComponent> recruitBuildingOwner = game.gameManager.attachedToPlayer(targetEntity);
-                if(recruitBuildingOwner != null ) targetEntity.remove(recruitBuildingOwner);
                 if(recruitBuildingOwner != currentPlayerClass) {
+                    if(recruitBuildingOwner != null ) targetEntity.remove(recruitBuildingOwner);
                     bannerMap.get(targetEntity).color.set(playerData.color);
                     targetEntity.add(game.engine.createComponent(currentPlayerClass));
                     Gdx.app.log("EndNodeInteractionSystem", "Recruit building taken by "+currentPlayerClass.getSimpleName() + " from " + ((recruitBuildingOwner != null) ? recruitBuildingOwner.getSimpleName() : "no one"));

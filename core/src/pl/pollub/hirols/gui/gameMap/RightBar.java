@@ -60,7 +60,7 @@ public class RightBar extends Table {
 
     private Class<? extends PlayerComponent> currentPlayer;
 
-    RightBar(Hirols game, GameMapHud gameMapHud, Class<? extends GameMapComponent> gameMapComponent) {
+    RightBar(Hirols game, GameMapHud gameMapHud) {
         this.game = game;
         this.stage = gameMapHud.getStage();
         this.gameMapHud = gameMapHud;
@@ -70,7 +70,7 @@ public class RightBar extends Table {
         setDebug(game.hudManager.debug);
 
         createActors();
-        updatePlayer(gameMapComponent);
+        updatePlayer();
 
         //TODO zmienic z Marcinowego na jakies czytelne
         addListener(new ActorGestureListener() {
@@ -104,15 +104,18 @@ public class RightBar extends Table {
         gridGroupHeroes.updateHero(selectedHero);
     }
 
-    public boolean updatePlayer(Class<? extends GameMapComponent> gameMapComponent) {
+    public boolean updatePlayer() {
         Class<? extends PlayerComponent> player = game.gameManager.getCurrentPlayerClass();
-        if (currentPlayer == player) return false;
+        if (currentPlayer == player) {
+            updateTownsAndHeroes(gameMapHud.gameMapScreen.getGameMapComponentClass(), gameMapHud);
+            return false;
+        }
         currentPlayer = player;
 
         gridGroupHeroes.clear();
         gridGroupTowns.clear();
 
-        updateTownsAndHeroes(gameMapComponent, gameMapHud);
+        updateTownsAndHeroes(gameMapHud.gameMapScreen.getGameMapComponentClass(), gameMapHud);
         return true;
     }
 
@@ -121,6 +124,14 @@ public class RightBar extends Table {
         moveButton.getStyle().imageUp = new SpriteDrawable(new Sprite(new TextureRegion(game.assetManager.get("ui/button-images.png", Texture.class), 0, 2, 128, 176)));
         turnButton = new VisImageButton(new VisImageButton.VisImageButtonStyle(game.hudManager.skin.get("image-button", VisImageButton.VisImageButtonStyle.class)));
         turnButton.getStyle().imageUp = new SpriteDrawable(new Sprite(new TextureRegion(game.assetManager.get("ui/button-images.png", Texture.class), 128, 0, 104, 178)));
+
+        turnButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                MapInteractionSystem mapInteractionSystem = game.engine.getSystem(MapInteractionSystem.class);
+                mapInteractionSystem.newTurn();
+            }
+        });
 
         moveButton.addListener(new ChangeListener() {
             @Override
@@ -179,27 +190,27 @@ public class RightBar extends Table {
     }
 
     public void updateTownsAndHeroes(Class<? extends GameMapComponent> gameMapComponent, GameMapHud gameMapHud) {
-        ImmutableArray<Entity> heroes = game.engine.getEntitiesFor(Family.all(HeroDataComponent.class, gameMapComponent, game.gameManager.getCurrentPlayerClass()).get());
+        ImmutableArray<Entity> playerHeroes = game.engine.getEntitiesFor(Family.all(HeroDataComponent.class, gameMapComponent, game.gameManager.getCurrentPlayerClass()).get());
         ArrayList<Entity> currentHeroesInGridGroup = new ArrayList<>(gridGroupHeroes.heroTableMap.keySet());
         for (Entity hero : currentHeroesInGridGroup) {
-            if (!heroes.contains(hero, true)) {
+            if (!playerHeroes.contains(hero, true)) {
                 gridGroupHeroes.removeHero(hero);
             } else {
                 gridGroupHeroes.updateHero(hero);
             }
         }
-        for (Entity hero : heroes) {
+        for (Entity hero : playerHeroes) {
             gridGroupHeroes.addHero(hero, gameMapHud);
         }
 
-        ImmutableArray<Entity> towns = game.engine.getEntitiesFor(Family.all(TownDataComponent.class, gameMapComponent, game.gameManager.getCurrentPlayerClass()).get());
+        ImmutableArray<Entity> playerTowns = game.engine.getEntitiesFor(Family.all(TownDataComponent.class, gameMapComponent, game.gameManager.getCurrentPlayerClass()).get());
         ArrayList<Entity> currentTownsInGridGroup = new ArrayList<>(gridGroupTowns.townButtonMap.keySet());
         for (Entity town : currentTownsInGridGroup) {
-            if (!towns.contains(town, true)) {
+            if (!playerTowns.contains(town, true)) {
                 gridGroupTowns.removeTown(town);
             }
         }
-        for (Entity town : towns) {
+        for (Entity town : playerTowns) {
             gridGroupTowns.addTown(town);
         }
     }

@@ -21,6 +21,7 @@ public class HeroDataComponent implements Component, Pool.Poolable{
     public final Army army = new Army();
 
     public float additionalMovementPoints;
+    public float basicMovementPoints;
     public float movementPoints;
     public int magicPoints;
     public String name;
@@ -32,13 +33,13 @@ public class HeroDataComponent implements Component, Pool.Poolable{
     public HeroDataComponent init(int id, String name, float additionalMovementPoints, UnitsManager.Hero hero, UnitsManager.Unit startUnit) {
         this.id = id;
         this.additionalMovementPoints = additionalMovementPoints;
-        this.movementPoints = additionalMovementPoints;
         this.name = name;
         this.hero = hero;
         magicPoints = hero.magicPoints;
         attack = hero.attack;
         defense = hero.defense;
         army.addUnit(startUnit, 1);
+        this.movementPoints = basicMovementPoints + additionalMovementPoints;
         return this;
     }
 
@@ -117,7 +118,7 @@ public class HeroDataComponent implements Component, Pool.Poolable{
             } else if(maxSpeed >= 7) {
                 movementPointsFromSpeed = 18;
             }
-            movementPoints = additionalMovementPoints + movementPointsFromSpeed;
+            basicMovementPoints =  movementPointsFromSpeed;
         }
 
         public Squad[] getSquads() {

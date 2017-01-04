@@ -94,6 +94,7 @@ public class HudManager {
         textButtonStyle.down = drawableDown;
         textButtonStyle.over = drawableOver;
         textButtonStyle.font = bitmapFont;
+        textButtonStyle.fontColor = Color.GOLD;
         skin.add("text-button", textButtonStyle, VisTextButton.VisTextButtonStyle.class);
 
         VisImageTextButton.VisImageTextButtonStyle imageTextButtonStyle = new VisImageTextButton.VisImageTextButtonStyle();
