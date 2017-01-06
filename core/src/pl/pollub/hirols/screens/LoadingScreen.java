@@ -125,39 +125,39 @@ public class LoadingScreen implements Screen {
 
         assetManager.load("animations/OrcWyvern_Standing.png", Texture.class, textureParameter);
         assetManager.load("animations/OrcWyvern_Walking.png", Texture.class, textureParameter);
-        assetManager.load("animations/OrcWyvern_Attacking.png", Texture.class, textureParameter);
-        assetManager.load("animations/OrcWyvern_Dying.png", Texture.class, textureParameter);
-        assetManager.load("animations/OrcWyvern_TakingDamage.png", Texture.class, textureParameter);
+        //assetManager.load("animations/OrcWyvern_Attacking.png", Texture.class, textureParameter);
+        //assetManager.load("animations/OrcWyvern_Dying.png", Texture.class, textureParameter);
+        //assetManager.load("animations/OrcWyvern_TakingDamage.png", Texture.class, textureParameter);
 
         assetManager.load("animations/Orc_Staying.png", Texture.class, textureParameter);
         assetManager.load("animations/Orc_Walking.png", Texture.class, textureParameter);
-        assetManager.load("animations/Orc_Attacking.png", Texture.class, textureParameter);
-        assetManager.load("animations/Orc_Dying.png", Texture.class, textureParameter);
-        assetManager.load("animations/Orc_TakingDamage.png", Texture.class, textureParameter);
+        //assetManager.load("animations/Orc_Attacking.png", Texture.class, textureParameter);
+        //assetManager.load("animations/Orc_Dying.png", Texture.class, textureParameter);
+        //assetManager.load("animations/Orc_TakingDamage.png", Texture.class, textureParameter);
 
         assetManager.load("animations/OrcCrossbow_Standing.png", Texture.class, textureParameter);
         assetManager.load("animations/OrcCrossbow_Walking.png", Texture.class, textureParameter);
-        assetManager.load("animations/OrcCrossbow_Attacking.png", Texture.class, textureParameter);
-        assetManager.load("animations/OrcCrossbow_Dying.png", Texture.class, textureParameter);
-        assetManager.load("animations/OrcCrossbow_TakingDamage.png", Texture.class, textureParameter);
+        //assetManager.load("animations/OrcCrossbow_Attacking.png", Texture.class, textureParameter);
+        //assetManager.load("animations/OrcCrossbow_Dying.png", Texture.class, textureParameter);
+        //assetManager.load("animations/OrcCrossbow_TakingDamage.png", Texture.class, textureParameter);
 
         assetManager.load("animations/OrcSlinger_Standing.png", Texture.class, textureParameter);
         assetManager.load("animations/OrcSlinger_Walking.png", Texture.class, textureParameter);
-        assetManager.load("animations/OrcSlinger_Attacking.png", Texture.class, textureParameter);
-        assetManager.load("animations/OrcSlinger_Dying.png", Texture.class, textureParameter);
-        assetManager.load("animations/OrcSlinger_TakingDamage.png", Texture.class, textureParameter);
+        //assetManager.load("animations/OrcSlinger_Attacking.png", Texture.class, textureParameter);
+        //assetManager.load("animations/OrcSlinger_Dying.png", Texture.class, textureParameter);
+        //assetManager.load("animations/OrcSlinger_TakingDamage.png", Texture.class, textureParameter);
 
         assetManager.load("animations/OrcRider_Standing.png", Texture.class, textureParameter);
         assetManager.load("animations/OrcRider_Walking.png", Texture.class, textureParameter);
-        assetManager.load("animations/OrcRider_Attacking.png", Texture.class, textureParameter);
-        assetManager.load("animations/OrcRider_Dying.png", Texture.class, textureParameter);
-        assetManager.load("animations/OrcRider_TakingDamage.png", Texture.class, textureParameter);
+        //assetManager.load("animations/OrcRider_Attacking.png", Texture.class, textureParameter);
+        //assetManager.load("animations/OrcRider_Dying.png", Texture.class, textureParameter);
+        //assetManager.load("animations/OrcRider_TakingDamage.png", Texture.class, textureParameter);
 
         assetManager.load("animations/OrcWarrior_Standing.png", Texture.class, textureParameter);
         assetManager.load("animations/OrcWarrior_Walking.png", Texture.class, textureParameter);
-        assetManager.load("animations/OrcWarrior_Attacking.png", Texture.class, textureParameter);
-        assetManager.load("animations/OrcWarrior_Dying.png", Texture.class, textureParameter);
-        assetManager.load("animations/OrcWarrior_TakingDamage.png", Texture.class, textureParameter);
+        //assetManager.load("animations/OrcWarrior_Attacking.png", Texture.class, textureParameter);
+        //assetManager.load("animations/OrcWarrior_Dying.png", Texture.class, textureParameter);
+        //assetManager.load("animations/OrcWarrior_TakingDamage.png", Texture.class, textureParameter);
 
 
         assetManager.load("animations/OrcHero_Standing.png", Texture.class, textureParameter);

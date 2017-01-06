@@ -50,6 +50,7 @@ public class AnimationManager {
             AnimationType animationType = entry.getKey();
             AnimationProperties animationProperties = entry.getValue();
 
+            if(game.assetManager.isLoaded(animationProperties.getPath(), Texture.class))
             animationMap.put(animationType, createAnimation(animationProperties.getDirections(), game.assetManager.get(animationProperties.getPath(), Texture.class), animationProperties.getCols(), animationProperties.getRows(), animationProperties.getTime()));
         }
 
@@ -63,6 +64,7 @@ public class AnimationManager {
             AnimationType animationType = entry.getKey();
             AnimationProperties animationProperties = entry.getValue();
 
+            if(game.assetManager.isLoaded(animationProperties.getPath(), Texture.class))
             animationMap.put(animationType, createAnimation(animationProperties.getDirections(), game.assetManager.get(animationProperties.getPath(), Texture.class), animationProperties.getCols(), animationProperties.getRows(), animationProperties.getTime()));
         }
 

@@ -613,6 +613,9 @@ public class MapInteractionSystem extends GameMapEntitySystem {
         for (Entity hero : playerHeroEntities) {
             HeroDataComponent heroDataComponent = heroDataMap.get(hero);
             heroDataComponent.movementPoints = heroDataComponent.basicMovementPoints + heroDataComponent.additionalMovementPoints;
+            if(selectedMap.has(hero)) {
+                recalculatePathForHero(hero);
+            }
         }
 
         GameMapDataComponent gameMapData = gameMapDataMapper.get(gameMapDataArray.first());
