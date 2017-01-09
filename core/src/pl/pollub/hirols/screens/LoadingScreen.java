@@ -19,8 +19,10 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -39,6 +41,7 @@ public class LoadingScreen implements Screen {
     private Stage stage;
     private ProgressBar bar;
     private Skin skin;
+    private Image backgroundImage;
 
     public LoadingScreen(Hirols game) {
         this.game = game;
@@ -79,6 +82,10 @@ public class LoadingScreen implements Screen {
         Viewport loadPort = new ScreenViewport(loadCam);
         stage = new Stage(loadPort, game.batch);
 
+        backgroundImage = new Image(new Texture(Gdx.files.internal("temp/logoork.png")));
+        backgroundImage.setColor(new Color(1,1,1,0.01f));
+        backgroundImage.setPosition(stage.getWidth()/2 - backgroundImage.getWidth()/2, stage.getHeight()/5 + 20);
+        stage.addActor(backgroundImage);
         bar = new ProgressBar(0, 100, 1, false, skin.get("progress-bar",ProgressBar.ProgressBarStyle.class));
         bar.setPosition(100, stage.getHeight()/5);
         bar.setWidth(stage.getWidth() - 200);
@@ -186,22 +193,18 @@ public class LoadingScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         game.batch.setProjectionMatrix(stage.getCamera().combined);
+
         stage.draw();
         
         if(assetManager.update()) {
             if(Gdx.input.isTouched()) {
                 game.hudManager = new HudManager(game);
                 game.setScreen(new MainMenuScreen(game));
-//                ArrayList<String> playerNames = new ArrayList<>();
-//                playerNames.add("dsa");
-//                game.gameManager = new GameManager(game, playerNames);
-//                game.gameManager.createMap("maps/defaultMap/Map1 tiles 48x48.tmx");
-//                game.gameManager.setCurrentMapScreen("maps/defaultMap/Map1 tiles 48x48.tmx");
-                //game.setScreen(new TownScreen(game));
-                //game.setScreen(new BattleScreen(game));
             }
         } else {
-            Gdx.app.log("Loading progress", String.valueOf(assetManager.getProgress()*100));
+            float progress = assetManager.getProgress();
+            Gdx.app.log("Loading progress", String.valueOf(progress*100));
+            backgroundImage.getColor().a = progress;
         }
     }
 
@@ -234,5 +237,6 @@ public class LoadingScreen implements Screen {
     public void dispose() {
         stage.dispose();
         skin.dispose();
+        ((TextureRegionDrawable)backgroundImage.getDrawable()).getRegion().getTexture().dispose();
     }
 }

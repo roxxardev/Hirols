@@ -38,7 +38,7 @@ import pl.pollub.hirols.components.physics.PositionComponent;
 import pl.pollub.hirols.components.player.PlayerComponent;
 import pl.pollub.hirols.components.player.PlayerDataComponent;
 import pl.pollub.hirols.gameMap.Map;
-import pl.pollub.hirols.managers.RenderPriority;
+import pl.pollub.hirols.managers.enums.RenderPriority;
 import pl.pollub.hirols.managers.enums.Direction;
 import pl.pollub.hirols.managers.enums.GroundType;
 import pl.pollub.hirols.managers.input.InputManager;
@@ -600,13 +600,13 @@ public class MapInteractionSystem extends GameMapEntitySystem {
                 RecruitDataComponent recruitDataComponent = recruitDataMap.get(recruitBuildingEntity);
                 recruitDataComponent.currentNumber = recruitDataComponent.amountPerWeek;
             }
+        }
 
-            ImmutableArray<Entity> playerMines = game.engine.getEntitiesFor(Family.all(MineDataComponent.class, newSelectedPlayerClass, gameMapClass).get());
-            for (Entity playerMine : playerMines) {
-                MineDataComponent mineDataComponent = mineDataMap.get(playerMine);
-                int resourceAmount = playerDataComponent.resources.get(mineDataComponent.type);
-                playerDataComponent.resources.put(mineDataComponent.type, resourceAmount + mineDataComponent.amountPerWeek);
-            }
+        ImmutableArray<Entity> playerMines = game.engine.getEntitiesFor(Family.all(MineDataComponent.class, newSelectedPlayerClass, gameMapClass).get());
+        for (Entity playerMine : playerMines) {
+            MineDataComponent mineDataComponent = mineDataMap.get(playerMine);
+            int resourceAmount = playerDataComponent.resources.get(mineDataComponent.type);
+            playerDataComponent.resources.put(mineDataComponent.type, resourceAmount + mineDataComponent.amountPerWeek);
         }
 
         ImmutableArray<Entity> playerHeroEntities = game.engine.getEntitiesFor(Family.all(HeroDataComponent.class, gameMapClass, newSelectedPlayerClass).get());

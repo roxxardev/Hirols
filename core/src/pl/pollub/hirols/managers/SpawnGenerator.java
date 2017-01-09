@@ -19,8 +19,6 @@ import pl.pollub.hirols.animation.AnimationSet;
 import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.components.map.BannerComponent;
 import pl.pollub.hirols.components.map.EnemyDataComponent;
-import pl.pollub.hirols.components.player.Player1;
-import pl.pollub.hirols.components.player.Player2;
 import pl.pollub.hirols.components.player.PlayerComponent;
 import pl.pollub.hirols.components.player.PlayerDataComponent;
 import pl.pollub.hirols.components.graphics.AnimationComponent;
@@ -31,8 +29,7 @@ import pl.pollub.hirols.components.map.HeroDataComponent;
 import pl.pollub.hirols.components.map.MapComponent;
 import pl.pollub.hirols.components.physics.PositionComponent;
 import pl.pollub.hirols.components.physics.VelocityComponent;
-import pl.pollub.hirols.managers.enums.AnimationType;
-import pl.pollub.hirols.managers.enums.Direction;
+import pl.pollub.hirols.managers.enums.*;
 
 /**
  * Created by Eryk on 2015-12-02.
@@ -151,7 +148,7 @@ public class SpawnGenerator {
                         .add(engine.createComponent(map.getGameMapComponentClazz()))
                         .add(engine.createComponent(AnimationComponent.class).init(new AnimationSet(AnimationType.STAND, Direction.getRandomDirection(), animationMap), true, 0f))
                         .add(engine.createComponent(PositionComponent.class).init(generateRandomPositionOnMap(heroPosition,map)))
-                        .add(engine.createComponent(RenderableComponent.class).init(RenderPriority.LAST))
+                        .add(engine.createComponent(RenderableComponent.class).init(pl.pollub.hirols.managers.enums.RenderPriority.LAST))
                         .add(engine.createComponent(TextureComponent.class).setSize(animationInformation.size).setAdditionalOffset(animationInformation.offset))
                         .add(engine.createComponent(HeroDataComponent.class).init(++heroID,"nołnejm", 100000f, game.unitsManager.heroOrcMage, unit))
                         .add(engine.createComponent(BannerComponent.class).init(flagSprite, playerDataComponent.color, 0, (int) (map.getTileHeight() - flagSprite.getHeight())))
