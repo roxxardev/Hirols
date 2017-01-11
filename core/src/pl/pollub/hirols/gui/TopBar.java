@@ -21,6 +21,7 @@ import java.util.Map;
 import pl.pollub.hirols.Hirols;
 import pl.pollub.hirols.components.player.PlayerComponent;
 import pl.pollub.hirols.components.player.PlayerDataComponent;
+import pl.pollub.hirols.managers.HudManager;
 import pl.pollub.hirols.managers.enums.ResourceType;
 
 /**
@@ -70,7 +71,7 @@ public class TopBar extends Table {
 
     private void addPlayer() {
         BitmapFont font = game.assetManager.get("testFontSize18.ttf", BitmapFont.class);
-        Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.GOLD);
+        Label.LabelStyle labelStyle = new Label.LabelStyle(font, HudManager.FONT_COLOR);
         playerLabel = new Label("no player", labelStyle);
         add(playerLabel).expand().fill().padRight(30);
         playerLabel.setWrap(true);
@@ -80,7 +81,7 @@ public class TopBar extends Table {
 
     private void addDayLabel() {
         BitmapFont font = game.assetManager.get("testFontSize18.ttf", BitmapFont.class);
-        Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.GOLD);
+        Label.LabelStyle labelStyle = new Label.LabelStyle(font, HudManager.FONT_COLOR);
         dayLabel = new Label("Week 0, Day 0", labelStyle);
         dayLabel.setWrap(true);
         dayLabel.setEllipsis(true);
@@ -91,7 +92,7 @@ public class TopBar extends Table {
     private void addResources() {
         BitmapFont font = game.assetManager.get("testFontSize18.ttf", BitmapFont.class);
 
-        Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.GOLD);
+        Label.LabelStyle labelStyle = new Label.LabelStyle(font, HudManager.FONT_COLOR);
 
         defaults().expandY().padRight(5);
 

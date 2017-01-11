@@ -106,7 +106,7 @@ public class GameManager implements Disposable{
 
     public GameMapScreen createMap(String filePath) {
         if(mapScreens.containsKey(filePath)) return mapScreens.get(filePath);
-        if(availableGameMapComponents.size() < 1) throw new NullPointerException("There is no GameMapComponent left!");
+        if(availableGameMapComponents.size() < 1) throw new IndexOutOfBoundsException("There is no GameMapComponent left!");
         pl.pollub.hirols.gameMap.Map map = new pl.pollub.hirols.gameMap.Map(game,tmxMapLoader.load(filePath, parameters),getNewGameMapComponentClass());
         GameMapScreen gameMapScreen = new GameMapScreen(game,map,gameMapCam,gameMapPort);
         mapScreens.put(filePath,gameMapScreen);

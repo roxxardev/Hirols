@@ -103,12 +103,12 @@ public class LoadingScreen implements Screen {
         textureParameter.minFilter = Texture.TextureFilter.Linear;
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter fontLoaderParameter = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        fontLoaderParameter.fontFileName = "ui/fonts/VIDEOPHREAK.ttf";
+        fontLoaderParameter.fontFileName = "ui/fonts/Righteous-Regular.ttf";
         fontLoaderParameter.fontParameters.size = 32;
         fontLoaderParameter.fontParameters.color = Color.WHITE;
         assetManager.load("testFontSize32.ttf", BitmapFont.class, fontLoaderParameter);
         FreetypeFontLoader.FreeTypeFontLoaderParameter fontLoaderParameter2 = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        fontLoaderParameter2.fontFileName = "ui/fonts/VIDEOPHREAK.ttf";
+        fontLoaderParameter2.fontFileName = "ui/fonts/Righteous-Regular.ttf";
         fontLoaderParameter2.fontParameters.color = Color.WHITE;
         fontLoaderParameter2.fontParameters.size = 12;
         assetManager.load("testFontSize12.ttf", BitmapFont.class, fontLoaderParameter2);

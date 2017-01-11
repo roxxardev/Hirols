@@ -39,6 +39,7 @@ import pl.pollub.hirols.components.map.TownDataComponent;
 import pl.pollub.hirols.components.map.maps.GameMapComponent;
 import pl.pollub.hirols.components.map.PortalComponent;
 import pl.pollub.hirols.components.physics.PositionComponent;
+import pl.pollub.hirols.components.player.Player1;
 import pl.pollub.hirols.components.player.PlayerDataComponent;
 import pl.pollub.hirols.managers.enums.GroundType;
 import pl.pollub.hirols.managers.enums.Race;
@@ -188,7 +189,7 @@ public class Map implements Disposable {
                 int x = (int)Math.floor(position.x)/tileWidth;
                 int y = (int)Math.floor(position.y)/tileHeight;
                 if(type.equals("castle")) {
-                    Gdx.app.log("Castle Object", objectName + " " +position.toString());
+                    Gdx.app.log("Town Object", objectName + " " +position.toString());
                     Entity town = entityMap[x][y];
                     if(object.getProperties().containsKey("isEnter")) {
                         if(Boolean.valueOf(object.getProperties().get("isEnter").toString())) {
@@ -210,7 +211,7 @@ public class Map implements Disposable {
                                     .add(game.engine.createComponent(TownDataComponent.class).init(townName, townRace))
                                     .add(game.engine.createComponent(BannerComponent.class).init(flagSprite, playerDataComponent.color, 0, (int) (getTileHeight() - flagSprite.getHeight())))
                                     .add(game.engine.createComponent(RenderableComponent.class))
-                                    .add(game.engine.createComponent(game.gameManager.getCurrentPlayerClass()));
+                                    .add(game.engine.createComponent(Player1.class));
                             game.engine.addEntity(town);
                         } else {
                             if(!townMap.containsKey(objectName)) {

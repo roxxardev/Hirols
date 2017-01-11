@@ -32,8 +32,7 @@ public class HudManager {
     private BitmapFont bitmapFont;
     public boolean debug;
 
-    public Button.ButtonStyle buttonStyleRoundedOver;
-    public Button.ButtonStyle buttonStyleRoundedChecked;
+    public final static Color FONT_COLOR = Color.GOLD;
 
     public HudManager(Hirols game){
         this.game = game;
@@ -83,6 +82,8 @@ public class HudManager {
         Label.LabelStyle labelStyleWhite = new Label.LabelStyle(bitmapFont, Color.WHITE);
         skin.add("label-white", labelStyleWhite, Label.LabelStyle.class);
 
+        Color fontColor = FONT_COLOR;
+
         VisImageButton.VisImageButtonStyle imageButtonStyle = new VisImageButton.VisImageButtonStyle();
         imageButtonStyle.up = drawableUp;
         imageButtonStyle.down = drawableDown;
@@ -94,7 +95,7 @@ public class HudManager {
         textButtonStyle.down = drawableDown;
         textButtonStyle.over = drawableOver;
         textButtonStyle.font = bitmapFont;
-        textButtonStyle.fontColor = Color.GOLD;
+        textButtonStyle.fontColor = fontColor;
         skin.add("text-button", textButtonStyle, VisTextButton.VisTextButtonStyle.class);
 
         VisImageTextButton.VisImageTextButtonStyle imageTextButtonStyle = new VisImageTextButton.VisImageTextButtonStyle();
@@ -102,7 +103,7 @@ public class HudManager {
         imageTextButtonStyle.down = drawableDown;
         imageTextButtonStyle.over = drawableOver;
         imageTextButtonStyle.font = bitmapFont;
-        imageTextButtonStyle.fontColor = Color.GOLD;
+        imageTextButtonStyle.fontColor = fontColor;
         skin.add("image-text-button", imageTextButtonStyle, VisImageTextButton.VisImageTextButtonStyle.class);
 
 
@@ -119,7 +120,7 @@ public class HudManager {
         menuStyle.down = drawableUp.tint(new Color(1,1,1,0.5f));
         menuStyle.over = drawableUp.tint(new Color(1,1,1,0.2f));
         menuStyle.font = game.assetManager.get("testFontSize32.ttf", BitmapFont.class);
-        menuStyle.fontColor = Color.GOLD;
+        menuStyle.fontColor = fontColor;
         skin.add("mainMenuStyle", menuStyle, VisTextButton.VisTextButtonStyle.class);
 
         ImageButton.ImageButtonStyle townImageButtonStyle = new ImageButton.ImageButtonStyle();

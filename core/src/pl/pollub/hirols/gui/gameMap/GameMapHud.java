@@ -28,6 +28,7 @@ import pl.pollub.hirols.gui.TopBar;
 import pl.pollub.hirols.gui.UnitsGrid;
 import pl.pollub.hirols.managers.AnimationManager;
 import pl.pollub.hirols.gui.Hud;
+import pl.pollub.hirols.managers.HudManager;
 import pl.pollub.hirols.managers.enums.AnimationType;
 import pl.pollub.hirols.managers.enums.Direction;
 import pl.pollub.hirols.managers.enums.ResourceType;
@@ -130,7 +131,7 @@ public class GameMapHud extends Hud {
 
             Table heroTable = new Table();
             Table heroInfoTable = new Table();
-            Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, Color.GOLD);
+            Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, HudManager.FONT_COLOR);
             Label heroName = new Label(heroDataComponent.hero.name , labelStyle);
             Label heroLevel = new Label("Level " + heroDataComponent.heroLevel.getLevel() , labelStyle);
             Label heroExperience = new Label("Experience " + heroDataComponent.heroLevel.getExperience() , labelStyle);
@@ -175,7 +176,7 @@ public class GameMapHud extends Hud {
             longPressWindow.add(unitAnimatedImage).expand().fill().row();
 
             BitmapFont bitmapFont = game.assetManager.get("testFontSize18.ttf", BitmapFont.class);
-            Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, Color.GOLD);
+            Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, HudManager.FONT_COLOR);
             Label unitName = new Label(enemyDataComponent.unit.name , labelStyle);
             longPressWindow.add(unitName).pad(3).row();
             int quantity = enemyDataComponent.quantity;
@@ -204,7 +205,7 @@ public class GameMapHud extends Hud {
             longPressWindow.setSize(windowWidth,windowHeight);
 
             BitmapFont bitmapFont = game.assetManager.get("testFontSize18.ttf", BitmapFont.class);
-            Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, Color.GOLD);
+            Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, HudManager.FONT_COLOR);
             ResourceType resourceType = mineDataComponent.type;
             String mineName;
             String resourceTexturePath = "resources/GoldPile.png";
@@ -247,7 +248,7 @@ public class GameMapHud extends Hud {
             int windowHeight = 200;
             longPressWindow.setSize(windowWidth,windowHeight);
             BitmapFont bitmapFont = game.assetManager.get("testFontSize18.ttf", BitmapFont.class);
-            Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, Color.GOLD);
+            Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, HudManager.FONT_COLOR);
             Label resourceName = new Label(resourceComponent.resourceType.name(), labelStyle);
             longPressWindow.add(resourceName);
 
@@ -258,7 +259,7 @@ public class GameMapHud extends Hud {
             int windowHeight = 200;
             longPressWindow.setSize(windowWidth,windowHeight);
             BitmapFont bitmapFont = game.assetManager.get("testFontSize18.ttf", BitmapFont.class);
-            Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, Color.GOLD);
+            Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, HudManager.FONT_COLOR);
             Label label = new Label("Chest", labelStyle);
             longPressWindow.add(label);
 
@@ -278,7 +279,7 @@ public class GameMapHud extends Hud {
             longPressWindow.add(unitAnimatedImage).expandY().fill();
 
             BitmapFont bitmapFont = game.assetManager.get("testFontSize18.ttf", BitmapFont.class);
-            Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, Color.GOLD);
+            Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, HudManager.FONT_COLOR);
             Label unitName = new Label(recruitDataComponent.unit.name + "\n" + recruitDataComponent.amountPerWeek +" per week\nYou can recruit units here", labelStyle);
             unitName.setWrap(true);
             longPressWindow.add(unitName).expand().fill().pad(3);
@@ -290,7 +291,7 @@ public class GameMapHud extends Hud {
             int windowHeight = 200;
             longPressWindow.setSize(windowWidth,windowHeight);
             BitmapFont bitmapFont = game.assetManager.get("testFontSize18.ttf", BitmapFont.class);
-            Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, Color.GOLD);
+            Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, HudManager.FONT_COLOR);
             Label label = new Label("Portal",labelStyle);
             Label info = new Label("Moves your hero to other location where same portal is", labelStyle);
             info.setWrap(true);

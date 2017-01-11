@@ -35,6 +35,7 @@ import pl.pollub.hirols.console.GraphicalConsole;
 import pl.pollub.hirols.gui.battle.BattleHud;
 import pl.pollub.hirols.managers.AnimationManager;
 import pl.pollub.hirols.managers.EngineTools;
+import pl.pollub.hirols.managers.HudManager;
 import pl.pollub.hirols.managers.UnitsManager;
 import pl.pollub.hirols.managers.enums.AnimationType;
 import pl.pollub.hirols.managers.enums.Direction;
@@ -121,7 +122,7 @@ public class BattleScreen extends GameScreen {
 
             BitmapFontComponent bitmapFontComponent = game.engine.createComponent(BitmapFontComponent.class)
                     .init(new BitmapFont(bitmapFont.getData(), bitmapFont.getRegion(), bitmapFont.usesIntegerPositions()), squad.getQuantity()+"");
-            bitmapFontComponent.bitmapFont.setColor(Color.GOLD);
+            bitmapFontComponent.bitmapFont.setColor(HudManager.FONT_COLOR);
             bitmapFontComponent.offset.set(hexagonMapPolygon.getR(),10);
             mapEntity
                     .add(game.engine.createComponent(RenderableComponent.class))
@@ -148,7 +149,7 @@ public class BattleScreen extends GameScreen {
         for(int i = 0; i < divider; i++) {
             BitmapFontComponent bitmapFontComponent = game.engine.createComponent(BitmapFontComponent.class)
                     .init(new BitmapFont(bitmapFont.getData(), bitmapFont.getRegion(), bitmapFont.usesIntegerPositions()), enemyData.quantity+"");
-            bitmapFontComponent.bitmapFont.setColor(Color.GOLD);
+            bitmapFontComponent.bitmapFont.setColor(HudManager.FONT_COLOR);
             bitmapFontComponent.offset.set(hexagonMapPolygon.getR(),10);
             Entity mapEntity = hexagonMapPolygon.getEntity(hexagonMapPolygon.getMapWidth() - 1, i*2+1);
             mapEntity

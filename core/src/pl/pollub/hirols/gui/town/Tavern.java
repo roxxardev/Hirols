@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Scaling;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import pl.pollub.hirols.Hirols;
+import pl.pollub.hirols.managers.HudManager;
 import pl.pollub.hirols.managers.UnitsManager;
 
 /**
@@ -42,7 +43,7 @@ public class Tavern extends TownBuilding {
             add(image).width(100).pad(10);
 
             BitmapFont bitmapFont = game.assetManager.get("testFontSize18.ttf", BitmapFont.class);
-            Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, Color.GOLD);
+            Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, HudManager.FONT_COLOR);
             Label heroName = new Label(hero.name , labelStyle);
             add(heroName).pad(20);
 
