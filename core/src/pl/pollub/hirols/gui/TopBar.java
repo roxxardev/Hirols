@@ -32,9 +32,9 @@ public class TopBar extends Table {
 
     private Label playerLabel;
     private Label dayLabel;
-    private ArrayList<Image> resourceImages = new ArrayList<>();
-    private ArrayList<Label> resourceLabels = new ArrayList<>();
-    private Map<ResourceType, Resource> resourceMap = new HashMap<>(4);
+    private ArrayList<Image> resourceImages = new ArrayList<Image>();
+    private ArrayList<Label> resourceLabels = new ArrayList<Label>();
+    private Map<ResourceType, Resource> resourceMap = new HashMap<ResourceType, Resource>(4);
 
     private Class<? extends PlayerComponent> currentPlayer;
 

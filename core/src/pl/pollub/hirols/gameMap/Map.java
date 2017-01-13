@@ -84,7 +84,7 @@ public class Map implements Disposable {
         entityMap = new Entity[tileMapWidth][tileMapHeight];
         createEntities();
         graph = GraphGenerator.generateDiagonalGraph(this,tileWidth,tileHeight,tileMapWidth,tileMapHeight);
-        pathFinder = new IndexedAStarPathFinder<>(graph);
+        pathFinder = new IndexedAStarPathFinder<Node>(graph);
         loadObjects();
     }
 
@@ -171,11 +171,11 @@ public class Map implements Disposable {
         MapLayer objectLayer = tiledMap.getLayers().get("objects");
         MapObjects mapObjects = objectLayer.getObjects();
 
-        java.util.Map<String, ArrayList<Entity>> mineMap = new HashMap<>();
-        java.util.Map<String, ArrayList<Entity>> townMap = new HashMap<>();
-        java.util.Map<String, ArrayList<Entity>> recruitMap = new HashMap<>();
-        java.util.Map<String, Entity> enterEntityMap = new HashMap<>();
-        java.util.Map<MapObject, Entity> portals = new HashMap<>();
+        java.util.Map<String, ArrayList<Entity>> mineMap = new HashMap<String, ArrayList<Entity>>();
+        java.util.Map<String, ArrayList<Entity>> townMap = new HashMap<String, ArrayList<Entity>>();
+        java.util.Map<String, ArrayList<Entity>> recruitMap = new HashMap<String, ArrayList<Entity>>();
+        java.util.Map<String, Entity> enterEntityMap = new HashMap<String, Entity>();
+        java.util.Map<MapObject, Entity> portals = new HashMap<MapObject, Entity>();
 
         PlayerDataComponent playerDataComponent = ComponentMapper.getFor(PlayerDataComponent.class).get(game.gameManager.getCurrentPlayer());
 
@@ -357,7 +357,7 @@ public class Map implements Disposable {
     }
 
     public List<Entity> getAdjacentEntities(float positionX, float positionY) {
-        List<Entity> adjacentEntities = new ArrayList<>();
+        List<Entity> adjacentEntities = new ArrayList<Entity>();
 
         int x = (int)Math.floor(positionX / tileWidth);
         int y = (int)Math.floor(positionY / tileHeight);

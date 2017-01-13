@@ -181,7 +181,7 @@ public class RightBar extends Table {
             });
         }};
 
-        rightBarDragImage = new Image(game.assetManager.get("ui/minimapDrag.png", Texture.class));
+        rightBarDragImage = new Image(game.assetManager.get("ui/townheroDrag.png", Texture.class));
 
         addActor(changeButton);
         addActor(scrollPaneHeroes);
@@ -259,7 +259,7 @@ public class RightBar extends Table {
     }
 
     private class GridGroupTowns extends GridGroup {
-        final Map<Entity, TownButton> townButtonMap = new HashMap<>();
+        final Map<Entity, TownButton> townButtonMap = new HashMap<Entity, TownButton>();
 
         @Override
         public void clear() {
@@ -318,7 +318,7 @@ public class RightBar extends Table {
     }
 
     private class GridGroupHeroes extends GridGroup {
-        final Map<Entity, HeroTable> heroTableMap = new HashMap<>();
+        final Map<Entity, HeroTable> heroTableMap = new HashMap<Entity, HeroTable>();
 
         @Override
         public void clear() {

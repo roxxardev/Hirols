@@ -178,7 +178,7 @@ public class LoadingScreen implements Screen {
 
         assetManager.load("ui/button-images.png", Texture.class, textureParameter);
         assetManager.load("ui/menuDrag.png", Texture.class, textureParameter);
-        assetManager.load("ui/minimapDrag.png", Texture.class, textureParameter);
+        assetManager.load("ui/townheroDrag.png", Texture.class, textureParameter);
 
         assetManager.load("temp/portrait.png", Texture.class, textureParameter);
         assetManager.load("temp/orki.png", Texture.class, textureParameter);
