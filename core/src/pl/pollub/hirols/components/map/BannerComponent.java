@@ -12,12 +12,12 @@ import com.badlogic.gdx.utils.Pool;
 
 public class BannerComponent implements Component, Pool.Poolable {
     public Sprite bannerSprite;
-    public Color color;
+    public Color color = new Color();
     public Vector2 offset = new Vector2();
 
     public BannerComponent init(Sprite bannerSprite, Color color, int offsetX, int offsetY) {
         this.bannerSprite = bannerSprite;
-        this.color = color;
+        this.color.set(color);
         this.offset.set(offsetX, offsetY);
         return this;
     }

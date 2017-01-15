@@ -42,6 +42,7 @@ public class TextureRenderableComponentRemovalSystem extends GeneralIteratingSys
             entity.remove(RenderableComponent.class);
             entity.remove(LifePeriodComponent.class);
             entity.remove(TransparencyComponent.class);
+            entity.remove(TextureRenderableRemovalComponent.class);
         }
     }
 }

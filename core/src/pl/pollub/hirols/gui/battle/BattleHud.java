@@ -33,7 +33,7 @@ public class BattleHud extends Hud {
 
         stage.addActor(waitButton);
         stage.addActor(blockButton);
-        stage.addActor(magicBookButton);
+        //stage.addActor(magicBookButton);
         stage.addActor(runButton);
     }
 

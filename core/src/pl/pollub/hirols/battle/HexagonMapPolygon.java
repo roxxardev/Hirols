@@ -25,7 +25,7 @@ public class HexagonMapPolygon {
 
     private int mapWidth;
     private int mapHeight;
-    private float h,r,b,a;
+    private float h, r, b, a;
     private float hexagonSideLength;
     private Vector2 margin;
     private Sprite backgroundSprite;
@@ -47,8 +47,8 @@ public class HexagonMapPolygon {
         hexagons = new HexagonTilePolygon[mapWidth][mapHeight];
         entityMap = new Entity[mapWidth][mapHeight];
 
-        Pixmap pixmap = new Pixmap(1,1, Pixmap.Format.RGBA8888);
-        pixmap.setColor(1f,1f,1f,1f);
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        pixmap.setColor(1f, 1f, 1f, 1f);
         pixmap.fill();
         regionFromPixMap = new TextureRegion(new Texture(pixmap));
         pixmap.dispose();
@@ -68,7 +68,7 @@ public class HexagonMapPolygon {
                 entity
                         .add(game.engine.createComponent(HexagonComponent.class).init(hexagonTilePolygon))
                         .add(game.engine.createComponent(BattleComponent.class))
-                        .add(game.engine.createComponent(PositionComponent.class).init(hexagonTilePolygon.getPositionX(),hexagonTilePolygon.getPositionY()));
+                        .add(game.engine.createComponent(PositionComponent.class).init(hexagonTilePolygon.getPositionX(), hexagonTilePolygon.getPositionY()));
                 entityMap[x][y] = entity;
             }
         }
@@ -114,7 +114,7 @@ public class HexagonMapPolygon {
     }
 
     public HexagonTilePolygon getHexagonTile(int x, int y) {
-        if(x >= 0 && x < getMapWidth() && y>=0 && y<getMapHeight()) {
+        if (x >= 0 && x < getMapWidth() && y >= 0 && y < getMapHeight()) {
             return hexagons[x][y];
         }
         return null;
@@ -130,38 +130,38 @@ public class HexagonMapPolygon {
     }
 
     public HexagonTilePolygon getHexagonTileFromPoint(Vector2 point) {
-        float rectangleA =2*r;
-        float rectangleB = h+hexagonSideLength;
-        int rectX = (int)Math.floor((point.x - margin.x) / rectangleA);
-        int rectY = (int)Math.floor((point.y - margin.y) / rectangleB);
-        if(!(rectX >=0 && rectX<mapWidth+1 && rectY>=0 && rectY<mapHeight+1)) return null;
-        float rectPositionX = rectX*rectangleA+margin.x;
-        float rectPositionY = rectY*(h+hexagonSideLength)+margin.y;
-        int hexX,hexY;
-        if(rectY % 2 == 0) {
+        float rectangleA = 2 * r;
+        float rectangleB = h + hexagonSideLength;
+        int rectX = (int) Math.floor((point.x - margin.x) / rectangleA);
+        int rectY = (int) Math.floor((point.y - margin.y) / rectangleB);
+        if (!(rectX >= 0 && rectX < mapWidth + 1 && rectY >= 0 && rectY < mapHeight + 1)) return null;
+        float rectPositionX = rectX * rectangleA + margin.x;
+        float rectPositionY = rectY * (h + hexagonSideLength) + margin.y;
+        int hexX, hexY;
+        if (rectY % 2 == 0) {
             p1.set(rectPositionX, rectPositionY);
             p2.set(rectPositionX + r, rectPositionY);
             p3.set(rectPositionX, rectPositionY + h);
-            if(pointInTriangle(point,p1,p2,p3)) {
-                hexX = rectX -1;
-                hexY = rectY -1;
-            } else if(pointInTriangle(point,p1.set(rectPositionX+2*r,rectPositionY),p2,p3.set(rectPositionX + 2*r,rectPositionY+h))){
+            if (pointInTriangle(point, p1, p2, p3)) {
+                hexX = rectX - 1;
+                hexY = rectY - 1;
+            } else if (pointInTriangle(point, p1.set(rectPositionX + 2 * r, rectPositionY), p2, p3.set(rectPositionX + 2 * r, rectPositionY + h))) {
                 hexX = rectX;
-                hexY = rectY-1;
+                hexY = rectY - 1;
             } else {
                 hexX = rectX;
                 hexY = rectY;
             }
         } else {
             p1.set(rectPositionX, rectPositionY);
-            p2.set(rectPositionX + 2*r, rectPositionY);
+            p2.set(rectPositionX + 2 * r, rectPositionY);
             p3.set(rectPositionX + r, rectPositionY + h);
-            if(pointInTriangle(point, p1,p2,p3)) {
+            if (pointInTriangle(point, p1, p2, p3)) {
                 hexX = rectX;
-                hexY = rectY-1;
+                hexY = rectY - 1;
             } else {
-                if(point.x < rectPositionX + rectangleA /2) {
-                    hexX = rectX-1;
+                if (point.x < rectPositionX + rectangleA / 2) {
+                    hexX = rectX - 1;
                     hexY = rectY;
                 } else {
                     hexX = rectX;
@@ -169,7 +169,7 @@ public class HexagonMapPolygon {
                 }
             }
         }
-        return getHexagonTile(hexX,hexY);
+        return getHexagonTile(hexX, hexY);
     }
 
     public int getMapWidth() {
@@ -212,11 +212,11 @@ public class HexagonMapPolygon {
         return margin;
     }
 
-    private float sign (Vector2 p1, Vector2 p2, Vector2 p3) {
+    private float sign(Vector2 p1, Vector2 p2, Vector2 p3) {
         return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
     }
 
-    private boolean pointInTriangle (Vector2 pt, Vector2 v1, Vector2 v2, Vector2 v3) {
+    private boolean pointInTriangle(Vector2 pt, Vector2 v1, Vector2 v2, Vector2 v3) {
         boolean b1, b2, b3;
 
         b1 = sign(pt, v1, v2) < 0.0f;

@@ -18,7 +18,6 @@ public class BeginSystem extends EntitySystem {
 
     @Override
     public void update(float deltaTime) {
-        //Gdx.app.log("BeginSystem", priority + " Batch begin");
         batch.begin();
     }
 }

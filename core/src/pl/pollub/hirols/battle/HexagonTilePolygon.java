@@ -11,13 +11,13 @@ public class HexagonTilePolygon {
     private int x, y;
     private float positionX, positionY;
     public PolygonSprite sprite;
-    public float[] vertices = new float[] {};
+    public float[] vertices = new float[]{};
 
     public HexagonTilePolygon(HexagonMapPolygon hexagonMap, int x, int y) {
         this.x = x;
         this.y = y;
-        sprite = new PolygonSprite(new PolygonRegion(hexagonMap.getRegionFromPixMap(),vertices, new short[] {}));
-        sprite.setColor(0,0,0,0.15f);
+        sprite = new PolygonSprite(new PolygonRegion(hexagonMap.getRegionFromPixMap(), vertices, new short[]{}));
+        sprite.setColor(0, 0, 0, 0.15f);
         update(hexagonMap);
     }
 
@@ -26,16 +26,16 @@ public class HexagonTilePolygon {
         float yPixel = y * (hexagonMap.getH() + hexagonMap.getHexagonSideLength());
         positionX = xPixel + hexagonMap.getMargin().x;
         positionY = yPixel + hexagonMap.getMargin().y;
-        vertices = new float[] {
-                positionX,positionY+hexagonMap.getH(),
-                positionX+hexagonMap.getR(),positionY,
-                positionX+2*hexagonMap.getR(),positionY+hexagonMap.getH(),
-                positionX+2*hexagonMap.getR(),positionY+hexagonMap.getH()+hexagonMap.getHexagonSideLength(),
-                positionX+hexagonMap.getR(),positionY+hexagonMap.getB(),
-                positionX,positionY+hexagonMap.getH()+hexagonMap.getHexagonSideLength()};
+        vertices = new float[]{
+                positionX, positionY + hexagonMap.getH(),
+                positionX + hexagonMap.getR(), positionY,
+                positionX + 2 * hexagonMap.getR(), positionY + hexagonMap.getH(),
+                positionX + 2 * hexagonMap.getR(), positionY + hexagonMap.getH() + hexagonMap.getHexagonSideLength(),
+                positionX + hexagonMap.getR(), positionY + hexagonMap.getB(),
+                positionX, positionY + hexagonMap.getH() + hexagonMap.getHexagonSideLength()};
 
         ShortArray triangulatedIndices = hexagonMap.getEarClippingTriangulator().computeTriangles(vertices);
-        sprite.setRegion(new PolygonRegion(hexagonMap.getRegionFromPixMap(),vertices,triangulatedIndices.toArray()));
+        sprite.setRegion(new PolygonRegion(hexagonMap.getRegionFromPixMap(), vertices, triangulatedIndices.toArray()));
     }
 
     public float getPositionX() {

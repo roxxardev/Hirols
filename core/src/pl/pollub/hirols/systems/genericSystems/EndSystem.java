@@ -18,7 +18,6 @@ public class EndSystem extends EntitySystem {
 
     @Override
     public void update(float deltaTime) {
-        //Gdx.app.log("EndSystem", priority + " Batch end");
         batch.end();
     }
 }
