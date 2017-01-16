@@ -120,7 +120,7 @@ public class SpawnGenerator {
                     .add(engine.createComponent(RenderableComponent.class))
                     .add(engine.createComponent(TextureComponent.class).setSize(128, 128).setAdditionalOffset(-16, -14))
                     .add(engine.createComponent(HeroDataComponent.class)
-                            .init(++heroID,"nołnejm", 10f, hero, game.unitsManager.orc))
+                            .init(++heroID,"nołnejm", 10f, hero, game.unitsManager.orc, game.unitsManager.oldShaman, game.unitsManager.smallWyvern, game.unitsManager.shaman, game.unitsManager.wyvern))
                     .add(engine.createComponent(VelocityComponent.class))
                     .add(engine.createComponent(BannerComponent.class).init(flagSprite, playerDataComponent.color, 0, (int) (map.getTileHeight() - flagSprite.getHeight())))
                     .add(engine.createComponent(playerClass));
