@@ -271,9 +271,10 @@ public class MapInteractionSystem extends GameMapEntitySystem {
         } else if (townMap.has(mapEntity)) {
             Gdx.app.log("MapInteractionSystem", "Tap on town");
             TownComponent townComponent = townMap.get(mapEntity);
+            Entity townEnterEntity = townComponent.enterEntity;
             PositionComponent townEnterPosition = posMap.get(townComponent.enterEntity);
             Vector2 townPos = Pools.obtain(Vector2.class).set(townEnterPosition.x,townEnterPosition.y);
-            if(findPathNonWalkable(pathStartPosition.set(selectedHeroPosition.x, selectedHeroPosition.y), townPos, gameMap, selectedHeroData, mapEntity, LastPathTexture.CROSS, true)) {
+            if(findPathNonWalkable(pathStartPosition.set(selectedHeroPosition.x, selectedHeroPosition.y), townPos, gameMap, selectedHeroData, townEnterEntity, LastPathTexture.CROSS, true)) {
                 Gdx.app.log("MapInteractionSystem", "Path created for hero id: "
                         + selectedHeroData.id + " Length: " + selectedHeroData.heroPath.getPathSize() + " to town");
             }
